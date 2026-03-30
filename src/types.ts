@@ -9,20 +9,20 @@ import type { LoadContext, RouteConfig } from '@docusaurus/types';
  */
 export interface DocsSection {
   /**
-   * Physical directory path relative to siteDir (e.g., 'docs', 'cloud', 'feature-collections').
+   * Physical directory path relative to siteDir (e.g., 'docs', 'product-a', 'product-b').
    * This is the `path` option you pass to `@docusaurus/plugin-content-docs`.
    */
   path: string;
   /**
    * URL route base path. Use '/' when the docs plugin has `routeBasePath: '/'`,
-   * otherwise use the same value as `routeBasePath` (e.g., 'cloud', 'feature-collections').
+   * otherwise use the same value as `routeBasePath` (e.g., 'product-a', 'product-b').
    */
   routeBasePath: string;
   /**
    * Human-readable label used as a section heading in llms.txt and llms-full.txt.
    * Falls back to the `path` value when not provided.
    *
-   * @example '☁️ Cloud Resources'
+   * @example '🚀 Product A'
    */
   label?: string;
 }
@@ -98,9 +98,9 @@ export interface PluginOptions {
    *
    * @example Multiple sections (array form)
    * docsDir: [
-   *   { path: 'docs',  routeBasePath: '/',     label: 'General' },
-   *   { path: 'cloud', routeBasePath: 'cloud', label: '☁️ Cloud Resources' },
-   *   { path: 'api',   routeBasePath: 'api',   label: '🔌 API Reference' },
+   *   { path: 'docs',      routeBasePath: '/',          label: 'General' },
+   *   { path: 'product-a', routeBasePath: 'product-a',  label: '🚀 Product A' },
+   *   { path: 'product-b', routeBasePath: 'product-b',  label: '🛠️ Product B' },
    * ]
    */
   docsDir?: string | DocsSection[];

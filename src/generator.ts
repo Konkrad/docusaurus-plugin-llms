@@ -232,7 +232,7 @@ export async function generateIndividualMarkdownFiles(
       // Multi-section mode: remap physical directory to routeBasePath so that
       // generated files land at URLs that match the Docusaurus routes.
       // e.g. docs/index.md (routeBasePath '/') → index.md
-      //      cloud/guide.md (routeBasePath 'cloud') → cloud/guide.md (unchanged)
+      //      product-a/guide.md (routeBasePath 'product-a') → product-a/guide.md (unchanged)
       const section = docsSections.find(s => {
         const prefix = s.path + '/';
         return relativePath.startsWith(prefix) || relativePath === s.path + '.md';
