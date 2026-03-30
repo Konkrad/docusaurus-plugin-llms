@@ -95,17 +95,17 @@ const testCases = [
         path: 'docs/getting-started.md',
         content: '# Getting Started\n\nThis is the getting started guide.',
         description: 'Introduction to the system',
-        url: 'https://example.com/getting-started'
+        url: 'https://example.com/getting-started',
       },
       {
         title: 'Advanced Usage',
         path: 'docs/advanced.md',
         content: '# Advanced Usage\n\nAdvanced usage guide.',
         description: 'Advanced features',
-        url: 'https://example.com/advanced'
-      }
+        url: 'https://example.com/advanced',
+      },
     ],
-    expectedHeaders: ['Getting Started', 'Advanced Usage']
+    expectedHeaders: ['Getting Started', 'Advanced Usage'],
   },
   {
     name: 'Duplicate headers with folder differentiation',
@@ -115,17 +115,17 @@ const testCases = [
         path: 'docs/basic/configuration.md',
         content: '# Configuration\n\nBasic configuration options.',
         description: 'Basic configuration',
-        url: 'https://example.com/basic/configuration'
+        url: 'https://example.com/basic/configuration',
       },
       {
         title: 'Configuration',
         path: 'docs/advanced/configuration.md',
         content: '# Configuration\n\nAdvanced configuration options.',
         description: 'Advanced configuration',
-        url: 'https://example.com/advanced/configuration'
-      }
+        url: 'https://example.com/advanced/configuration',
+      },
     ],
-    expectedHeaders: ['Configuration', 'Configuration (Advanced)']
+    expectedHeaders: ['Configuration', 'Configuration (Advanced)'],
   },
   {
     name: 'Multiple duplicate headers',
@@ -135,24 +135,24 @@ const testCases = [
         path: 'docs/api/reference.md',
         content: '# API Reference\n\nGeneral API reference.',
         description: 'General API',
-        url: 'https://example.com/api/reference'
+        url: 'https://example.com/api/reference',
       },
       {
         title: 'API Reference',
         path: 'docs/python/reference.md',
         content: '# API Reference\n\nPython API reference.',
         description: 'Python API',
-        url: 'https://example.com/python/reference'
+        url: 'https://example.com/python/reference',
       },
       {
         title: 'API Reference',
         path: 'docs/javascript/reference.md',
         content: '# API Reference\n\nJavaScript API reference.',
         description: 'JavaScript API',
-        url: 'https://example.com/javascript/reference'
-      }
+        url: 'https://example.com/javascript/reference',
+      },
     ],
-    expectedHeaders: ['API Reference', 'API Reference (Python)', 'API Reference (Javascript)']
+    expectedHeaders: ['API Reference', 'API Reference (Python)', 'API Reference (Javascript)'],
   },
   {
     name: 'Headers without folder context fall back to numbers',
@@ -162,17 +162,17 @@ const testCases = [
         path: 'tutorial1.md',
         content: '# Tutorial\n\nFirst tutorial.',
         description: 'First tutorial',
-        url: 'https://example.com/tutorial1'
+        url: 'https://example.com/tutorial1',
       },
       {
         title: 'Tutorial',
         path: 'tutorial2.md',
         content: '# Tutorial\n\nSecond tutorial.',
         description: 'Second tutorial',
-        url: 'https://example.com/tutorial2'
-      }
+        url: 'https://example.com/tutorial2',
+      },
     ],
-    expectedHeaders: ['Tutorial', 'Tutorial (2)']
+    expectedHeaders: ['Tutorial', 'Tutorial (2)'],
   },
   {
     name: 'Mixed content with and without existing headers',
@@ -182,18 +182,18 @@ const testCases = [
         path: 'docs/setup/guide.md',
         content: '# Setup Guide\n\nSetup guide content.',
         description: 'Setup guide',
-        url: 'https://example.com/setup/guide'
+        url: 'https://example.com/setup/guide',
       },
       {
         title: 'Setup Guide',
         path: 'docs/install/guide.md',
         content: 'This is content without a heading.\n\nMore content here.',
         description: 'Install guide',
-        url: 'https://example.com/install/guide'
-      }
+        url: 'https://example.com/install/guide',
+      },
     ],
-    expectedHeaders: ['Setup Guide', 'Setup Guide (Install)']
-  }
+    expectedHeaders: ['Setup Guide', 'Setup Guide (Install)'],
+  },
 ];
 
 function runTests() {
@@ -211,7 +211,7 @@ function runTests() {
         'Test Documentation',
         'Test description',
         true,
-        'test-version'
+        'test-version',
       );
 
       // Extract H2 headers from the output (document sections should be H2)

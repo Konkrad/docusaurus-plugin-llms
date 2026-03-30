@@ -41,7 +41,7 @@ const testCases = [
     partialContent: 'Configuration content',
     mainContent: "import SharedConfig from './_config-v1.0.mdx';\n\n<SharedConfig />\n\nOther content",
     expectedContent: 'Configuration content\n\nOther content',
-    description: 'Import path with dots should be escaped properly'
+    description: 'Import path with dots should be escaped properly',
   },
   {
     name: 'Component with path containing parentheses',
@@ -50,7 +50,7 @@ const testCases = [
     partialContent: 'API guide content',
     mainContent: "import APIGuide from './_api(v2).mdx';\n\n<APIGuide />\n\nMore info",
     expectedContent: 'API guide content\n\nMore info',
-    description: 'Import path with parentheses should be escaped'
+    description: 'Import path with parentheses should be escaped',
   },
   {
     name: 'Component with path containing square brackets',
@@ -59,7 +59,7 @@ const testCases = [
     partialContent: 'Array methods documentation',
     mainContent: "import ArrayDocs from './_array[methods].mdx';\n\n<ArrayDocs />\n\nExample",
     expectedContent: 'Array methods documentation\n\nExample',
-    description: 'Import path with square brackets should be escaped'
+    description: 'Import path with square brackets should be escaped',
   },
   {
     name: 'Component with path containing plus signs',
@@ -68,7 +68,7 @@ const testCases = [
     partialContent: 'C++ programming guide',
     mainContent: "import CppGuide from './_c++guide.mdx';\n\n<CppGuide />\n\nDetails",
     expectedContent: 'C++ programming guide\n\nDetails',
-    description: 'Import path with ++ should be escaped'
+    description: 'Import path with ++ should be escaped',
   },
   {
     name: 'Component with path containing dollar sign',
@@ -77,7 +77,7 @@ const testCases = [
     partialContent: 'Price information',
     mainContent: "import PriceInfo from './_price$info.mdx';\n\n<PriceInfo />\n\nNotes",
     expectedContent: 'Price information\n\nNotes',
-    description: 'Import path with $ should be escaped'
+    description: 'Import path with $ should be escaped',
   },
   {
     name: 'Component with path containing asterisk',
@@ -86,7 +86,7 @@ const testCases = [
     partialContent: 'Wildcard test content',
     mainContent: "import WildcardTest from './_test*.mdx';\n\n<WildcardTest />\n\nText",
     expectedContent: 'Wildcard test content\n\nText',
-    description: 'Import path with * should be escaped'
+    description: 'Import path with * should be escaped',
   },
   {
     name: 'Component with path containing question mark',
@@ -95,7 +95,7 @@ const testCases = [
     partialContent: 'Help documentation',
     mainContent: "import HelpDoc from './_help?.mdx';\n\n<HelpDoc />\n\nFAQ",
     expectedContent: 'Help documentation\n\nFAQ',
-    description: 'Import path with ? should be escaped'
+    description: 'Import path with ? should be escaped',
   },
   {
     name: 'Component with path containing caret',
@@ -104,7 +104,7 @@ const testCases = [
     partialContent: 'Configuration settings',
     mainContent: "import ConfigSettings from './_config^settings.mdx';\n\n<ConfigSettings />\n\nInfo",
     expectedContent: 'Configuration settings\n\nInfo',
-    description: 'Import path with ^ should be escaped'
+    description: 'Import path with ^ should be escaped',
   },
   {
     name: 'Component with path containing pipe',
@@ -113,7 +113,7 @@ const testCases = [
     partialContent: 'Option selection guide',
     mainContent: "import OptionSelect from './_option|select.mdx';\n\n<OptionSelect />\n\nMore",
     expectedContent: 'Option selection guide\n\nMore',
-    description: 'Import path with | should be escaped'
+    description: 'Import path with | should be escaped',
   },
   {
     name: 'Component with path containing curly braces',
@@ -122,7 +122,7 @@ const testCases = [
     partialContent: 'Template content',
     mainContent: "import TemplateDoc from './_template{}.mdx';\n\n<TemplateDoc />\n\nExample",
     expectedContent: 'Template content\n\nExample',
-    description: 'Import path with {} should be escaped'
+    description: 'Import path with {} should be escaped',
   },
   {
     name: 'Normal component without special chars',
@@ -131,7 +131,7 @@ const testCases = [
     partialContent: 'Simple content',
     mainContent: "import SimpleComponent from './_simple.mdx';\n\n<SimpleComponent />\n\nText",
     expectedContent: 'Simple content\n\nText',
-    description: 'Normal paths without special characters should still work'
+    description: 'Normal paths without special characters should still work',
   },
   {
     name: 'Destructured import with special chars in path',
@@ -140,7 +140,7 @@ const testCases = [
     partialContent: 'Special component content',
     mainContent: "import { SpecialComponent } from './_special-v1.0.mdx';\n\n<SpecialComponent />\n\nMore",
     expectedContent: 'Special component content\n\nMore',
-    description: 'Destructured imports with special chars in path should work'
+    description: 'Destructured imports with special chars in path should work',
   },
   {
     name: 'Component with complex path',
@@ -149,7 +149,7 @@ const testCases = [
     partialContent: 'Complex documentation',
     mainContent: "import ComplexDoc from './_api(v2.0)[beta]*.mdx';\n\n<ComplexDoc />\n\nNotes",
     expectedContent: 'Complex documentation\n\nNotes',
-    description: 'Path with multiple special characters should all be escaped'
+    description: 'Path with multiple special characters should all be escaped',
   },
   {
     name: 'Regex injection prevention in path',
@@ -158,7 +158,7 @@ const testCases = [
     partialContent: 'Test content',
     mainContent: "import TestComponent from './_test.star.mdx';\n\n<TestComponent />\n\nData",
     expectedContent: 'Test content\n\nData',
-    description: 'Path with dots should be treated literally, not as regex wildcard'
+    description: 'Path with dots should be treated literally, not as regex wildcard',
   },
   {
     name: 'Multiple imports with special paths',
@@ -168,8 +168,8 @@ const testCases = [
     mainContent:
       "import FirstComponent from './_first-v1.0.mdx';\nimport SecondComponent from './_second.mdx';\n\n<FirstComponent />\n\nText",
     expectedContent: 'First component\n\nText',
-    description: 'Multiple imports with mixed special characters should work'
-  }
+    description: 'Multiple imports with mixed special characters should work',
+  },
 ];
 
 // Run tests

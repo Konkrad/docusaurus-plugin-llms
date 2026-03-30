@@ -18,10 +18,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected "Test error message", got "${result}"`
+          error: `Expected "Test error message", got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles string errors',
@@ -34,10 +34,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected "String error message", got "${result}"`
+          error: `Expected "String error message", got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles object errors',
@@ -52,10 +52,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected "${expected}", got "${result}"`
+          error: `Expected "${expected}", got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles null',
@@ -70,10 +70,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected 'null' or 'Unknown error', got "${result}"`
+          error: `Expected 'null' or 'Unknown error', got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles undefined',
@@ -88,10 +88,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected a non-empty string, got "${result}"`
+          error: `Expected a non-empty string, got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles circular references',
@@ -107,10 +107,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected "Unknown error", got "${result}"`
+          error: `Expected "Unknown error", got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles numbers',
@@ -124,7 +124,7 @@ const testCases = [
       } else {
         return { passed: false, error: `Expected "42", got "${result}"` };
       }
-    }
+    },
   },
   {
     name: 'getErrorMessage handles arrays',
@@ -139,10 +139,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected "${expected}", got "${result}"`
+          error: `Expected "${expected}", got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorStack returns stack from Error instances',
@@ -155,10 +155,10 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Expected stack trace, got "${result}"`
+          error: `Expected stack trace, got "${result}"`,
         };
       }
-    }
+    },
   },
   {
     name: 'getErrorStack returns undefined for non-Error types',
@@ -170,13 +170,13 @@ const testCases = [
         if (result !== undefined) {
           return {
             passed: false,
-            error: `Expected undefined for ${typeof error}, got "${result}"`
+            error: `Expected undefined for ${typeof error}, got "${result}"`,
           };
         }
       }
 
       return { passed: true };
-    }
+    },
   },
   {
     name: 'Type safety - catch blocks can use unknown',
@@ -194,13 +194,13 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Unexpected results: message="${message}", stack="${typeof stack}"`
+            error: `Unexpected results: message="${message}", stack="${typeof stack}"`,
           };
         }
       }
 
       return { passed: false, error: 'Did not catch expected error' };
-    }
+    },
   },
   {
     name: 'Type safety - string errors work correctly',
@@ -216,13 +216,13 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Unexpected results: message="${message}", stack="${stack}"`
+            error: `Unexpected results: message="${message}", stack="${stack}"`,
           };
         }
       }
 
       return { passed: false, error: 'Did not catch expected error' };
-    }
+    },
   },
   {
     name: 'Error messages preserve details',
@@ -235,11 +235,11 @@ const testCases = [
       } else {
         return {
           passed: false,
-          error: `Error message not preserved: "${result}"`
+          error: `Error message not preserved: "${result}"`,
         };
       }
-    }
-  }
+    },
+  },
 ];
 
 async function runTests() {

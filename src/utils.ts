@@ -118,7 +118,7 @@ export function validateRequired<T>(value: T | null | undefined, paramName: stri
 export function validateString(
   value: unknown,
   paramName: string,
-  options: { minLength?: number; maxLength?: number; pattern?: RegExp } = {}
+  options: { minLength?: number; maxLength?: number; pattern?: RegExp } = {},
 ): string {
   if (typeof value !== 'string') {
     throw new ValidationError(`Parameter '${paramName}' must be a string, got ${typeof value}`);
@@ -150,7 +150,7 @@ export function validateString(
 export function validateArray<T>(
   value: unknown,
   paramName: string,
-  elementValidator?: (item: unknown) => boolean
+  elementValidator?: (item: unknown) => boolean,
 ): T[] {
   if (!Array.isArray(value)) {
     throw new ValidationError(`Parameter '${paramName}' must be an array`);
@@ -173,7 +173,7 @@ export function validateArray<T>(
 export enum LogLevel {
   QUIET = 0,
   NORMAL = 1,
-  VERBOSE = 2
+  VERBOSE = 2,
 }
 
 let currentLogLevel = LogLevel.NORMAL;
@@ -207,7 +207,7 @@ export const logger = {
     if (currentLogLevel >= LogLevel.VERBOSE) {
       console.log(`[docusaurus-plugin-llms] ${message}`);
     }
-  }
+  },
 };
 
 /**
@@ -305,7 +305,7 @@ export function shouldIgnoreFile(
   filePath: string,
   baseDir: string,
   ignorePatterns: string[],
-  docsDir: string = 'docs'
+  docsDir: string = 'docs',
 ): boolean {
   if (!isNonEmptyArray(ignorePatterns)) {
     return false;
@@ -354,7 +354,7 @@ export async function readMarkdownFiles(
   ignorePatterns: string[] = [],
   docsDir: string = 'docs',
   warnOnIgnoredFiles: boolean = false,
-  visitedPaths: Set<string> = new Set()
+  visitedPaths: Set<string> = new Set(),
 ): Promise<string[]> {
   // Get real path to detect symlink loops
   let realPath: string;
@@ -405,7 +405,7 @@ export async function readMarkdownFiles(
         ignorePatterns,
         docsDir,
         warnOnIgnoredFiles,
-        visitedPaths
+        visitedPaths,
       );
       files.push(...subDirFiles);
     } else if (!entry.name.includes('.')) {
@@ -474,7 +474,7 @@ function escapeRegex(str: string): string {
 export async function resolvePartialImports(
   content: string,
   filePath: string,
-  importChain: Set<string> = new Set()
+  importChain: Set<string> = new Set(),
 ): Promise<string> {
   let resolved = content;
 
@@ -518,15 +518,15 @@ export async function resolvePartialImports(
         resolved = resolved.replace(
           new RegExp(
             `^\\s*import\\s+(?:${escapedComponentName}|{\\s*${escapedComponentName}\\s*})\\s+from\\s+['"]${escapedImportPath}['"];?\\s*$`,
-            'gm'
+            'gm',
           ),
-          ''
+          '',
         );
 
         // Remove JSX usage of this component
         const jsxRegex = new RegExp(
           `<${escapedComponentName}(?:\\s+[^>]*)?\\s*\\/?>(?:[\\s\\S]*?<\\/${escapedComponentName}>)?`,
-          'gm'
+          'gm',
         );
         resolved = resolved.replace(jsxRegex, '');
 
@@ -552,9 +552,9 @@ export async function resolvePartialImports(
       resolved = resolved.replace(
         new RegExp(
           `^\\s*import\\s+(?:${escapedComponentName}|{\\s*${escapedComponentName}\\s*})\\s+from\\s+['"]${escapedImportPath}['"];?\\s*$`,
-          'gm'
+          'gm',
         ),
-        ''
+        '',
       );
 
       // Replace JSX usage with the partial content
@@ -576,16 +576,16 @@ export async function resolvePartialImports(
       resolved = resolved.replace(
         new RegExp(
           `^\\s*import\\s+(?:${escapedComponentName}|{\\s*${escapedComponentName}\\s*})\\s+from\\s+['"]${escapedImportPath}['"];?\\s*$`,
-          'gm'
+          'gm',
         ),
-        ''
+        '',
       );
 
       // Remove JSX usage of this component
       // Handle both self-closing tags (<Component />) and regular tags with content (<Component>...</Component>)
       const jsxRegex = new RegExp(
         `<${escapedComponentName}(?:\\s+[^>]*)?\\s*\\/?>(?:[\\s\\S]*?<\\/${escapedComponentName}>)?`,
-        'gm'
+        'gm',
       );
       resolved = resolved.replace(jsxRegex, '');
     }
@@ -604,7 +604,7 @@ export async function resolvePartialImports(
 export function cleanMarkdownContent(
   content: string,
   excludeImports: boolean = false,
-  removeDuplicateHeadings: boolean = false
+  removeDuplicateHeadings: boolean = false,
 ): string {
   let cleaned = content;
 
@@ -625,7 +625,7 @@ export function cleanMarkdownContent(
   // This regex targets common HTML tags while being more conservative about XML
   cleaned = cleaned.replace(
     /<\/?(?:div|span|p|br|hr|img|a|strong|em|b|i|u|h[1-6]|ul|ol|li|table|tr|td|th|thead|tbody)\b[^>]*>/gi,
-    ''
+    '',
   );
 
   // Remove redundant content that just repeats the heading (if requested)
@@ -692,7 +692,7 @@ export function cleanMarkdownContent(
  */
 export function applyPathTransformations(
   urlPath: string,
-  pathTransformation?: PluginOptions['pathTransformation']
+  pathTransformation?: PluginOptions['pathTransformation'],
 ): string {
   if (!isDefined(pathTransformation)) {
     return urlPath;
@@ -748,7 +748,7 @@ export function sanitizeForFilename(
   options: {
     preserveUnicode?: boolean;
     preserveCase?: boolean;
-  } = {}
+  } = {},
 ): string {
   // Validate input parameters
   validateString(input, 'input');
@@ -790,7 +790,7 @@ export function sanitizeForFilename(
 export function ensureUniqueIdentifier(
   baseIdentifier: string,
   usedIdentifiers: Set<string>,
-  suffix: (counter: number, base: string) => string = counter => `(${counter})`
+  suffix: (counter: number, base: string) => string = counter => `(${counter})`,
 ): string {
   // Validate input parameters
   validateString(baseIdentifier, 'baseIdentifier', { minLength: 1 });
@@ -838,7 +838,7 @@ export function createMarkdownContent(
   description: string = '',
   content: string = '',
   includeMetadata: boolean = true,
-  frontMatter?: Record<string, any>
+  frontMatter?: Record<string, any>,
 ): string {
   let result = '';
 
@@ -848,7 +848,7 @@ export function createMarkdownContent(
     result += YAML.stringify(frontMatter, {
       lineWidth: 0,
       defaultStringType: 'QUOTE_DOUBLE',
-      defaultKeyType: 'PLAIN'
+      defaultKeyType: 'PLAIN',
     });
     result += '---\n\n';
   }

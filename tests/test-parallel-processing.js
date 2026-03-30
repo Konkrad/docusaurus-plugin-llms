@@ -119,8 +119,8 @@ const testCases = [
           docsDir: 'docs',
           options: {
             excludeImports: false,
-            removeDuplicateHeadings: false
-          }
+            removeDuplicateHeadings: false,
+          },
         };
 
         const startTime = Date.now();
@@ -130,7 +130,7 @@ const testCases = [
           [], // includePatterns
           [], // ignorePatterns
           [], // orderPatterns
-          true // includeUnmatched
+          true, // includeUnmatched
         );
         const endTime = Date.now();
 
@@ -138,7 +138,7 @@ const testCases = [
         if (result.length !== 5) {
           return {
             passed: false,
-            error: `Expected 5 processed files, got ${result.length}`
+            error: `Expected 5 processed files, got ${result.length}`,
           };
         }
 
@@ -147,7 +147,7 @@ const testCases = [
           if (!doc.title || !doc.content || !doc.url) {
             return {
               passed: false,
-              error: 'Processed document missing required properties'
+              error: 'Processed document missing required properties',
             };
           }
         }
@@ -157,7 +157,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Handles individual file failures without stopping processing',
@@ -173,8 +173,8 @@ const testCases = [
           docsDir: 'docs',
           options: {
             excludeImports: false,
-            removeDuplicateHeadings: false
-          }
+            removeDuplicateHeadings: false,
+          },
         };
 
         // Capture console.warn output
@@ -191,7 +191,7 @@ const testCases = [
             [], // includePatterns
             [], // ignorePatterns
             [], // orderPatterns
-            true // includeUnmatched
+            true, // includeUnmatched
           );
 
           // Restore console.warn
@@ -203,7 +203,7 @@ const testCases = [
           if (result.length < 3) {
             return {
               passed: false,
-              error: `Expected at least 3 valid processed files, got ${result.length}`
+              error: `Expected at least 3 valid processed files, got ${result.length}`,
             };
           }
 
@@ -212,7 +212,7 @@ const testCases = [
             if (!doc.title || !doc.content || !doc.url) {
               return {
                 passed: false,
-                error: 'Processed document missing required properties'
+                error: 'Processed document missing required properties',
               };
             }
           }
@@ -225,7 +225,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Processes files faster than sequential processing would',
@@ -242,8 +242,8 @@ const testCases = [
           docsDir: 'docs',
           options: {
             excludeImports: false,
-            removeDuplicateHeadings: false
-          }
+            removeDuplicateHeadings: false,
+          },
         };
 
         const startTime = Date.now();
@@ -253,14 +253,14 @@ const testCases = [
           [], // includePatterns
           [], // ignorePatterns
           [], // orderPatterns
-          true // includeUnmatched
+          true, // includeUnmatched
         );
         const parallelTime = Date.now() - startTime;
 
         if (result.length !== 10) {
           return {
             passed: false,
-            error: `Expected 10 processed files, got ${result.length}`
+            error: `Expected 10 processed files, got ${result.length}`,
           };
         }
 
@@ -272,7 +272,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Returns empty array when no files to process',
@@ -289,8 +289,8 @@ const testCases = [
           docsDir: 'docs',
           options: {
             excludeImports: false,
-            removeDuplicateHeadings: false
-          }
+            removeDuplicateHeadings: false,
+          },
         };
 
         const result = await processFilesWithPatterns(
@@ -299,13 +299,13 @@ const testCases = [
           [], // includePatterns
           [], // ignorePatterns
           [], // orderPatterns
-          true // includeUnmatched
+          true, // includeUnmatched
         );
 
         if (result.length !== 0) {
           return {
             passed: false,
-            error: `Expected 0 processed files, got ${result.length}`
+            error: `Expected 0 processed files, got ${result.length}`,
           };
         }
 
@@ -313,7 +313,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Maintains order when processing files with patterns',
@@ -329,8 +329,8 @@ const testCases = [
           docsDir: 'docs',
           options: {
             excludeImports: false,
-            removeDuplicateHeadings: false
-          }
+            removeDuplicateHeadings: false,
+          },
         };
 
         // Use order patterns to specify specific order
@@ -339,7 +339,7 @@ const testCases = [
           'docs/test-2.md',
           'docs/test-0.md',
           'docs/test-3.md',
-          'docs/test-1.md'
+          'docs/test-1.md',
         ];
 
         const result = await processFilesWithPatterns(
@@ -348,13 +348,13 @@ const testCases = [
           [], // includePatterns
           [], // ignorePatterns
           orderPatterns,
-          true // includeUnmatched
+          true, // includeUnmatched
         );
 
         if (result.length !== 5) {
           return {
             passed: false,
-            error: `Expected 5 processed files, got ${result.length}`
+            error: `Expected 5 processed files, got ${result.length}`,
           };
         }
 
@@ -364,13 +364,13 @@ const testCases = [
           'Test Document 2',
           'Test Document 0',
           'Test Document 3',
-          'Test Document 1'
+          'Test Document 1',
         ];
         for (let i = 0; i < result.length; i++) {
           if (result[i].title !== expectedOrder[i]) {
             return {
               passed: false,
-              error: `Expected title "${expectedOrder[i]}" at position ${i}, got "${result[i].title}"`
+              error: `Expected title "${expectedOrder[i]}" at position ${i}, got "${result[i].title}"`,
             };
           }
         }
@@ -380,8 +380,8 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
-  }
+    },
+  },
 ];
 
 async function runTests() {

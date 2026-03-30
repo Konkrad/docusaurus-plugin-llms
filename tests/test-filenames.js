@@ -19,7 +19,7 @@ function createTestDoc(filename, frontMatter = {}) {
     content: `This is ${baseName} content.`,
     description: `${baseName} documentation`,
     url: `https://example.com/docs/${filename}`,
-    frontMatter
+    frontMatter,
   };
 }
 
@@ -51,29 +51,29 @@ const testCases = [
     name: 'Uses slug for filename when slug present',
     doc: createTestDoc('guides/config.md', { slug: 'custom-config-slug' }),
     expectedPath: 'guides/custom-config-slug.md',
-    fallbackPath: 'guides/config.md'
+    fallbackPath: 'guides/config.md',
   },
   {
     name: 'Prioritizes slug over id when both present',
     doc: createTestDoc('api/reference.md', { slug: 'api-slug', id: 'api-id' }),
     expectedPath: 'api/api-slug.md',
-    fallbackPath: 'api/reference.md'
+    fallbackPath: 'api/reference.md',
   },
   {
     name: 'Uses id for filename when only id present',
     doc: createTestDoc('tutorials/basic.md', { id: 'tutorial-basic-id' }),
     expectedPath: 'tutorials/tutorial-basic-id.md',
-    fallbackPath: 'tutorials/basic.md'
+    fallbackPath: 'tutorials/basic.md',
   },
   {
     name: 'Uses original filename when no slug or id',
     doc: createTestDoc('getting-started.md', {
       sidebar_position: 1,
-      tags: ['guide']
+      tags: ['guide'],
     }),
     expectedPath: 'getting-started.md',
-    fallbackPath: 'getting-started.md'
-  }
+    fallbackPath: 'getting-started.md',
+  },
 ];
 
 async function runFilenameTests() {
@@ -97,7 +97,7 @@ async function runFilenameTests() {
           siteUrl,
           'docs',
           [],
-          false // preserveDirectoryStructure = false
+          false, // preserveDirectoryStructure = false
         );
 
         // Validate file paths

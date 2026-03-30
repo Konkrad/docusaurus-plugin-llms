@@ -165,7 +165,7 @@ async function runTests() {
       path.join(testDir, 'main-self.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     // The document should still be processed (not crash)

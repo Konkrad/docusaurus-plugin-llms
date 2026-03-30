@@ -15,7 +15,7 @@ import {
   normalizePath,
   logger,
   getErrorMessage,
-  isNonEmptyString
+  isNonEmptyString,
 } from './utils';
 
 /**
@@ -38,7 +38,7 @@ export async function processMarkdownFile(
   },
   excludeImports: boolean = false,
   removeDuplicateHeadings: boolean = false,
-  resolvedUrl?: string
+  resolvedUrl?: string,
 ): Promise<DocInfo | null> {
   const content = await readFile(filePath);
   const { data, content: markdownContent } = matter(content);
@@ -227,7 +227,7 @@ export async function processMarkdownFile(
     url: fullUrl,
     content: cleanedContent,
     description: description || '',
-    frontMatter: data
+    frontMatter: data,
   };
 }
 
@@ -263,7 +263,7 @@ function findRouteInMap(routeMap: Map<string, string>, possiblePaths: string[]):
 function tryExactRouteMatch(
   routeMap: Map<string, string>,
   relativePath: string,
-  pathPrefix: string
+  pathPrefix: string,
 ): string | undefined {
   const possiblePaths = [`/${pathPrefix}/${relativePath}`, `/${relativePath}`];
   return findRouteInMap(routeMap, possiblePaths);
@@ -275,7 +275,7 @@ function tryExactRouteMatch(
 function tryNumberedPrefixResolution(
   routeMap: Map<string, string>,
   relativePath: string,
-  pathPrefix: string
+  pathPrefix: string,
 ): string | undefined {
   const cleanPath = removeNumberedPrefixes(relativePath);
 
@@ -334,7 +334,7 @@ function resolveDocumentUrl(
   filePath: string,
   baseDir: string,
   pathPrefix: string,
-  context: PluginContext
+  context: PluginContext,
 ): string | undefined {
   // Early return if no route map available
   if (!context.routeMap) {
@@ -413,7 +413,7 @@ export async function processFilesWithPatterns(
   includePatterns: string[] = [],
   ignorePatterns: string[] = [],
   orderPatterns: string[] = [],
-  includeUnmatched: boolean = false
+  includeUnmatched: boolean = false,
 ): Promise<DocInfo[]> {
   const { siteDir, siteUrl, docsDir } = context;
 
@@ -507,7 +507,7 @@ export async function processFilesWithPatterns(
           context.options.pathTransformation,
           context.options.excludeImports || false,
           context.options.removeDuplicateHeadings || false,
-          resolvedUrl
+          resolvedUrl,
         );
         if (docInfo !== null && !isBlogFile && context.docsSections?.length > 0) {
           const matchedSection = context.docsSections.find(s => {
@@ -523,7 +523,7 @@ export async function processFilesWithPatterns(
         logger.warn(`Error processing ${filePath}: ${getErrorMessage(err)}`);
         return null;
       }
-    })
+    }),
   );
 
   // Filter successful results and non-null DocInfo objects

@@ -27,11 +27,11 @@ const testCases = [
         path: 'docs/getting-started.md',
         content: 'This is the getting started guide.\n\nFollow these steps to begin.',
         description: 'Introduction to the system',
-        url: 'https://example.com/docs/getting-started'
-      }
+        url: 'https://example.com/docs/getting-started',
+      },
     ],
     expectedPaths: ['getting-started.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Nested directory structure preservation',
@@ -41,11 +41,11 @@ const testCases = [
         path: 'docs/api/reference.md',
         content: 'This is the API reference documentation.\n\nVersion 2.0 beta features.',
         description: 'API reference documentation for version 2.0',
-        url: 'https://example.com/docs/api/reference'
-      }
+        url: 'https://example.com/docs/api/reference',
+      },
     ],
     expectedPaths: ['api/reference.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Duplicate paths handling',
@@ -55,18 +55,18 @@ const testCases = [
         path: 'docs/basic/configuration.md',
         content: 'Basic configuration options.\n\nThese are the basic settings.',
         description: 'Basic configuration guide',
-        url: 'https://example.com/docs/basic/configuration'
+        url: 'https://example.com/docs/basic/configuration',
       },
       {
         title: 'Different Configuration',
         path: 'docs/basic/configuration.md', // Same path, different content
         content: 'Different configuration options.\n\nThese are different settings.',
         description: 'Different configuration guide',
-        url: 'https://example.com/docs/basic/configuration'
-      }
+        url: 'https://example.com/docs/basic/configuration',
+      },
     ],
     expectedPaths: ['basic/configuration.md', 'basic/configuration-2.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Empty path fallback to title',
@@ -76,11 +76,11 @@ const testCases = [
         path: '',
         content: 'This is a troubleshooting guide.\n\nCommon issues and solutions.',
         description: 'How to troubleshoot common issues',
-        url: 'https://example.com/troubleshooting'
-      }
+        url: 'https://example.com/troubleshooting',
+      },
     ],
     expectedPaths: ['troubleshooting-guide.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Mixed directory structures',
@@ -90,25 +90,25 @@ const testCases = [
         path: 'docs/quick-start.md',
         content: 'Get started quickly with our platform.\n\nJust a few simple steps.',
         description: 'Quick start guide for new users',
-        url: 'https://example.com/docs/quick-start'
+        url: 'https://example.com/docs/quick-start',
       },
       {
         title: 'Tutorial #1',
         path: 'docs/tutorials/tutorial-1.md',
         content: 'First tutorial in our series.\n\nLearn the basics here.',
         description: 'Basic tutorial for beginners',
-        url: 'https://example.com/docs/tutorials/tutorial-1'
+        url: 'https://example.com/docs/tutorials/tutorial-1',
       },
       {
         title: 'Tutorial #2',
         path: 'guides/advanced/tutorial-2.md',
         content: 'Second tutorial building on the first.\n\nAdvanced concepts covered.',
         description: 'Advanced tutorial building on basics',
-        url: 'https://example.com/guides/advanced/tutorial-2'
-      }
+        url: 'https://example.com/guides/advanced/tutorial-2',
+      },
     ],
     expectedPaths: ['quick-start.md', 'tutorials/tutorial-1.md', 'guides/advanced/tutorial-2.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Deep nested structure with extension normalization',
@@ -118,12 +118,12 @@ const testCases = [
         path: 'docs/level1/level2/level3/document.mdx',
         content: 'Content in a deeply nested structure.\n\nThis tests deep directory creation.',
         description: 'Testing deep nested paths',
-        url: 'https://example.com/docs/level1/level2/level3/document'
-      }
+        url: 'https://example.com/docs/level1/level2/level3/document',
+      },
     ],
     expectedPaths: ['level1/level2/level3/document.md'], // .mdx becomes .md
-    siteUrl: 'https://example.com'
-  }
+    siteUrl: 'https://example.com',
+  },
 ];
 
 async function runIndividualMarkdownGenerationTests() {
@@ -153,7 +153,7 @@ async function runIndividualMarkdownGenerationTests() {
           testCase.siteUrl,
           'docs', // Use 'docs' as the default for tests
           [], // No frontmatter preservation for basic tests
-          false // Don't preserve directory structure (old behavior for these tests)
+          false, // Don't preserve directory structure (old behavior for these tests)
         );
 
         // Check that the expected files were created at the correct paths
@@ -303,7 +303,7 @@ async function testEdgeCases() {
     {
       name: 'Empty docs array',
       docs: [],
-      expectedPaths: []
+      expectedPaths: [],
     },
     {
       name: 'Doc with no description',
@@ -313,10 +313,10 @@ async function testEdgeCases() {
           path: 'docs/no-desc.md',
           content: 'Content without description',
           description: '',
-          url: 'https://example.com/docs/no-desc'
-        }
+          url: 'https://example.com/docs/no-desc',
+        },
       ],
-      expectedPaths: ['no-desc.md']
+      expectedPaths: ['no-desc.md'],
     },
     {
       name: 'Doc with special characters in path',
@@ -326,11 +326,11 @@ async function testEdgeCases() {
           path: 'docs/special-chars/file.with.dots.md',
           content: 'Content with special path',
           description: 'Testing special characters',
-          url: 'https://example.com/docs/special'
-        }
+          url: 'https://example.com/docs/special',
+        },
       ],
-      expectedPaths: ['special-chars/file.with.dots.md']
-    }
+      expectedPaths: ['special-chars/file.with.dots.md'],
+    },
   ];
 
   try {
@@ -344,7 +344,7 @@ async function testEdgeCases() {
           'https://example.com',
           'docs', // Use 'docs' as the default for tests
           [], // No frontmatter preservation for edge case tests
-          false // Don't preserve directory structure (old behavior for these tests)
+          false, // Don't preserve directory structure (old behavior for these tests)
         );
 
         // Check that all expected paths exist
@@ -412,13 +412,13 @@ async function testKeepFrontMatter() {
           frontMatter: {
             sidebar_label: 'Custom Label',
             keywords: ['test', 'frontmatter'],
-            author: 'Test Author'
-          }
-        }
+            author: 'Test Author',
+          },
+        },
       ],
       keepFrontMatter: [],
       expectedFrontmatter: {},
-      expectedPaths: ['test.md']
+      expectedPaths: ['test.md'],
     },
     {
       name: 'Basic frontmatter preservation',
@@ -435,17 +435,17 @@ async function testKeepFrontMatter() {
             tags: ['guide', 'api'],
             author: 'API Team',
             draft: false,
-            custom_field: 'custom_value'
-          }
-        }
+            custom_field: 'custom_value',
+          },
+        },
       ],
       keepFrontMatter: ['sidebar_label', 'keywords', 'tags'],
       expectedFrontmatter: {
         sidebar_label: 'API Reference',
         keywords: ['api', 'reference', 'documentation'],
-        tags: ['guide', 'api']
+        tags: ['guide', 'api'],
       },
-      expectedPaths: ['api-guide.md']
+      expectedPaths: ['api-guide.md'],
     },
     {
       name: 'All frontmatter fields preserved',
@@ -463,9 +463,9 @@ async function testKeepFrontMatter() {
             tags: ['tutorial', 'comprehensive'],
             author: 'Documentation Team',
             draft: false,
-            difficulty_level: 'beginner'
-          }
-        }
+            difficulty_level: 'beginner',
+          },
+        },
       ],
       keepFrontMatter: ['sidebar_label', 'sidebar_position', 'keywords', 'tags', 'author', 'draft', 'difficulty_level'],
       expectedFrontmatter: {
@@ -475,9 +475,9 @@ async function testKeepFrontMatter() {
         tags: ['tutorial', 'comprehensive'],
         author: 'Documentation Team',
         draft: false,
-        difficulty_level: 'beginner'
+        difficulty_level: 'beginner',
       },
-      expectedPaths: ['complete-guide.md']
+      expectedPaths: ['complete-guide.md'],
     },
     {
       name: 'Non-existent fields ignored',
@@ -490,16 +490,16 @@ async function testKeepFrontMatter() {
           url: 'https://example.com/partial',
           frontMatter: {
             sidebar_label: 'Partial Label',
-            keywords: ['partial', 'test']
-          }
-        }
+            keywords: ['partial', 'test'],
+          },
+        },
       ],
       keepFrontMatter: ['sidebar_label', 'keywords', 'non_existent_field', 'another_missing'],
       expectedFrontmatter: {
         sidebar_label: 'Partial Label',
-        keywords: ['partial', 'test']
+        keywords: ['partial', 'test'],
       },
-      expectedPaths: ['partial.md']
+      expectedPaths: ['partial.md'],
     },
     {
       name: 'Mixed data types handling',
@@ -517,10 +517,10 @@ async function testKeepFrontMatter() {
             tags: ['array', 'values'],
             metadata: {
               version: '1.0.0',
-              author_email: 'test@example.com'
-            }
-          }
-        }
+              author_email: 'test@example.com',
+            },
+          },
+        },
       ],
       keepFrontMatter: ['title_override', 'position', 'is_published', 'tags', 'metadata'],
       expectedFrontmatter: {
@@ -530,11 +530,11 @@ async function testKeepFrontMatter() {
         tags: ['array', 'values'],
         metadata: {
           version: '1.0.0',
-          author_email: 'test@example.com'
-        }
+          author_email: 'test@example.com',
+        },
       },
-      expectedPaths: ['mixed-types.md']
-    }
+      expectedPaths: ['mixed-types.md'],
+    },
   ];
 
   try {
@@ -548,7 +548,7 @@ async function testKeepFrontMatter() {
           'https://example.com',
           'docs',
           testCase.keepFrontMatter,
-          false // Don't preserve directory structure (old behavior for these tests)
+          false, // Don't preserve directory structure (old behavior for these tests)
         );
 
         // Check that files were created

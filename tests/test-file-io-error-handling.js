@@ -69,8 +69,8 @@ const testCases = [
             content: 'Test content',
             url: 'https://example.com/test',
             path: '/test.md',
-            description: 'Test description'
-          }
+            description: 'Test description',
+          },
         ];
 
         const outputPath = path.join(readOnlyDir, 'test-output.txt');
@@ -82,7 +82,7 @@ const testCases = [
           await restoreWritePermissions(readOnlyDir);
           return {
             passed: false,
-            error: 'Expected write error but none was thrown'
+            error: 'Expected write error but none was thrown',
           };
         } catch (error) {
           // Check if the error message is descriptive
@@ -96,14 +96,14 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Error message not descriptive enough: ${error.message}`
+              error: `Error message not descriptive enough: ${error.message}`,
             };
           }
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'generateLLMFile with fullContent handles write errors',
@@ -126,8 +126,8 @@ const testCases = [
             content: 'Test content',
             url: 'https://example.com/test',
             path: '/test.md',
-            description: 'Test description'
-          }
+            description: 'Test description',
+          },
         ];
 
         const outputPath = path.join(readOnlyDir, 'test-output-full.txt');
@@ -138,13 +138,13 @@ const testCases = [
             outputPath,
             'Test Title',
             'Test Description',
-            true // fullContent
+            true, // fullContent
           );
 
           await restoreWritePermissions(readOnlyDir);
           return {
             passed: false,
-            error: 'Expected write error but none was thrown'
+            error: 'Expected write error but none was thrown',
           };
         } catch (error) {
           const hasDescriptiveError =
@@ -157,14 +157,14 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Error message not descriptive enough: ${error.message}`
+              error: `Error message not descriptive enough: ${error.message}`,
             };
           }
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'generateIndividualMarkdownFiles handles mkdir errors',
@@ -188,8 +188,8 @@ const testCases = [
             url: 'https://example.com/test',
             path: '/nested/path/test.md',
             description: 'Test description',
-            frontMatter: {}
-          }
+            frontMatter: {},
+          },
         ];
 
         try {
@@ -199,7 +199,7 @@ const testCases = [
           await restoreWritePermissions(readOnlyParent);
           return {
             passed: false,
-            error: 'Expected mkdir error but none was thrown'
+            error: 'Expected mkdir error but none was thrown',
           };
         } catch (error) {
           const hasDescriptiveError = error.message.includes('Failed to create directory');
@@ -211,14 +211,14 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Error message not descriptive enough: ${error.message}`
+              error: `Error message not descriptive enough: ${error.message}`,
             };
           }
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'generateIndividualMarkdownFiles handles write errors',
@@ -246,8 +246,8 @@ const testCases = [
             url: 'https://example.com/test',
             path: '/test.md',
             description: 'Test description',
-            frontMatter: {}
-          }
+            frontMatter: {},
+          },
         ];
 
         try {
@@ -256,7 +256,7 @@ const testCases = [
           await restoreWritePermissions(testFilePath);
           return {
             passed: false,
-            error: 'Expected write error but none was thrown'
+            error: 'Expected write error but none was thrown',
           };
         } catch (error) {
           const hasDescriptiveError =
@@ -269,14 +269,14 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Error message not descriptive enough: ${error.message}`
+              error: `Error message not descriptive enough: ${error.message}`,
             };
           }
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Error messages include full file paths for debugging',
@@ -299,8 +299,8 @@ const testCases = [
             content: 'Content',
             url: 'https://example.com/test',
             path: '/test.md',
-            description: 'Desc'
-          }
+            description: 'Desc',
+          },
         ];
 
         const outputPath = path.join(readOnlyDir, 'subdir', 'test.txt');
@@ -321,14 +321,14 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Error message does not include full path: ${error.message}`
+              error: `Error message does not include full path: ${error.message}`,
             };
           }
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Successful file operations complete without errors',
@@ -345,8 +345,8 @@ const testCases = [
             content: 'This should work',
             url: 'https://example.com/success',
             path: '/success.md',
-            description: 'Success test'
-          }
+            description: 'Success test',
+          },
         ];
 
         const outputPath = path.join(outputDir, 'success.txt');
@@ -369,7 +369,7 @@ const testCases = [
             } else {
               return {
                 passed: false,
-                error: 'File created but content is incorrect'
+                error: 'File created but content is incorrect',
               };
             }
           } else {
@@ -381,7 +381,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'generateIndividualMarkdownFiles creates nested directories successfully',
@@ -398,8 +398,8 @@ const testCases = [
             url: 'https://example.com/nested',
             path: '/deep/nested/path/test.md',
             description: 'Nested test',
-            frontMatter: {}
-          }
+            frontMatter: {},
+          },
         ];
 
         try {
@@ -417,7 +417,7 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `File not created at expected path: ${expectedPath}`
+              error: `File not created at expected path: ${expectedPath}`,
             };
           }
         } catch (error) {
@@ -426,8 +426,8 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
-  }
+    },
+  },
 ];
 
 async function runTests() {

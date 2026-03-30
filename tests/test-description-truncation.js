@@ -49,19 +49,19 @@ const tests = [
     name: 'Short description (no truncation)',
     input: 'This is a short description',
     expected: 'This is a short description',
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Exactly at max length',
     input: 'a'.repeat(MAX_DESCRIPTION_LENGTH),
     expected: 'a'.repeat(MAX_DESCRIPTION_LENGTH),
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'One character over max length',
     input: 'a'.repeat(MAX_DESCRIPTION_LENGTH + 1),
     expected: 'a'.repeat(DESCRIPTION_TRUNCATE_AT) + '...',
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Long description with spaces (word boundary truncation)',
@@ -76,13 +76,13 @@ const tests = [
         (result.substring(0, result.length - 3).match(/\s$/) || true)
       );
     },
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Long description without spaces (no word boundary)',
     input: 'a'.repeat(200),
     expected: 'a'.repeat(DESCRIPTION_TRUNCATE_AT) + '...',
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Description with space near the end',
@@ -93,49 +93,49 @@ const tests = [
       // So it should truncate at the space and include " test"
       return result.endsWith('...') && result.length <= MAX_DESCRIPTION_LENGTH;
     },
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Description with space too early (below 80% threshold)',
     input: 'word ' + 'a'.repeat(200),
     expected: 'word ' + 'a'.repeat(DESCRIPTION_TRUNCATE_AT - 5) + '...',
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Multi-line description (only first line used)',
     input: 'First line that is quite long and should be used\nSecond line should be ignored',
     expected: 'First line that is quite long and should be used',
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Description with heading marker',
     input: '## This heading marker should be removed',
     expected: 'This heading marker should be removed',
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Long description with heading marker',
     input: '# ' + 'a'.repeat(200),
     expected: 'a'.repeat(DESCRIPTION_TRUNCATE_AT) + '...',
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Description with inline hashtag (preserved)',
     input: 'Learn about the # symbol in programming',
     expected: 'Learn about the # symbol in programming',
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Empty string',
     input: '',
     expected: '',
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Only whitespace',
     input: '   \t  \n  ',
     expected: '   \t  ', // First line only (before \n)
-    expectsTruncation: false
+    expectsTruncation: false,
   },
   {
     name: 'Word boundary at exactly 80% threshold',
@@ -146,7 +146,7 @@ const tests = [
       // So it will truncate at the space, but since we're at 147 chars first, it includes some 'b's
       return result.endsWith('...') && result.length <= MAX_DESCRIPTION_LENGTH;
     },
-    expectsTruncation: true
+    expectsTruncation: true,
   },
   {
     name: 'Word boundary just above 80% threshold',
@@ -155,8 +155,8 @@ const tests = [
       // Should truncate at the space
       return result.endsWith('...') && !result.includes('b');
     },
-    expectsTruncation: true
-  }
+    expectsTruncation: true,
+  },
 ];
 
 // Run tests
@@ -246,15 +246,15 @@ function runIntegrationTests() {
   console.log('Test: Constants consistency');
   assert(
     DESCRIPTION_TRUNCATE_AT < MAX_DESCRIPTION_LENGTH,
-    'DESCRIPTION_TRUNCATE_AT must be less than MAX_DESCRIPTION_LENGTH'
+    'DESCRIPTION_TRUNCATE_AT must be less than MAX_DESCRIPTION_LENGTH',
   );
   assert(
     DESCRIPTION_TRUNCATE_AT + 3 === MAX_DESCRIPTION_LENGTH,
-    'DESCRIPTION_TRUNCATE_AT + "..." (3 chars) should equal MAX_DESCRIPTION_LENGTH'
+    'DESCRIPTION_TRUNCATE_AT + "..." (3 chars) should equal MAX_DESCRIPTION_LENGTH',
   );
   assert(
     WORD_BOUNDARY_MIN_RATIO > 0 && WORD_BOUNDARY_MIN_RATIO < 1,
-    'WORD_BOUNDARY_MIN_RATIO should be between 0 and 1'
+    'WORD_BOUNDARY_MIN_RATIO should be between 0 and 1',
   );
   console.log('  ✅ PASS: Constants are consistent\n');
 

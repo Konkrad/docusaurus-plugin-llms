@@ -146,7 +146,7 @@ test('Edge case: distinguishes between empty string and null', () => {
 test('Edge case: distinguishes between false and undefined', () => {
   assert(
     isDefined(false) === true && isDefined(undefined) === false,
-    'false should be defined but undefined should not'
+    'false should be defined but undefined should not',
   );
 });
 

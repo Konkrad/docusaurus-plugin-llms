@@ -50,64 +50,64 @@ const testCases = [
     name: 'No transformations',
     input: 'docs/api/method',
     config: null,
-    expected: 'docs/api/method'
+    expected: 'docs/api/method',
   },
   {
     name: 'Ignore "docs" at beginning',
     input: 'docs/api/method',
     config: { ignorePaths: ['docs'] },
-    expected: 'api/method'
+    expected: 'api/method',
   },
   {
     name: 'Ignore "api" in middle',
     input: 'docs/api/method',
     config: { ignorePaths: ['api'] },
-    expected: 'docs/method'
+    expected: 'docs/method',
   },
   {
     name: 'Ignore multiple paths',
     input: 'docs/api/method',
     config: { ignorePaths: ['docs', 'api'] },
-    expected: 'method'
+    expected: 'method',
   },
   {
     name: 'Add path',
     input: 'api/method',
     config: { addPaths: ['reference'] },
-    expected: 'reference/api/method'
+    expected: 'reference/api/method',
   },
   {
     name: 'Add path when already exists',
     input: 'reference/api/method',
     config: { addPaths: ['reference'] },
-    expected: 'reference/api/method'
+    expected: 'reference/api/method',
   },
   {
     name: 'Multiple add paths',
     input: 'method',
     config: { addPaths: ['reference', 'api'] },
-    expected: 'reference/api/method'
+    expected: 'reference/api/method',
   },
   {
     name: 'Both ignore and add paths',
     input: 'docs/old/api/method',
     config: {
       ignorePaths: ['docs', 'old'],
-      addPaths: ['reference']
+      addPaths: ['reference'],
     },
-    expected: 'reference/api/method'
+    expected: 'reference/api/method',
   },
   {
     name: 'Handle index files correctly',
     input: 'docs/index',
     config: { ignorePaths: ['docs'] },
-    expected: 'index'
+    expected: 'index',
   },
   {
     name: 'Handle empty result from ignoring',
     input: 'docs',
     config: { ignorePaths: ['docs'] },
-    expected: ''
+    expected: '',
   },
   {
     name: 'Path prefix handling',
@@ -115,8 +115,8 @@ const testCases = [
     input: 'api/method',
     config: { ignorePaths: ['docs'] },
     // Should remove 'docs' from the final URL
-    expected: 'api/method'
-  }
+    expected: 'api/method',
+  },
 ];
 
 // Run tests
@@ -191,9 +191,9 @@ function createMockContext() {
       title: 'Mock Site',
       tagline: 'For testing purposes',
       url: 'https://example.com',
-      baseUrl: '/'
+      baseUrl: '/',
     },
-    outDir: '/mock/site/build'
+    outDir: '/mock/site/build',
   };
 }
 
@@ -208,7 +208,7 @@ async function testOrderingDocuments() {
     '/mock/site/docs/getting-started/overview.md',
     '/mock/site/docs/api/core/main-functions.md',
     '/mock/site/docs/api/plugins/plugin-api.md',
-    '/mock/site/docs/advanced/configuration.md'
+    '/mock/site/docs/advanced/configuration.md',
   ];
 
   // Mock file contents
@@ -218,7 +218,7 @@ async function testOrderingDocuments() {
     'overview.md': '# Overview\nOverview...',
     'main-functions.md': '# Core Functions\nCore API functions...',
     'plugin-api.md': '# Plugin API\nPlugin API documentation...',
-    'configuration.md': '# Advanced Configuration\nAdvanced configuration...'
+    'configuration.md': '# Advanced Configuration\nAdvanced configuration...',
   };
 
   // Track processing order
@@ -240,7 +240,7 @@ async function testOrderingDocuments() {
       path: filePath,
       url: `https://example.com/${fileName.replace('.md', '')}`,
       content: fileContent,
-      description: ''
+      description: '',
     });
   };
 
@@ -263,8 +263,8 @@ async function testOrderingDocuments() {
       'docs/getting-started/*.md',
       'docs/api/core/*.md',
       'docs/api/plugins/*.md',
-      'docs/advanced/*.md'
-    ]
+      'docs/advanced/*.md',
+    ],
   };
 
   // Run fake plugin
@@ -294,7 +294,7 @@ async function testOrderingDocuments() {
       for (const filePath of filesToProcess) {
         await mockProcessMarkdownFile(filePath);
       }
-    }
+    },
   };
 
   try {
@@ -307,7 +307,7 @@ async function testOrderingDocuments() {
       'overview.md',
       'main-functions.md',
       'plugin-api.md',
-      'configuration.md'
+      'configuration.md',
     ];
 
     const actualOrder = processedFiles.map(path => path.split('/').pop());
@@ -350,7 +350,7 @@ async function testExcludeUnmatchedFiles() {
   // Mock file contents
   const mockContents = {
     'public-doc.md': '# Public Document\nThis is a public document...',
-    'internal-doc.md': '# Internal Document\nThis is an internal document...'
+    'internal-doc.md': '# Internal Document\nThis is an internal document...',
   };
 
   // Track processing
@@ -372,7 +372,7 @@ async function testExcludeUnmatchedFiles() {
       path: filePath,
       url: `https://example.com/${fileName.replace('.md', '')}`,
       content: fileContent,
-      description: ''
+      description: '',
     });
   };
 
@@ -386,7 +386,7 @@ async function testExcludeUnmatchedFiles() {
   // Plugin options with strict inclusion
   const options = {
     includeOrder: ['docs/public/*.md'],
-    includeUnmatchedLast: false
+    includeUnmatchedLast: false,
   };
 
   // Run fake plugin
@@ -422,7 +422,7 @@ async function testExcludeUnmatchedFiles() {
       for (const filePath of filesToProcess) {
         await mockProcessMarkdownFile(filePath);
       }
-    }
+    },
   };
 
   try {
@@ -480,7 +480,7 @@ async function testCustomLLMFiles() {
     '/mock/site/docs/api/javascript/module1.md',
     '/mock/site/docs/guides/python/guide1.md',
     '/mock/site/docs/guides/javascript/guide1.md',
-    '/mock/site/docs/tutorials/tutorial1.md'
+    '/mock/site/docs/tutorials/tutorial1.md',
   ];
 
   // Mock file contents
@@ -488,7 +488,7 @@ async function testCustomLLMFiles() {
     'module1.md': '# Module 1\nPython module 1 documentation...',
     'module2.md': '# Module 2\nPython module 2 documentation...',
     'guide1.md': '# Guide 1\nA guide for getting started...',
-    'tutorial1.md': '# Tutorial 1\nA beginner tutorial...'
+    'tutorial1.md': '# Tutorial 1\nA beginner tutorial...',
   };
 
   // Track file generation
@@ -517,7 +517,7 @@ async function testCustomLLMFiles() {
       path: filePath,
       url: `https://example.com/${fileName.replace('.md', '')}`,
       content: fileContent,
-      description: ''
+      description: '',
     });
   };
 
@@ -541,22 +541,22 @@ async function testCustomLLMFiles() {
       includePatterns: ['docs/api/python/**/*.md', 'docs/guides/python/*.md'],
       fullContent: true,
       title: 'Python API Documentation',
-      description: 'Complete reference for Python API'
+      description: 'Complete reference for Python API',
     },
     {
       filename: 'llms-javascript.txt',
       includePatterns: ['docs/api/javascript/**/*.md', 'docs/guides/javascript/*.md'],
       fullContent: true,
       title: 'JavaScript API Documentation',
-      description: 'Complete reference for JavaScript API'
+      description: 'Complete reference for JavaScript API',
     },
     {
       filename: 'llms-tutorials.txt',
       includePatterns: ['docs/tutorials/**/*.md'],
       fullContent: false,
       title: 'Tutorial Documentation',
-      description: 'All tutorials in a single file'
-    }
+      description: 'All tutorials in a single file',
+    },
   ];
 
   // Run fake plugin with custom LLM files
@@ -597,7 +597,7 @@ async function testCustomLLMFiles() {
         const outputPath = `/mock/site/build/${customFile.filename}`;
         await mockWriteFile(outputPath, content);
       }
-    }
+    },
   };
 
   try {
@@ -668,23 +668,23 @@ function runDescriptionTests() {
     {
       title: 'Normal description',
       input: 'This is a simple description',
-      expected: 'This is a simple description'
+      expected: 'This is a simple description',
     },
     {
       title: 'Description with heading marker',
       input: '# This has a heading marker',
-      expected: 'This has a heading marker'
+      expected: 'This has a heading marker',
     },
     {
       title: 'Multi-level heading marker',
       input: '### This has a multi-level heading marker',
-      expected: 'This has a multi-level heading marker'
+      expected: 'This has a multi-level heading marker',
     },
     {
       title: 'Multiple heading markers',
       input: '# Heading\n## Subheading',
-      expected: 'Heading\n## Subheading' // Only the first marker is removed by current implementation
-    }
+      expected: 'Heading\n## Subheading', // Only the first marker is removed by current implementation
+    },
   ];
 
   const path = require('path');

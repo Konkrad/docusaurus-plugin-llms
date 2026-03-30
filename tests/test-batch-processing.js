@@ -41,7 +41,7 @@ function createMockDocuments(count) {
       path: `/docs/doc-${i + 1}.md`,
       url: `https://example.com/docs/doc-${i + 1}`,
       content: `This is the content of document ${i + 1}.\n\nIt has multiple paragraphs.\n\nAnd some more text to make it realistic.`,
-      description: `Description for document ${i + 1}`
+      description: `Description for document ${i + 1}`,
     });
   }
   return docs;
@@ -66,7 +66,7 @@ async function testBatchProcessing() {
     true, // includeFullContent
     '1.0.0',
     undefined,
-    batchSize
+    batchSize,
   );
 
   // Verify the file was created
@@ -118,7 +118,7 @@ async function testSingleDocumentBatch() {
     true, // includeFullContent
     '1.0.0',
     undefined,
-    batchSize
+    batchSize,
   );
 
   // Verify the file was created
@@ -156,7 +156,7 @@ async function testDefaultBatchSize() {
     'Test Documentation',
     'Test documentation with default batch size',
     true, // includeFullContent
-    '1.0.0'
+    '1.0.0',
   );
 
   // Verify the file was created
@@ -196,7 +196,7 @@ async function testBatchOrderPreservation() {
     true, // includeFullContent
     '1.0.0',
     undefined,
-    batchSize
+    batchSize,
   );
 
   // Verify the file was created
@@ -213,7 +213,7 @@ async function testBatchOrderPreservation() {
     const expectedHeader = `## Document ${i + 1}`;
     if (headerMatches[i] !== expectedHeader) {
       throw new Error(
-        `Document order mismatch at position ${i}: expected "${expectedHeader}", got "${headerMatches[i]}"`
+        `Document order mismatch at position ${i}: expected "${expectedHeader}", got "${headerMatches[i]}"`,
       );
     }
   }
@@ -240,7 +240,7 @@ async function testBatchProcessingLinksOnly() {
     false, // links only, no full content
     '1.0.0',
     undefined,
-    batchSize
+    batchSize,
   );
 
   // Verify the file was created

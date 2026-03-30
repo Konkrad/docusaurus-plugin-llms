@@ -72,7 +72,7 @@ function validatePluginOptions(options) {
     'excludeImports',
     'removeDuplicateHeadings',
     'generateMarkdownFiles',
-    'preserveDirectoryStructure'
+    'preserveDirectoryStructure',
   ];
 
   for (const option of booleanOptions) {
@@ -112,7 +112,7 @@ function validatePluginOptions(options) {
     'llmsFullTxtFilename',
     'version',
     'rootContent',
-    'fullRootContent'
+    'fullRootContent',
   ];
 
   for (const option of stringOptions) {
@@ -221,7 +221,7 @@ const testCases = [
     name: 'Valid empty options',
     options: {},
     shouldThrow: false,
-    description: 'Empty options object should be valid'
+    description: 'Empty options object should be valid',
   },
   {
     name: 'Valid complete options',
@@ -237,7 +237,7 @@ const testCases = [
       includeBlog: false,
       pathTransformation: {
         ignorePaths: ['api', 'internal'],
-        addPaths: ['docs']
+        addPaths: ['docs'],
       },
       includeOrder: ['intro.md', 'guide.md'],
       includeUnmatchedLast: true,
@@ -245,321 +245,321 @@ const testCases = [
         {
           filename: 'custom.txt',
           includePatterns: ['*.md'],
-          fullContent: true
-        }
+          fullContent: true,
+        },
       ],
       excludeImports: false,
       removeDuplicateHeadings: false,
       generateMarkdownFiles: false,
       keepFrontMatter: ['title', 'description'],
       rootContent: 'Root content',
-      fullRootContent: 'Full root content'
+      fullRootContent: 'Full root content',
     },
     shouldThrow: false,
-    description: 'All valid options should pass validation'
+    description: 'All valid options should pass validation',
   },
 
   // includeOrder validation tests
   {
     name: 'Invalid includeOrder (not array)',
     options: {
-      includeOrder: 'not-an-array'
+      includeOrder: 'not-an-array',
     },
     shouldThrow: true,
     expectedError: 'includeOrder must be an array',
-    description: 'includeOrder must be an array'
+    description: 'includeOrder must be an array',
   },
   {
     name: 'Invalid includeOrder (non-string elements)',
     options: {
-      includeOrder: ['valid', 123, 'also-valid']
+      includeOrder: ['valid', 123, 'also-valid'],
     },
     shouldThrow: true,
     expectedError: 'includeOrder must contain only strings',
-    description: 'includeOrder must contain only strings'
+    description: 'includeOrder must contain only strings',
   },
 
   // ignoreFiles validation tests
   {
     name: 'Invalid ignoreFiles (not array)',
     options: {
-      ignoreFiles: 'not-an-array'
+      ignoreFiles: 'not-an-array',
     },
     shouldThrow: true,
     expectedError: 'ignoreFiles must be an array',
-    description: 'ignoreFiles must be an array'
+    description: 'ignoreFiles must be an array',
   },
   {
     name: 'Invalid ignoreFiles (non-string elements)',
     options: {
-      ignoreFiles: ['valid.md', { file: 'invalid' }]
+      ignoreFiles: ['valid.md', { file: 'invalid' }],
     },
     shouldThrow: true,
     expectedError: 'ignoreFiles must contain only strings',
-    description: 'ignoreFiles must contain only strings'
+    description: 'ignoreFiles must contain only strings',
   },
 
   // pathTransformation validation tests
   {
     name: 'Invalid pathTransformation (not object)',
     options: {
-      pathTransformation: 'not-an-object'
+      pathTransformation: 'not-an-object',
     },
     shouldThrow: true,
     expectedError: 'pathTransformation must be an object',
-    description: 'pathTransformation must be an object'
+    description: 'pathTransformation must be an object',
   },
   {
     name: 'Invalid pathTransformation (null)',
     options: {
-      pathTransformation: null
+      pathTransformation: null,
     },
     shouldThrow: true,
     expectedError: 'pathTransformation must be an object',
-    description: 'pathTransformation cannot be null'
+    description: 'pathTransformation cannot be null',
   },
   {
     name: 'Invalid pathTransformation.ignorePaths (not array)',
     options: {
       pathTransformation: {
-        ignorePaths: 'not-an-array'
-      }
+        ignorePaths: 'not-an-array',
+      },
     },
     shouldThrow: true,
     expectedError: 'pathTransformation.ignorePaths must be an array',
-    description: 'pathTransformation.ignorePaths must be an array'
+    description: 'pathTransformation.ignorePaths must be an array',
   },
   {
     name: 'Invalid pathTransformation.ignorePaths (non-string elements)',
     options: {
       pathTransformation: {
-        ignorePaths: ['valid', 123]
-      }
+        ignorePaths: ['valid', 123],
+      },
     },
     shouldThrow: true,
     expectedError: 'pathTransformation.ignorePaths must contain only strings',
-    description: 'pathTransformation.ignorePaths must contain only strings'
+    description: 'pathTransformation.ignorePaths must contain only strings',
   },
   {
     name: 'Invalid pathTransformation.addPaths (not array)',
     options: {
       pathTransformation: {
-        addPaths: 'not-an-array'
-      }
+        addPaths: 'not-an-array',
+      },
     },
     shouldThrow: true,
     expectedError: 'pathTransformation.addPaths must be an array',
-    description: 'pathTransformation.addPaths must be an array'
+    description: 'pathTransformation.addPaths must be an array',
   },
   {
     name: 'Invalid pathTransformation.addPaths (non-string elements)',
     options: {
       pathTransformation: {
-        addPaths: ['valid', true]
-      }
+        addPaths: ['valid', true],
+      },
     },
     shouldThrow: true,
     expectedError: 'pathTransformation.addPaths must contain only strings',
-    description: 'pathTransformation.addPaths must contain only strings'
+    description: 'pathTransformation.addPaths must contain only strings',
   },
 
   // Boolean options validation tests
   {
     name: 'Invalid generateLLMsTxt (not boolean)',
     options: {
-      generateLLMsTxt: 'true'
+      generateLLMsTxt: 'true',
     },
     shouldThrow: true,
     expectedError: 'generateLLMsTxt must be a boolean',
-    description: 'generateLLMsTxt must be a boolean'
+    description: 'generateLLMsTxt must be a boolean',
   },
   {
     name: 'Invalid includeBlog (not boolean)',
     options: {
-      includeBlog: 1
+      includeBlog: 1,
     },
     shouldThrow: true,
     expectedError: 'includeBlog must be a boolean',
-    description: 'includeBlog must be a boolean'
+    description: 'includeBlog must be a boolean',
   },
   {
     name: 'Invalid excludeImports (not boolean)',
     options: {
-      excludeImports: 'false'
+      excludeImports: 'false',
     },
     shouldThrow: true,
     expectedError: 'excludeImports must be a boolean',
-    description: 'excludeImports must be a boolean'
+    description: 'excludeImports must be a boolean',
   },
 
   // docsDir validation tests
   {
     name: 'Valid docsDir as string',
     options: {
-      docsDir: 'docs'
+      docsDir: 'docs',
     },
     shouldThrow: false,
-    description: 'docsDir accepts a plain string'
+    description: 'docsDir accepts a plain string',
   },
   {
     name: 'Valid docsDir as array of sections',
     options: {
       docsDir: [
         { path: 'docs', routeBasePath: '/', label: 'General' },
-        { path: 'cloud', routeBasePath: 'cloud', label: 'Cloud' }
-      ]
+        { path: 'cloud', routeBasePath: 'cloud', label: 'Cloud' },
+      ],
     },
     shouldThrow: false,
-    description: 'docsDir accepts an array of DocsSection objects'
+    description: 'docsDir accepts an array of DocsSection objects',
   },
   {
     name: 'Valid docsDir as array without optional label',
     options: {
-      docsDir: [{ path: 'docs', routeBasePath: '/' }]
+      docsDir: [{ path: 'docs', routeBasePath: '/' }],
     },
     shouldThrow: false,
-    description: 'docsDir array sections do not require a label'
+    description: 'docsDir array sections do not require a label',
   },
   {
     name: 'Invalid docsDir (number)',
     options: {
-      docsDir: 123
+      docsDir: 123,
     },
     shouldThrow: true,
     expectedError: 'docsDir must be a string or an array of section objects',
-    description: 'docsDir must be a string or an array'
+    description: 'docsDir must be a string or an array',
   },
   {
     name: 'Invalid docsDir (boolean)',
     options: {
-      docsDir: true
+      docsDir: true,
     },
     shouldThrow: true,
     expectedError: 'docsDir must be a string or an array of section objects',
-    description: 'docsDir must be a string or an array'
+    description: 'docsDir must be a string or an array',
   },
   {
     name: 'Invalid docsDir array element (not object)',
     options: {
-      docsDir: ['not-an-object']
+      docsDir: ['not-an-object'],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0] must be an object',
-    description: 'docsDir array elements must be objects'
+    description: 'docsDir array elements must be objects',
   },
   {
     name: 'Invalid docsDir array element (null)',
     options: {
-      docsDir: [null]
+      docsDir: [null],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0] must be an object',
-    description: 'docsDir array elements cannot be null'
+    description: 'docsDir array elements cannot be null',
   },
   {
     name: 'Invalid docsDir[].path (missing)',
     options: {
-      docsDir: [{ routeBasePath: '/' }]
+      docsDir: [{ routeBasePath: '/' }],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].path must be a non-empty string',
-    description: 'docsDir array section must have a non-empty path'
+    description: 'docsDir array section must have a non-empty path',
   },
   {
     name: 'Invalid docsDir[].path (empty string)',
     options: {
-      docsDir: [{ path: '   ', routeBasePath: '/' }]
+      docsDir: [{ path: '   ', routeBasePath: '/' }],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].path must be a non-empty string',
-    description: 'docsDir array section path cannot be blank'
+    description: 'docsDir array section path cannot be blank',
   },
   {
     name: 'Invalid docsDir[].routeBasePath (not string)',
     options: {
-      docsDir: [{ path: 'docs', routeBasePath: 42 }]
+      docsDir: [{ path: 'docs', routeBasePath: 42 }],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].routeBasePath must be a string',
-    description: 'docsDir array section routeBasePath must be a string'
+    description: 'docsDir array section routeBasePath must be a string',
   },
   {
     name: 'Invalid docsDir[].label (empty string)',
     options: {
-      docsDir: [{ path: 'docs', routeBasePath: '/', label: '   ' }]
+      docsDir: [{ path: 'docs', routeBasePath: '/', label: '   ' }],
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].label must be a non-empty string',
-    description: 'docsDir array section label cannot be blank when provided'
+    description: 'docsDir array section label cannot be blank when provided',
   },
 
   // Other string options validation tests
   {
     name: 'Invalid title (not string)',
     options: {
-      title: ['title']
+      title: ['title'],
     },
     shouldThrow: true,
     expectedError: 'title must be a string',
-    description: 'title must be a string'
+    description: 'title must be a string',
   },
   {
     name: 'Invalid llmsTxtFilename (not string)',
     options: {
-      llmsTxtFilename: true
+      llmsTxtFilename: true,
     },
     shouldThrow: true,
     expectedError: 'llmsTxtFilename must be a string',
-    description: 'llmsTxtFilename must be a string'
+    description: 'llmsTxtFilename must be a string',
   },
 
   // keepFrontMatter validation tests
   {
     name: 'Invalid keepFrontMatter (not array)',
     options: {
-      keepFrontMatter: 'not-an-array'
+      keepFrontMatter: 'not-an-array',
     },
     shouldThrow: true,
     expectedError: 'keepFrontMatter must be an array',
-    description: 'keepFrontMatter must be an array'
+    description: 'keepFrontMatter must be an array',
   },
   {
     name: 'Invalid keepFrontMatter (non-string elements)',
     options: {
-      keepFrontMatter: ['title', 123, 'description']
+      keepFrontMatter: ['title', 123, 'description'],
     },
     shouldThrow: true,
     expectedError: 'keepFrontMatter must contain only strings',
-    description: 'keepFrontMatter must contain only strings'
+    description: 'keepFrontMatter must contain only strings',
   },
 
   // customLLMFiles validation tests
   {
     name: 'Invalid customLLMFiles (not array)',
     options: {
-      customLLMFiles: 'not-an-array'
+      customLLMFiles: 'not-an-array',
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles must be an array',
-    description: 'customLLMFiles must be an array'
+    description: 'customLLMFiles must be an array',
   },
   {
     name: 'Invalid customLLMFiles element (not object)',
     options: {
-      customLLMFiles: ['not-an-object']
+      customLLMFiles: ['not-an-object'],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0] must be an object',
-    description: 'customLLMFiles elements must be objects'
+    description: 'customLLMFiles elements must be objects',
   },
   {
     name: 'Invalid customLLMFiles element (null)',
     options: {
-      customLLMFiles: [null]
+      customLLMFiles: [null],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0] must be an object',
-    description: 'customLLMFiles elements cannot be null'
+    description: 'customLLMFiles elements cannot be null',
   },
   {
     name: 'Invalid customLLMFiles.filename (not string)',
@@ -568,13 +568,13 @@ const testCases = [
         {
           filename: 123,
           includePatterns: ['*.md'],
-          fullContent: true
-        }
-      ]
+          fullContent: true,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].filename must be a string',
-    description: 'customLLMFiles[].filename must be a string'
+    description: 'customLLMFiles[].filename must be a string',
   },
   {
     name: 'Invalid customLLMFiles.filename (empty)',
@@ -583,13 +583,13 @@ const testCases = [
         {
           filename: '   ',
           includePatterns: ['*.md'],
-          fullContent: true
-        }
-      ]
+          fullContent: true,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].filename cannot be empty',
-    description: 'customLLMFiles[].filename cannot be empty'
+    description: 'customLLMFiles[].filename cannot be empty',
   },
   {
     name: 'Invalid customLLMFiles.includePatterns (not array)',
@@ -598,13 +598,13 @@ const testCases = [
         {
           filename: 'test.txt',
           includePatterns: 'not-an-array',
-          fullContent: true
-        }
-      ]
+          fullContent: true,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].includePatterns must be an array',
-    description: 'customLLMFiles[].includePatterns must be an array'
+    description: 'customLLMFiles[].includePatterns must be an array',
   },
   {
     name: 'Invalid customLLMFiles.includePatterns (non-string elements)',
@@ -613,13 +613,13 @@ const testCases = [
         {
           filename: 'test.txt',
           includePatterns: ['*.md', 123],
-          fullContent: true
-        }
-      ]
+          fullContent: true,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].includePatterns must contain only strings',
-    description: 'customLLMFiles[].includePatterns must contain only strings'
+    description: 'customLLMFiles[].includePatterns must contain only strings',
   },
   {
     name: 'Invalid customLLMFiles.includePatterns (empty array)',
@@ -628,13 +628,13 @@ const testCases = [
         {
           filename: 'test.txt',
           includePatterns: [],
-          fullContent: true
-        }
-      ]
+          fullContent: true,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].includePatterns cannot be empty',
-    description: 'customLLMFiles[].includePatterns cannot be empty'
+    description: 'customLLMFiles[].includePatterns cannot be empty',
   },
   {
     name: 'Invalid customLLMFiles.fullContent (not boolean)',
@@ -643,13 +643,13 @@ const testCases = [
         {
           filename: 'test.txt',
           includePatterns: ['*.md'],
-          fullContent: 'true'
-        }
-      ]
+          fullContent: 'true',
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].fullContent must be a boolean',
-    description: 'customLLMFiles[].fullContent must be a boolean'
+    description: 'customLLMFiles[].fullContent must be a boolean',
   },
   {
     name: 'Invalid customLLMFiles.title (not string)',
@@ -659,13 +659,13 @@ const testCases = [
           filename: 'test.txt',
           includePatterns: ['*.md'],
           fullContent: true,
-          title: 123
-        }
-      ]
+          title: 123,
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].title must be a string',
-    description: 'customLLMFiles[].title must be a string'
+    description: 'customLLMFiles[].title must be a string',
   },
   {
     name: 'Invalid customLLMFiles.ignorePatterns (not array)',
@@ -675,13 +675,13 @@ const testCases = [
           filename: 'test.txt',
           includePatterns: ['*.md'],
           fullContent: true,
-          ignorePatterns: 'not-an-array'
-        }
-      ]
+          ignorePatterns: 'not-an-array',
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].ignorePatterns must be an array',
-    description: 'customLLMFiles[].ignorePatterns must be an array'
+    description: 'customLLMFiles[].ignorePatterns must be an array',
   },
   {
     name: 'Invalid customLLMFiles.ignorePatterns (non-string elements)',
@@ -691,13 +691,13 @@ const testCases = [
           filename: 'test.txt',
           includePatterns: ['*.md'],
           fullContent: true,
-          ignorePatterns: ['valid', true]
-        }
-      ]
+          ignorePatterns: ['valid', true],
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].ignorePatterns must contain only strings',
-    description: 'customLLMFiles[].ignorePatterns must contain only strings'
+    description: 'customLLMFiles[].ignorePatterns must contain only strings',
   },
   {
     name: 'Invalid customLLMFiles.orderPatterns (not array)',
@@ -707,13 +707,13 @@ const testCases = [
           filename: 'test.txt',
           includePatterns: ['*.md'],
           fullContent: true,
-          orderPatterns: 'not-an-array'
-        }
-      ]
+          orderPatterns: 'not-an-array',
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].orderPatterns must be an array',
-    description: 'customLLMFiles[].orderPatterns must be an array'
+    description: 'customLLMFiles[].orderPatterns must be an array',
   },
   {
     name: 'Invalid customLLMFiles.includeUnmatchedLast (not boolean)',
@@ -723,58 +723,58 @@ const testCases = [
           filename: 'test.txt',
           includePatterns: ['*.md'],
           fullContent: true,
-          includeUnmatchedLast: 'true'
-        }
-      ]
+          includeUnmatchedLast: 'true',
+        },
+      ],
     },
     shouldThrow: true,
     expectedError: 'customLLMFiles[0].includeUnmatchedLast must be a boolean',
-    description: 'customLLMFiles[].includeUnmatchedLast must be a boolean'
+    description: 'customLLMFiles[].includeUnmatchedLast must be a boolean',
   },
 
   // logLevel validation tests
   {
     name: 'Valid logLevel (quiet)',
     options: {
-      logLevel: 'quiet'
+      logLevel: 'quiet',
     },
     shouldThrow: false,
-    description: 'logLevel can be "quiet"'
+    description: 'logLevel can be "quiet"',
   },
   {
     name: 'Valid logLevel (normal)',
     options: {
-      logLevel: 'normal'
+      logLevel: 'normal',
     },
     shouldThrow: false,
-    description: 'logLevel can be "normal"'
+    description: 'logLevel can be "normal"',
   },
   {
     name: 'Valid logLevel (verbose)',
     options: {
-      logLevel: 'verbose'
+      logLevel: 'verbose',
     },
     shouldThrow: false,
-    description: 'logLevel can be "verbose"'
+    description: 'logLevel can be "verbose"',
   },
   {
     name: 'Invalid logLevel (invalid value)',
     options: {
-      logLevel: 'debug'
+      logLevel: 'debug',
     },
     shouldThrow: true,
     expectedError: 'logLevel must be one of: quiet, normal, verbose',
-    description: 'logLevel must be one of the valid values'
+    description: 'logLevel must be one of the valid values',
   },
   {
     name: 'Invalid logLevel (number)',
     options: {
-      logLevel: 1
+      logLevel: 1,
     },
     shouldThrow: true,
     expectedError: 'logLevel must be one of: quiet, normal, verbose',
-    description: 'logLevel must be a string value'
-  }
+    description: 'logLevel must be a string value',
+  },
 ];
 
 // Run tests

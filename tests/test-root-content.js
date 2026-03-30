@@ -31,15 +31,15 @@ async function runTests() {
         path: 'docs/getting-started.md',
         url: 'https://example.com/docs/getting-started',
         content: 'This is the getting started guide.',
-        description: 'Learn how to get started'
+        description: 'Learn how to get started',
       },
       {
         title: 'API Reference',
         path: 'docs/api-reference.md',
         url: 'https://example.com/docs/api-reference',
         content: 'This is the API reference.',
-        description: 'Complete API documentation'
-      }
+        description: 'Complete API documentation',
+      },
     ];
 
     // Test 1: Default root content for links file
@@ -51,13 +51,13 @@ async function runTests() {
       'Test Documentation',
       'Test description',
       false, // links only
-      '1.0.0'
+      '1.0.0',
     );
 
     const defaultLinksContent = await fs.readFile(defaultLinksPath, 'utf-8');
     if (
       defaultLinksContent.includes(
-        'This file contains links to documentation sections following the llmstxt.org standard.'
+        'This file contains links to documentation sections following the llmstxt.org standard.',
       )
     ) {
       console.log('  ✅ PASS: Default root content appears in links file\n');
@@ -85,7 +85,7 @@ For questions, visit our support forum at https://example.com/support`;
       'Test description',
       false, // links only
       '1.0.0',
-      customLinksRootContent
+      customLinksRootContent,
     );
 
     const customLinksContent = await fs.readFile(customLinksPath, 'utf-8');
@@ -113,13 +113,13 @@ For questions, visit our support forum at https://example.com/support`;
       'Test Documentation',
       'Test description',
       true, // full content
-      '1.0.0'
+      '1.0.0',
     );
 
     const defaultFullContent = await fs.readFile(defaultFullPath, 'utf-8');
     if (
       defaultFullContent.includes(
-        'This file contains all documentation content in a single document following the llmstxt.org standard.'
+        'This file contains all documentation content in a single document following the llmstxt.org standard.',
       )
     ) {
       console.log('  ✅ PASS: Default root content appears in full content file\n');
@@ -146,7 +146,7 @@ All content below is organized by topic.`;
       'Test description',
       true, // full content
       '1.0.0',
-      customFullRootContent
+      customFullRootContent,
     );
 
     const customFullContent = await fs.readFile(customFullPath, 'utf-8');
@@ -183,7 +183,7 @@ All content below is organized by topic.`;
       'Test description',
       false, // links only
       '1.0.0',
-      markdownRootContent
+      markdownRootContent,
     );
 
     const markdownContent = await fs.readFile(markdownPath, 'utf-8');

@@ -122,7 +122,7 @@ Second usage: <Shared />`;
     } else {
       console.log('  ❌ FAIL: Some rapid calls failed');
       const failedCount = results.filter(
-        result => !result.includes('Shared Content') || result.includes('import Shared')
+        result => !result.includes('Shared Content') || result.includes('import Shared'),
       ).length;
       console.log(`    Failed calls: ${failedCount}/10\n`);
       allTestsPassed = false;

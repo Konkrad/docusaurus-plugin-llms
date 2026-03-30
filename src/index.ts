@@ -99,7 +99,7 @@ function validatePluginOptions(options: PluginOptions): void {
     'excludeImports',
     'removeDuplicateHeadings',
     'generateMarkdownFiles',
-    'preserveDirectoryStructure'
+    'preserveDirectoryStructure',
   ] as const;
 
   for (const option of booleanOptions) {
@@ -116,7 +116,7 @@ function validatePluginOptions(options: PluginOptions): void {
     'llmsFullTxtFilename',
     'version',
     'rootContent',
-    'fullRootContent'
+    'fullRootContent',
   ] as const;
 
   for (const option of stringOptions) {
@@ -244,14 +244,14 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
     keepFrontMatter = [],
     rootContent,
     fullRootContent,
-    logLevel = 'normal'
+    logLevel = 'normal',
   } = options;
 
   // Initialize logging level
   const logLevelMap = {
     quiet: LogLevel.QUIET,
     normal: LogLevel.NORMAL,
-    verbose: LogLevel.VERBOSE
+    verbose: LogLevel.VERBOSE,
   };
   setLogLevel(logLevelMap[logLevel] || LogLevel.NORMAL);
 
@@ -272,8 +272,8 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
       : [
           {
             path: typeof docsDir === 'string' ? docsDir : 'docs',
-            routeBasePath: typeof docsDir === 'string' ? docsDir : 'docs'
-          }
+            routeBasePath: typeof docsDir === 'string' ? docsDir : 'docs',
+          },
         ];
 
   // Resolve a plain string version of docsDir for internal helpers that still
@@ -310,8 +310,8 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
       generateMarkdownFiles,
       keepFrontMatter,
       rootContent,
-      fullRootContent
-    }
+      fullRootContent,
+    },
   };
 
   return {
@@ -354,7 +354,7 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
             ...pluginContext,
             routesPaths: props.routesPaths,
             routes: props.routes,
-            routeMap
+            routeMap,
           };
         }
 
@@ -378,7 +378,7 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
       } catch (err: unknown) {
         logger.error(`Error generating LLM documentation: ${getErrorMessage(err)}`);
       }
-    }
+    },
   };
 }
 

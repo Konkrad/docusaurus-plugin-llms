@@ -27,14 +27,14 @@ const testCases = [
         path: 'docs/server/config.md',
         content: 'Server configuration documentation.',
         description: 'How to configure the server',
-        url: 'https://example.com/docs/server/config'
-      }
+        url: 'https://example.com/docs/server/config',
+      },
     ],
     preserveDirectoryStructure: true,
     expectedPaths: ['docs/server/config.md'],
     expectedUrls: ['https://example.com/docs/server/config.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: false - strips docs/ prefix (old behavior)',
@@ -44,14 +44,14 @@ const testCases = [
         path: 'docs/server/config.md',
         content: 'Server configuration documentation.',
         description: 'How to configure the server',
-        url: 'https://example.com/docs/server/config'
-      }
+        url: 'https://example.com/docs/server/config',
+      },
     ],
     preserveDirectoryStructure: false,
     expectedPaths: ['server/config.md'],
     expectedUrls: ['https://example.com/server/config.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: true - multiple nested files',
@@ -61,32 +61,32 @@ const testCases = [
         path: 'docs/getting-started.md',
         content: 'Getting started guide.',
         description: 'Quick start guide',
-        url: 'https://example.com/docs/getting-started'
+        url: 'https://example.com/docs/getting-started',
       },
       {
         title: 'API Reference',
         path: 'docs/api/reference.md',
         content: 'API documentation.',
         description: 'API reference',
-        url: 'https://example.com/docs/api/reference'
+        url: 'https://example.com/docs/api/reference',
       },
       {
         title: 'Database Setup',
         path: 'docs/server/database/setup.md',
         content: 'Database setup instructions.',
         description: 'How to set up the database',
-        url: 'https://example.com/docs/server/database/setup'
-      }
+        url: 'https://example.com/docs/server/database/setup',
+      },
     ],
     preserveDirectoryStructure: true,
     expectedPaths: ['docs/getting-started.md', 'docs/api/reference.md', 'docs/server/database/setup.md'],
     expectedUrls: [
       'https://example.com/docs/getting-started.md',
       'https://example.com/docs/api/reference.md',
-      'https://example.com/docs/server/database/setup.md'
+      'https://example.com/docs/server/database/setup.md',
     ],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: false - multiple nested files',
@@ -96,32 +96,32 @@ const testCases = [
         path: 'docs/getting-started.md',
         content: 'Getting started guide.',
         description: 'Quick start guide',
-        url: 'https://example.com/docs/getting-started'
+        url: 'https://example.com/docs/getting-started',
       },
       {
         title: 'API Reference',
         path: 'docs/api/reference.md',
         content: 'API documentation.',
         description: 'API reference',
-        url: 'https://example.com/docs/api/reference'
+        url: 'https://example.com/docs/api/reference',
       },
       {
         title: 'Database Setup',
         path: 'docs/server/database/setup.md',
         content: 'Database setup instructions.',
         description: 'How to set up the database',
-        url: 'https://example.com/docs/server/database/setup'
-      }
+        url: 'https://example.com/docs/server/database/setup',
+      },
     ],
     preserveDirectoryStructure: false,
     expectedPaths: ['getting-started.md', 'api/reference.md', 'server/database/setup.md'],
     expectedUrls: [
       'https://example.com/getting-started.md',
       'https://example.com/api/reference.md',
-      'https://example.com/server/database/setup.md'
+      'https://example.com/server/database/setup.md',
     ],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: true - custom docsDir name (documentation)',
@@ -131,14 +131,14 @@ const testCases = [
         path: 'documentation/tutorials/basic.md',
         content: 'Basic tutorial content.',
         description: 'Basic tutorial',
-        url: 'https://example.com/documentation/tutorials/basic'
-      }
+        url: 'https://example.com/documentation/tutorials/basic',
+      },
     ],
     preserveDirectoryStructure: true,
     expectedPaths: ['documentation/tutorials/basic.md'],
     expectedUrls: ['https://example.com/documentation/tutorials/basic.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'documentation'
+    docsDir: 'documentation',
   },
   {
     name: 'preserveDirectoryStructure: false - custom docsDir name (documentation)',
@@ -148,14 +148,14 @@ const testCases = [
         path: 'documentation/tutorials/basic.md',
         content: 'Basic tutorial content.',
         description: 'Basic tutorial',
-        url: 'https://example.com/documentation/tutorials/basic'
-      }
+        url: 'https://example.com/documentation/tutorials/basic',
+      },
     ],
     preserveDirectoryStructure: false,
     expectedPaths: ['tutorials/basic.md'],
     expectedUrls: ['https://example.com/tutorials/basic.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'documentation'
+    docsDir: 'documentation',
   },
   {
     name: 'preserveDirectoryStructure: true - with frontmatter slug',
@@ -167,15 +167,15 @@ const testCases = [
         description: 'Advanced configuration',
         url: 'https://example.com/docs/advanced/config',
         frontMatter: {
-          slug: 'custom-config'
-        }
-      }
+          slug: 'custom-config',
+        },
+      },
     ],
     preserveDirectoryStructure: true,
     expectedPaths: ['docs/advanced/custom-config.md'],
     expectedUrls: ['https://example.com/docs/advanced/custom-config.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: false - with frontmatter slug',
@@ -187,15 +187,15 @@ const testCases = [
         description: 'Advanced configuration',
         url: 'https://example.com/docs/advanced/config',
         frontMatter: {
-          slug: 'custom-config'
-        }
-      }
+          slug: 'custom-config',
+        },
+      },
     ],
     preserveDirectoryStructure: false,
     expectedPaths: ['advanced/custom-config.md'],
     expectedUrls: ['https://example.com/advanced/custom-config.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: true - with nested frontmatter slug',
@@ -207,9 +207,9 @@ const testCases = [
         description: 'API usage guide',
         url: 'https://example.com/docs/api/guide',
         frontMatter: {
-          slug: 'v2/api-guide'
-        }
-      }
+          slug: 'v2/api-guide',
+        },
+      },
     ],
     preserveDirectoryStructure: true,
     // When slug contains /, it replaces the entire path with slug (current behavior)
@@ -217,7 +217,7 @@ const testCases = [
     expectedPaths: ['v2/api-guide.md'],
     expectedUrls: ['https://example.com/v2/api-guide.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
+    docsDir: 'docs',
   },
   {
     name: 'preserveDirectoryStructure: false - with nested frontmatter slug',
@@ -229,16 +229,16 @@ const testCases = [
         description: 'API usage guide',
         url: 'https://example.com/docs/api/guide',
         frontMatter: {
-          slug: 'v2/api-guide'
-        }
-      }
+          slug: 'v2/api-guide',
+        },
+      },
     ],
     preserveDirectoryStructure: false,
     expectedPaths: ['v2/api-guide.md'],
     expectedUrls: ['https://example.com/v2/api-guide.md'],
     siteUrl: 'https://example.com',
-    docsDir: 'docs'
-  }
+    docsDir: 'docs',
+  },
 ];
 
 async function runPreserveDirectoryStructureTests() {
@@ -268,7 +268,7 @@ async function runPreserveDirectoryStructureTests() {
           testCase.siteUrl,
           testCase.docsDir,
           [], // No frontmatter preservation for these tests
-          testCase.preserveDirectoryStructure
+          testCase.preserveDirectoryStructure,
         );
 
         // Check that the expected files were created at the correct paths
@@ -413,8 +413,8 @@ async function testDefaultBehavior() {
         path: 'docs/test/doc.md',
         content: 'Test content.',
         description: 'Test description',
-        url: 'https://example.com/docs/test/doc'
-      }
+        url: 'https://example.com/docs/test/doc',
+      },
     ];
 
     // Call without the preserveDirectoryStructure parameter (should default to true)
@@ -423,7 +423,7 @@ async function testDefaultBehavior() {
       testDir,
       'https://example.com',
       'docs',
-      [] // No frontmatter preservation
+      [], // No frontmatter preservation
       // Note: preserveDirectoryStructure parameter is omitted
     );
 

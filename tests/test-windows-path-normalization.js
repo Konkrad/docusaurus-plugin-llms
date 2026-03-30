@@ -38,7 +38,7 @@ function runTest(description, input, expected) {
 runTest(
   'Windows path with backslashes should be normalized to forward slashes',
   'docs\\quickstart\\file.md',
-  'docs/quickstart/file.md'
+  'docs/quickstart/file.md',
 );
 
 // Test 2: Unix path should remain unchanged
@@ -48,7 +48,7 @@ runTest('Unix path with forward slashes should remain unchanged', 'docs/quicksta
 runTest(
   'Mixed path separators should all be normalized to forward slashes',
   'docs\\api/methods\\file.md',
-  'docs/api/methods/file.md'
+  'docs/api/methods/file.md',
 );
 
 // Test 4: Single backslash

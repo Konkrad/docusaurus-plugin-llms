@@ -11,7 +11,7 @@ const {
   validateArray,
   sanitizeForFilename,
   ensureUniqueIdentifier,
-  normalizePath
+  normalizePath,
 } = require('../lib/utils');
 
 function testValidationError() {
@@ -528,7 +528,7 @@ function runAllTests() {
     validateArray: testValidateArray(),
     sanitizeForFilename: testSanitizeForFilenameValidation(),
     ensureUniqueIdentifier: testEnsureUniqueIdentifierValidation(),
-    normalizePath: testNormalizePathValidation()
+    normalizePath: testNormalizePathValidation(),
   };
 
   const passed = Object.values(results).filter(r => r === true).length;

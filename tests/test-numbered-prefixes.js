@@ -27,7 +27,7 @@ function testExactMatchWithNumberedPrefix() {
   // Mock route map that contains the exact path with numbered prefix
   const mockRouteMap = new Map([
     ['/docs/01-intro', '/docs/introduction'],
-    ['/docs/guide/01-start', '/docs/guide/getting-started']
+    ['/docs/guide/01-start', '/docs/guide/getting-started'],
   ]);
 
   // Simulate the logic from processor.ts (lines 289-354)
@@ -92,7 +92,7 @@ function testFallbackToPrefixRemoval() {
   // Mock route map that contains only the cleaned paths (no numbered prefixes)
   const mockRouteMap = new Map([
     ['/docs/intro', '/docs/introduction'],
-    ['/docs/guide/start', '/docs/guide/getting-started']
+    ['/docs/guide/start', '/docs/guide/getting-started'],
   ]);
 
   // Simulate the logic from processor.ts
@@ -158,7 +158,7 @@ function testExactMatchPrecedence() {
   // This simulates a scenario where Docusaurus has resolved the route differently
   const mockRouteMap = new Map([
     ['/docs/01-intro', '/docs/numbered-intro'], // Exact match
-    ['/docs/intro', '/docs/clean-intro'] // Cleaned match
+    ['/docs/intro', '/docs/clean-intro'], // Cleaned match
   ]);
 
   // Simulate the logic from processor.ts
@@ -214,7 +214,7 @@ function testComplexNestedNumberedFolders() {
   // Mock route map with multiple levels of numbered prefixes
   const mockRouteMap = new Map([
     ['/docs/01-guide/02-tutorials/03-advanced', '/docs/guide/tutorials/advanced'],
-    ['/docs/01-guide/02-tutorials', '/docs/guide/tutorials']
+    ['/docs/01-guide/02-tutorials', '/docs/guide/tutorials'],
   ]);
 
   // Simulate the logic from processor.ts
@@ -279,7 +279,7 @@ function testMixedNumberedSegments() {
   // Mock route map with mixed patterns
   const mockRouteMap = new Map([
     ['/docs/api/01-getting-started', '/docs/api/intro'],
-    ['/docs/01-guide/reference', '/docs/guide/ref']
+    ['/docs/01-guide/reference', '/docs/guide/ref'],
   ]);
 
   // Simulate the logic from processor.ts
@@ -344,7 +344,7 @@ function testTrailingSlashHandling() {
   // Mock route map with trailing slashes
   const mockRouteMap = new Map([
     ['/docs/01-intro/', '/docs/introduction/'],
-    ['/docs/guide/', '/docs/guide-home/']
+    ['/docs/guide/', '/docs/guide-home/'],
   ]);
 
   // Simulate the logic from processor.ts

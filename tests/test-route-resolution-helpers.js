@@ -45,7 +45,7 @@ async function runTests() {
     {
       const routeMap = new Map([
         ['/docs/simple', '/simple'],
-        ['/docs/01-numbered', '/numbered']
+        ['/docs/01-numbered', '/numbered'],
       ]);
 
       const context = {
@@ -53,7 +53,7 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap
+        routeMap,
       };
 
       const allFiles = [path.join(DOCS_DIR, 'simple.md'), path.join(DOCS_DIR, '01-numbered.md')];
@@ -83,7 +83,7 @@ async function runTests() {
     console.log('\nTest 2: Cleaned path match (numbered prefix removal)');
     {
       const routeMap = new Map([
-        ['/docs/another', '/another'] // No numbered prefix in route
+        ['/docs/another', '/another'], // No numbered prefix in route
       ]);
 
       const context = {
@@ -91,11 +91,11 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap
+        routeMap,
       };
 
       const allFiles = [
-        path.join(DOCS_DIR, '02-another.md') // Has numbered prefix in filename
+        path.join(DOCS_DIR, '02-another.md'), // Has numbered prefix in filename
       ];
 
       const results = await processFilesWithPatterns(context, allFiles);
@@ -113,7 +113,7 @@ async function runTests() {
     console.log('\nTest 3: Segment-wise match (nested folders)');
     {
       const routeMap = new Map([
-        ['/docs/category/nested', '/category/nested'] // Category without number
+        ['/docs/category/nested', '/category/nested'], // Category without number
       ]);
 
       const context = {
@@ -121,11 +121,11 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap
+        routeMap,
       };
 
       const allFiles = [
-        path.join(DOCS_DIR, '01-category', 'nested.md') // Folder has numbered prefix
+        path.join(DOCS_DIR, '01-category', 'nested.md'), // Folder has numbered prefix
       ];
 
       const results = await processFilesWithPatterns(context, allFiles);
@@ -149,7 +149,7 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap
+        routeMap,
       };
 
       const allFiles = [path.join(DOCS_DIR, '01-category', '01-double.md')];
@@ -172,7 +172,7 @@ async function runTests() {
         siteDir: TEST_DIR,
         siteUrl: 'https://example.com',
         docsDir: 'docs',
-        options: {}
+        options: {},
         // No routeMap provided
       };
 
@@ -202,7 +202,7 @@ async function runTests() {
         docsDir: 'docs',
         options: {},
         routeMap,
-        routesPaths
+        routesPaths,
       };
 
       const allFiles = [path.join(DOCS_DIR, '02-another.md')];

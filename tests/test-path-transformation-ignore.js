@@ -18,41 +18,41 @@ async function testPathTransformations() {
       name: 'Ignore "docs" from path',
       input: 'docs/tutorials/getting-started',
       config: { ignorePaths: ['docs'] },
-      expected: 'tutorials/getting-started'
+      expected: 'tutorials/getting-started',
     },
     {
       name: 'Ignore "tutorials" from path',
       input: 'docs/tutorials/getting-started',
       config: { ignorePaths: ['tutorials'] },
-      expected: 'docs/getting-started'
+      expected: 'docs/getting-started',
     },
     {
       name: 'Ignore multiple segments',
       input: 'docs/tutorials/advanced/concepts',
       config: { ignorePaths: ['docs', 'tutorials'] },
-      expected: 'advanced/concepts'
+      expected: 'advanced/concepts',
     },
     {
       name: 'Ignore non-existent segment',
       input: 'docs/tutorials/getting-started',
       config: { ignorePaths: ['blog'] },
-      expected: 'docs/tutorials/getting-started'
+      expected: 'docs/tutorials/getting-started',
     },
     {
       name: 'Add path prefix',
       input: 'tutorials/getting-started',
       config: { addPaths: ['reference'] },
-      expected: 'reference/tutorials/getting-started'
+      expected: 'reference/tutorials/getting-started',
     },
     {
       name: 'Both ignore and add',
       input: 'docs/tutorials/getting-started',
       config: {
         ignorePaths: ['docs'],
-        addPaths: ['reference']
+        addPaths: ['reference'],
       },
-      expected: 'reference/tutorials/getting-started'
-    }
+      expected: 'reference/tutorials/getting-started',
+    },
   ];
 
   let passed = 0;
@@ -102,7 +102,7 @@ description: A test tutorial
 
 # Test Tutorial
 
-This is a test tutorial.`
+This is a test tutorial.`,
   );
 
   // Test 1: Default URL generation
@@ -115,7 +115,7 @@ This is a test tutorial.`
   // Test 2: With ignorePaths
   console.log('Test 2: With ignorePaths ["tutorials"]');
   const result2 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
-    ignorePaths: ['tutorials']
+    ignorePaths: ['tutorials'],
   });
   console.log(`URL: ${result2.url}`);
   console.log(`Expected: https://example.com/docs/draft`);
@@ -124,7 +124,7 @@ This is a test tutorial.`
   // Test 3: Ignore the path prefix itself
   console.log('Test 3: With ignorePaths ["docs"]');
   const result3 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
-    ignorePaths: ['docs']
+    ignorePaths: ['docs'],
   });
   console.log(`URL: ${result3.url}`);
   console.log(`Expected: https://example.com/tutorials/draft`);
@@ -133,7 +133,7 @@ This is a test tutorial.`
   // Test 4: Add paths
   console.log('Test 4: With addPaths ["reference"]');
   const result4 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
-    addPaths: ['reference']
+    addPaths: ['reference'],
   });
   console.log(`URL: ${result4.url}`);
   console.log(`Expected: https://example.com/docs/reference/tutorials/draft`);
@@ -143,7 +143,7 @@ This is a test tutorial.`
   console.log('Test 5: With ignorePaths ["tutorials"] and addPaths ["api"]');
   const result5 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
     ignorePaths: ['tutorials'],
-    addPaths: ['api']
+    addPaths: ['api'],
   });
   console.log(`URL: ${result5.url}`);
   console.log(`Expected: https://example.com/docs/api/draft`);

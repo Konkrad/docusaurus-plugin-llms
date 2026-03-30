@@ -21,7 +21,7 @@ draft: true
 # This is a draft page
 
 This content should not appear in llms.txt.`,
-    expectedResult: null
+    expectedResult: null,
   },
   {
     name: 'Should include pages with draft: false',
@@ -35,9 +35,9 @@ draft: false
 This content should appear in llms.txt.`,
     expectedResult: {
       title: 'Published Page',
-      description: 'This is a published page'
+      description: 'This is a published page',
       // Other fields will be validated in the test
-    }
+    },
   },
   {
     name: 'Should include pages without draft field',
@@ -50,9 +50,9 @@ title: Regular Page
 This content should appear in llms.txt.`,
     expectedResult: {
       title: 'Regular Page',
-      description: 'This is a regular page'
+      description: 'This is a regular page',
       // Other fields will be validated in the test
-    }
+    },
   },
   {
     name: 'Should exclude pages with draft: "true" (string)',
@@ -66,10 +66,10 @@ draft: "true"
 This should still be included as draft is a string, not boolean.`,
     expectedResult: {
       title: 'String Draft Page',
-      description: 'This is a draft page with string value'
+      description: 'This is a draft page with string value',
       // Other fields will be validated in the test
-    }
-  }
+    },
+  },
 ];
 
 // Test function
@@ -142,7 +142,7 @@ title: Published Article 1
 
 # Published Article 1
 
-This is a published article.`
+This is a published article.`,
     );
 
     fs.writeFileSync(
@@ -154,7 +154,7 @@ draft: true
 
 # Draft Article 1
 
-This is a draft article.`
+This is a draft article.`,
     );
 
     fs.writeFileSync(
@@ -166,7 +166,7 @@ draft: false
 
 # Published Article 2
 
-This is another published article.`
+This is another published article.`,
     );
 
     // Mock context
@@ -174,7 +174,7 @@ This is another published article.`
       siteDir: testDir,
       siteUrl: 'https://example.com',
       docsDir: 'docs',
-      options: {}
+      options: {},
     };
 
     // Get all files
@@ -190,7 +190,7 @@ This is another published article.`
       [], // includePatterns
       [], // ignorePatterns
       [], // orderPatterns
-      true // includeUnmatched
+      true, // includeUnmatched
     );
 
     // Count non-draft files

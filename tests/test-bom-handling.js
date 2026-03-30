@@ -27,50 +27,50 @@ const testCases = [
     name: 'File with UTF-8 BOM',
     content: '\uFEFF# Test Document\n\nThis file has a BOM at the start.',
     expected: '# Test Document\n\nThis file has a BOM at the start.',
-    shouldHaveBOM: true
+    shouldHaveBOM: true,
   },
   {
     name: 'File without BOM',
     content: '# Test Document\n\nThis file has no BOM.',
     expected: '# Test Document\n\nThis file has no BOM.',
-    shouldHaveBOM: false
+    shouldHaveBOM: false,
   },
   {
     name: 'File with BOM and frontmatter',
     content: '\uFEFF---\ntitle: Test\n---\n\n# Content\n\nSome content here.',
     expected: '---\ntitle: Test\n---\n\n# Content\n\nSome content here.',
-    shouldHaveBOM: true
+    shouldHaveBOM: true,
   },
   {
     name: 'Empty file with BOM',
     content: '\uFEFF',
     expected: '',
-    shouldHaveBOM: true
+    shouldHaveBOM: true,
   },
   {
     name: 'Empty file without BOM',
     content: '',
     expected: '',
-    shouldHaveBOM: false
+    shouldHaveBOM: false,
   },
   {
     name: 'File with BOM and imports',
     content: '\uFEFFimport Component from "./Component";\n\n# Test\n\nContent here.',
     expected: 'import Component from "./Component";\n\n# Test\n\nContent here.',
-    shouldHaveBOM: true
+    shouldHaveBOM: true,
   },
   {
     name: 'File with BOM character in the middle (should not be removed)',
     content: '# Test\n\nSome text \uFEFF with BOM in middle.',
     expected: '# Test\n\nSome text \uFEFF with BOM in middle.',
-    shouldHaveBOM: false
+    shouldHaveBOM: false,
   },
   {
     name: 'File with multiple lines and BOM at start',
     content: '\uFEFF# Heading 1\n\n## Heading 2\n\nParagraph 1\n\nParagraph 2',
     expected: '# Heading 1\n\n## Heading 2\n\nParagraph 1\n\nParagraph 2',
-    shouldHaveBOM: true
-  }
+    shouldHaveBOM: true,
+  },
 ];
 
 async function runTests() {
@@ -154,26 +154,26 @@ function testBOMDetection() {
       name: 'String with BOM',
       input: '\uFEFFHello World',
       expectedHasBOM: true,
-      expectedWithoutBOM: 'Hello World'
+      expectedWithoutBOM: 'Hello World',
     },
     {
       name: 'String without BOM',
       input: 'Hello World',
       expectedHasBOM: false,
-      expectedWithoutBOM: 'Hello World'
+      expectedWithoutBOM: 'Hello World',
     },
     {
       name: 'Empty string',
       input: '',
       expectedHasBOM: false,
-      expectedWithoutBOM: ''
+      expectedWithoutBOM: '',
     },
     {
       name: 'String with only BOM',
       input: '\uFEFF',
       expectedHasBOM: true,
-      expectedWithoutBOM: ''
-    }
+      expectedWithoutBOM: '',
+    },
   ];
 
   let passCount = 0;

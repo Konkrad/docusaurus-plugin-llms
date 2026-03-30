@@ -98,7 +98,7 @@ async function runTests() {
       path.join(testDir, 'api-guide.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     // Check that import statement was removed
@@ -137,7 +137,7 @@ async function runTests() {
       path.join(testDir, 'quick-start.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     if (normalDoc && normalDoc.content.includes('Quick Start Guide')) {

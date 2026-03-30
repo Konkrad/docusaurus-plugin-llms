@@ -95,7 +95,7 @@ This is a component.`,
 This is a component.`,
     expectedWithoutImports: `# Component
 
-This is a component.`
+This is a component.`,
   },
   {
     name: 'Basic ES6 import with single quotes',
@@ -111,7 +111,7 @@ This is a component.`,
 This is a component.`,
     expectedWithoutImports: `# Component
 
-This is a component.`
+This is a component.`,
   },
   {
     name: 'Named imports with destructuring',
@@ -127,7 +127,7 @@ These are components.`,
 These are components.`,
     expectedWithoutImports: `# Components
 
-These are components.`
+These are components.`,
   },
   {
     name: 'Star imports',
@@ -143,7 +143,7 @@ This uses React.`,
 This uses React.`,
     expectedWithoutImports: `# React Component
 
-This uses React.`
+This uses React.`,
   },
   {
     name: 'Multiple imports',
@@ -163,7 +163,7 @@ import Button from "@site/src/components/Button";
 Uses multiple imports.`,
     expectedWithoutImports: `# Multi Import Component
 
-Uses multiple imports.`
+Uses multiple imports.`,
   },
   {
     name: 'Side-effect imports',
@@ -181,7 +181,7 @@ import "@site/src/css/custom.css";
 This component has styles.`,
     expectedWithoutImports: `# Styled Component
 
-This component has styles.`
+This component has styles.`,
   },
   {
     name: 'Mixed imports with content',
@@ -213,7 +213,7 @@ title: My Page
 
 # Configuration Keys
 
-This page shows configuration keys.`
+This page shows configuration keys.`,
   },
   {
     name: 'Imports with spaces and indentation',
@@ -231,7 +231,7 @@ Content here.`,
 Content here.`, // Leading whitespace is normalized
     expectedWithoutImports: `# Indented Imports
 
-Content here.`
+Content here.`,
   },
   {
     name: 'No imports in content',
@@ -249,7 +249,7 @@ Some more content here.`,
 
 This has no imports.
 
-Some more content here.`
+Some more content here.`,
   },
   {
     name: 'Imports without semicolons',
@@ -267,8 +267,8 @@ import Button from "./Button"
 Content without semicolons.`,
     expectedWithoutImports: `# No Semicolons
 
-Content without semicolons.`
-  }
+Content without semicolons.`,
+  },
 ];
 
 function runTests() {
@@ -334,7 +334,7 @@ Getting Started
 This is the real content.`,
       expected: `# Getting Started
 
-This is the real content.`
+This is the real content.`,
     },
     {
       name: 'Keep different text after heading',
@@ -347,7 +347,7 @@ This is different content.`,
 
 Introduction
 
-This is different content.`
+This is different content.`,
     },
     {
       name: 'Multiple levels of headings',
@@ -362,7 +362,7 @@ Different content here.`,
 
 ## Subsection
 
-Different content here.`
+Different content here.`,
     },
     {
       name: "Don't remove valid subheadings",
@@ -375,8 +375,8 @@ This should not be removed.`,
 
 ## API Reference Methods
 
-This should not be removed.`
-    }
+This should not be removed.`,
+    },
   ];
 
   let passCount = 0;

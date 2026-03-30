@@ -24,7 +24,7 @@ function createMockContext(options = {}) {
     docsDir: options.docsDir || 'docs',
     options: options.pluginOptions || {},
     routeMap: options.routeMap || undefined,
-    routesPaths: options.routesPaths || undefined
+    routesPaths: options.routesPaths || undefined,
   };
 }
 
@@ -73,7 +73,7 @@ async function runTests() {
   {
     const routeMap = new Map([
       ['/docs/test', '/resolved-test'],
-      ['/docs/other/', '/resolved-other/']
+      ['/docs/other/', '/resolved-other/'],
     ]);
 
     // Test exact match
@@ -94,7 +94,7 @@ async function runTests() {
   {
     const routeMap = new Map([
       ['/docs/exact-match', '/resolved'],
-      ['/other-path', '/other-resolved']
+      ['/other-path', '/other-resolved'],
     ]);
 
     const context = createMockContext({ routeMap });
@@ -117,7 +117,7 @@ async function runTests() {
   {
     const routeMap = new Map([
       ['/docs/intro', '/resolved-intro'],
-      ['/docs/category/file', '/resolved-file']
+      ['/docs/category/file', '/resolved-file'],
     ]);
 
     const context = createMockContext({ routeMap });
@@ -138,7 +138,7 @@ async function runTests() {
 
     const context = createMockContext({
       routeMap: new Map(),
-      routesPaths
+      routesPaths,
     });
 
     // Test case-insensitive matching
@@ -158,7 +158,7 @@ async function runTests() {
   console.log('\nTest Group 6: Early return when no route map');
   {
     const context = createMockContext({
-      routeMap: undefined
+      routeMap: undefined,
     });
 
     // When no route map, should return undefined (handled by processMarkdownFile fallback)
@@ -171,14 +171,14 @@ async function runTests() {
     const routeMap = new Map([
       ['/docs/simple', '/resolved-simple'],
       ['/docs/numbered', '/resolved-numbered'],
-      ['/docs/category/nested', '/resolved-nested']
+      ['/docs/category/nested', '/resolved-nested'],
     ]);
 
     const routesPaths = ['/docs/fallback'];
 
     const context = createMockContext({
       routeMap,
-      routesPaths
+      routesPaths,
     });
 
     // Test exact match priority
@@ -210,7 +210,7 @@ async function runTests() {
     // Trailing slash variations
     const routeMap3 = new Map([
       ['/docs/test', '/resolved'],
-      ['/docs/test/', '/resolved/']
+      ['/docs/test/', '/resolved/'],
     ]);
     const hasWithout = routeMap3.has('/docs/test');
     const hasWith = routeMap3.has('/docs/test/');
@@ -227,7 +227,7 @@ async function runTests() {
     assert(
       normalized === 'docs/subfolder/file.md',
       'Windows path normalization',
-      'Should convert backslashes to forward slashes'
+      'Should convert backslashes to forward slashes',
     );
 
     // Test index file handling
@@ -245,7 +245,7 @@ async function runTests() {
     assert(
       withoutMd === 'docs/file' && withoutMdx === 'docs/file',
       'Extension removal',
-      'Should remove .md and .mdx extensions'
+      'Should remove .md and .mdx extensions',
     );
   }
 
@@ -270,7 +270,7 @@ async function runTests() {
       assert(
         fullUrl2 === 'https://example.com/docs/test',
         'URL construction with trailing slash',
-        'Should handle trailing slash'
+        'Should handle trailing slash',
       );
     } catch (e) {
       assert(false, 'URL construction with trailing slash', 'Should not throw error');

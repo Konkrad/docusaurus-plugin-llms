@@ -39,9 +39,9 @@ const testCases = [
       content: 'Test content',
       url: 'https://example.com/test',
       path: '   ', // Whitespace-only
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'test-document.md'
+    expectedFilename: 'test-document.md',
   },
   {
     name: 'Handles tabs-only path',
@@ -51,9 +51,9 @@ const testCases = [
       content: 'Another content',
       url: 'https://example.com/another',
       path: '\t\t\t', // Tabs-only
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'another-document.md'
+    expectedFilename: 'another-document.md',
   },
   {
     name: 'Handles mixed whitespace path',
@@ -63,9 +63,9 @@ const testCases = [
       content: 'Mixed content',
       url: 'https://example.com/mixed',
       path: ' \t \n ', // Mixed whitespace
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'mixed-whitespace-doc.md'
+    expectedFilename: 'mixed-whitespace-doc.md',
   },
   {
     name: 'Handles whitespace around .md',
@@ -75,9 +75,9 @@ const testCases = [
       content: 'Extension content',
       url: 'https://example.com/ext',
       path: '  .md  ', // Whitespace around .md
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'extension-test.md'
+    expectedFilename: 'extension-test.md',
   },
   {
     name: 'Handles normal path correctly',
@@ -87,9 +87,9 @@ const testCases = [
       content: 'Normal content',
       url: 'https://example.com/normal',
       path: 'docs/normal-doc.md',
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'docs/normal-doc.md'
+    expectedFilename: 'docs/normal-doc.md',
   },
   {
     name: 'Handles path with leading/trailing whitespace',
@@ -99,9 +99,9 @@ const testCases = [
       content: 'Trimmed content',
       url: 'https://example.com/trimmed',
       path: '  docs/valid-path.md  ', // Should work after trim
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'docs/valid-path.md'
+    expectedFilename: 'docs/valid-path.md',
   },
   {
     name: 'Handles empty string path',
@@ -111,9 +111,9 @@ const testCases = [
       content: 'Empty content',
       url: 'https://example.com/empty',
       path: '',
-      frontMatter: {}
+      frontMatter: {},
     },
-    expectedFilename: 'empty-path-doc.md'
+    expectedFilename: 'empty-path-doc.md',
   },
   {
     name: 'Handles null path with whitespace slug',
@@ -124,10 +124,10 @@ const testCases = [
       url: 'https://example.com/null',
       path: 'docs/original.md',
       frontMatter: {
-        slug: '   ' // Whitespace-only slug - should be ignored
-      }
+        slug: '   ', // Whitespace-only slug - should be ignored
+      },
     },
-    expectedFilename: 'docs/original.md' // Should keep original path when slug is invalid
+    expectedFilename: 'docs/original.md', // Should keep original path when slug is invalid
   },
   {
     name: 'Handles null path with whitespace id',
@@ -138,11 +138,11 @@ const testCases = [
       url: 'https://example.com/nullid',
       path: 'docs/original.md',
       frontMatter: {
-        id: '\t\t' // Whitespace-only id - should be ignored
-      }
+        id: '\t\t', // Whitespace-only id - should be ignored
+      },
     },
-    expectedFilename: 'docs/original.md' // Should keep original path when id is invalid
-  }
+    expectedFilename: 'docs/original.md', // Should keep original path when id is invalid
+  },
 ];
 
 async function runTests() {
@@ -162,7 +162,7 @@ async function runTests() {
         'https://example.com',
         'docs',
         [],
-        true // preserveDirectoryStructure
+        true, // preserveDirectoryStructure
       );
 
       // Check that a file was generated

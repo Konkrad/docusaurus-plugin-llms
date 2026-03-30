@@ -50,13 +50,13 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Expected 3 files, got ${files.length}`
+            error: `Expected 3 files, got ${files.length}`,
           };
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Detects and prevents circular symlink loops',
@@ -102,7 +102,7 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Expected 2 files with loop warning. Got ${files.length} files. Warnings: ${warnings.join(', ')}`
+              error: `Expected 2 files with loop warning. Got ${files.length} files. Warnings: ${warnings.join(', ')}`,
             };
           }
         } finally {
@@ -111,7 +111,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Handles symlink to external directory',
@@ -143,13 +143,13 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Expected 2 files (including symlinked), got ${files.length}`
+            error: `Expected 2 files (including symlinked), got ${files.length}`,
           };
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Handles broken symlinks gracefully',
@@ -189,7 +189,7 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Expected 1 file with broken link warning. Got ${files.length} files. Warnings: ${warnings.join(', ')}`
+              error: `Expected 1 file with broken link warning. Got ${files.length} files. Warnings: ${warnings.join(', ')}`,
             };
           }
         } finally {
@@ -198,7 +198,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Handles multiple symlinks to same directory',
@@ -244,7 +244,7 @@ const testCases = [
           } else {
             return {
               passed: false,
-              error: `Expected 2 files (no duplicates). Got ${files.length} files. Warnings: ${warnings.join(', ')}`
+              error: `Expected 2 files (no duplicates). Got ${files.length} files. Warnings: ${warnings.join(', ')}`,
             };
           }
         } finally {
@@ -253,7 +253,7 @@ const testCases = [
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'Handles deeply nested symlink chains',
@@ -289,13 +289,13 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Expected 2 files through symlink chain, got ${files.length}`
+            error: `Expected 2 files through symlink chain, got ${files.length}`,
           };
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
+    },
   },
   {
     name: 'visitedPaths set persists across recursive calls',
@@ -330,14 +330,14 @@ const testCases = [
         } else {
           return {
             passed: false,
-            error: `Expected 3 unique files, got ${files.length}. Files: ${files.join(', ')}`
+            error: `Expected 3 unique files, got ${files.length}. Files: ${files.join(', ')}`,
           };
         }
       } finally {
         await cleanupTempDir(tmpDir);
       }
-    }
-  }
+    },
+  },
 ];
 
 async function runTests() {

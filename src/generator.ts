@@ -18,7 +18,7 @@ import {
   getErrorMessage,
   isNonEmptyString,
   isNonEmptyArray,
-  isDefined
+  isDefined,
 } from './utils';
 import { processFilesWithPatterns } from './processor';
 
@@ -62,7 +62,7 @@ export async function generateLLMFile(
   includeFullContent: boolean,
   version?: string,
   customRootContent?: string,
-  batchSize: number = 100
+  batchSize: number = 100,
 ): Promise<void> {
   // Validate path length before proceeding
   if (!validatePathLength(outputPath)) {
@@ -137,7 +137,7 @@ ${doc.content}`;
       fileTitle,
       `${fileDescription}${versionInfo}`,
       `${rootContent}\n\n${fullContentSections.join('\n\n---\n\n')}`,
-      true // include metadata (description)
+      true, // include metadata (description)
     );
 
     try {
@@ -187,7 +187,7 @@ ${doc.content}`;
       fileTitle,
       `${fileDescription}${versionInfo}`,
       `${rootContent}\n\n${tocBody}`,
-      true // include metadata (description)
+      true, // include metadata (description)
     );
 
     try {
@@ -217,7 +217,7 @@ export async function generateIndividualMarkdownFiles(
   docsDir: string = 'docs',
   keepFrontMatter: string[] = [],
   preserveDirectoryStructure: boolean = true,
-  docsSections: DocsSection[] = []
+  docsSections: DocsSection[] = [],
 ): Promise<DocInfo[]> {
   const updatedDocs: DocInfo[] = [];
   const usedPaths = new Set<string>();
@@ -352,7 +352,7 @@ export async function generateIndividualMarkdownFiles(
       doc.description,
       doc.content,
       true, // includeMetadata
-      Object.keys(preservedFrontMatter).length > 0 ? preservedFrontMatter : undefined
+      Object.keys(preservedFrontMatter).length > 0 ? preservedFrontMatter : undefined,
     );
 
     // Write the markdown file
@@ -370,7 +370,7 @@ export async function generateIndividualMarkdownFiles(
     updatedDocs.push({
       ...doc,
       url: newUrl,
-      path: `/${urlPath}` // Update path to the new markdown file
+      path: `/${urlPath}`, // Update path to the new markdown file
     });
 
     logger.verbose(`Generated markdown file: ${uniquePath}`);
@@ -398,7 +398,7 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
     generateMarkdownFiles = false,
     rootContent,
     fullRootContent,
-    processingBatchSize = 100
+    processingBatchSize = 100,
   } = options;
 
   if (!generateLLMsTxt && !generateLLMsFullTxt) {
@@ -413,7 +413,7 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
     [], // No specific include patterns - include all
     [], // No additional ignore patterns beyond global ignoreFiles
     includeOrder,
-    includeUnmatchedLast
+    includeUnmatchedLast,
   );
 
   logger.verbose(`Processed ${processedDocs.length} documentation files for standard LLM files`);
@@ -434,7 +434,7 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
       context.docsDir,
       context.options.keepFrontMatter || [],
       context.options.preserveDirectoryStructure !== false, // Default to true
-      context.docsSections
+      context.docsSections,
     );
   }
 
@@ -449,7 +449,7 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
       false, // links only
       version,
       rootContent,
-      processingBatchSize
+      processingBatchSize,
     );
   }
 
@@ -464,7 +464,7 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
       true, // full content
       version,
       fullRootContent,
-      processingBatchSize
+      processingBatchSize,
     );
   }
 }
@@ -501,7 +501,7 @@ export async function generateCustomLLMFiles(context: PluginContext, allDocFiles
       customFile.includePatterns,
       combinedIgnores,
       customFile.orderPatterns || [],
-      customFile.includeUnmatchedLast ?? false
+      customFile.includeUnmatchedLast ?? false,
     );
 
     if (customDocs.length > 0) {
@@ -515,7 +515,7 @@ export async function generateCustomLLMFiles(context: PluginContext, allDocFiles
           context.docsDir,
           context.options.keepFrontMatter || [],
           context.options.preserveDirectoryStructure !== false, // Default to true
-          context.docsSections
+          context.docsSections,
         );
       }
 
@@ -533,7 +533,7 @@ export async function generateCustomLLMFiles(context: PluginContext, allDocFiles
         customFile.fullContent,
         customFile.version,
         customFile.rootContent,
-        processingBatchSize
+        processingBatchSize,
       );
 
       logger.info(`Generated custom LLM file: ${customFile.filename} with ${customDocs.length} documents`);

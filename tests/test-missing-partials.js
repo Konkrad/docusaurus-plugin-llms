@@ -95,7 +95,7 @@ async function runTests() {
       path.join(testDir, 'api-guide.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     // Check that import statement was removed
@@ -135,7 +135,7 @@ async function runTests() {
       path.join(testDir, 'install-guide.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     const hasNamedImport = installDoc.content.includes('import { InstallSteps }');
@@ -159,7 +159,7 @@ async function runTests() {
       path.join(testDir, 'config-guide.md'),
       testDir,
       'https://example.com',
-      'docs'
+      'docs',
     );
 
     const hasFirstImport = configDoc.content.includes('import FirstPartial');

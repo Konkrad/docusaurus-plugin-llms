@@ -33,13 +33,13 @@ const testCases = [
         description: 'Test with numeric slug',
         url: 'https://example.com/test',
         frontMatter: {
-          slug: 12345 // Number instead of string
-        }
-      }
+          slug: 12345, // Number instead of string
+        },
+      },
     ],
     // Should fall back to original path since slug is not a string
     expectedPaths: ['test.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string slug (boolean)',
@@ -51,12 +51,12 @@ const testCases = [
         description: 'Test with boolean slug',
         url: 'https://example.com/boolean',
         frontMatter: {
-          slug: true // Boolean instead of string
-        }
-      }
+          slug: true, // Boolean instead of string
+        },
+      },
     ],
     expectedPaths: ['boolean-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string slug (object)',
@@ -68,12 +68,12 @@ const testCases = [
         description: 'Test with object slug',
         url: 'https://example.com/object',
         frontMatter: {
-          slug: { nested: 'value' } // Object instead of string
-        }
-      }
+          slug: { nested: 'value' }, // Object instead of string
+        },
+      },
     ],
     expectedPaths: ['object-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string slug (array)',
@@ -85,12 +85,12 @@ const testCases = [
         description: 'Test with array slug',
         url: 'https://example.com/array',
         frontMatter: {
-          slug: ['path', 'segments'] // Array instead of string
-        }
-      }
+          slug: ['path', 'segments'], // Array instead of string
+        },
+      },
     ],
     expectedPaths: ['array-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string slug (null)',
@@ -102,12 +102,12 @@ const testCases = [
         description: 'Test with null slug',
         url: 'https://example.com/null',
         frontMatter: {
-          slug: null // Null value
-        }
-      }
+          slug: null, // Null value
+        },
+      },
     ],
     expectedPaths: ['null-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string id (number)',
@@ -119,12 +119,12 @@ const testCases = [
         description: 'Test with numeric id',
         url: 'https://example.com/numeric',
         frontMatter: {
-          id: 99999 // Number instead of string
-        }
-      }
+          id: 99999, // Number instead of string
+        },
+      },
     ],
     expectedPaths: ['numeric-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string id (boolean)',
@@ -136,12 +136,12 @@ const testCases = [
         description: 'Test with boolean id',
         url: 'https://example.com/bool',
         frontMatter: {
-          id: false // Boolean instead of string
-        }
-      }
+          id: false, // Boolean instead of string
+        },
+      },
     ],
     expectedPaths: ['boolean-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string id (object)',
@@ -153,12 +153,12 @@ const testCases = [
         description: 'Test with object id',
         url: 'https://example.com/obj',
         frontMatter: {
-          id: { key: 'value' } // Object instead of string
-        }
-      }
+          id: { key: 'value' }, // Object instead of string
+        },
+      },
     ],
     expectedPaths: ['object-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string id (array)',
@@ -170,12 +170,12 @@ const testCases = [
         description: 'Test with array id',
         url: 'https://example.com/arr',
         frontMatter: {
-          id: ['id', 'parts'] // Array instead of string
-        }
-      }
+          id: ['id', 'parts'], // Array instead of string
+        },
+      },
     ],
     expectedPaths: ['array-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Both slug and id non-string',
@@ -188,12 +188,12 @@ const testCases = [
         url: 'https://example.com/both',
         frontMatter: {
           slug: 123,
-          id: true
-        }
-      }
+          id: true,
+        },
+      },
     ],
     expectedPaths: ['both-invalid.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Non-string slug with valid string id',
@@ -206,13 +206,13 @@ const testCases = [
         url: 'https://example.com/mixed',
         frontMatter: {
           slug: 456, // Invalid - should be ignored
-          id: 'valid-id' // Valid - should be used
-        }
-      }
+          id: 'valid-id', // Valid - should be used
+        },
+      },
     ],
     // Should use the valid id, ignoring the invalid slug
     expectedPaths: ['valid-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Valid slug with non-string id',
@@ -225,13 +225,13 @@ const testCases = [
         url: 'https://example.com/mixed2',
         frontMatter: {
           slug: 'valid-slug', // Valid - should be used
-          id: false // Invalid - should be ignored (slug takes precedence anyway)
-        }
-      }
+          id: false, // Invalid - should be ignored (slug takes precedence anyway)
+        },
+      },
     ],
     // Should use the valid slug
     expectedPaths: ['valid-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Undefined slug and id',
@@ -244,12 +244,12 @@ const testCases = [
         url: 'https://example.com/undefined',
         frontMatter: {
           slug: undefined,
-          id: undefined
-        }
-      }
+          id: undefined,
+        },
+      },
     ],
     expectedPaths: ['undefined-values.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Empty string slug (should fall back to path)',
@@ -261,12 +261,12 @@ const testCases = [
         description: 'Test empty string slug',
         url: 'https://example.com/empty',
         frontMatter: {
-          slug: '' // Empty string - is a string, but should fall back to path
-        }
-      }
+          slug: '', // Empty string - is a string, but should fall back to path
+        },
+      },
     ],
     expectedPaths: ['empty-string-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Whitespace-only slug (should fall back to path)',
@@ -278,12 +278,12 @@ const testCases = [
         description: 'Test whitespace slug',
         url: 'https://example.com/whitespace',
         frontMatter: {
-          slug: '   ' // Whitespace only - is a string, but should fall back
-        }
-      }
+          slug: '   ', // Whitespace only - is a string, but should fall back
+        },
+      },
     ],
     expectedPaths: ['whitespace-slug.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Empty string title (should use fallback)',
@@ -295,12 +295,12 @@ const testCases = [
         description: 'Test empty title',
         url: 'https://example.com/empty-title',
         frontMatter: {
-          title: '' // Empty string - should use first heading
-        }
-      }
+          title: '', // Empty string - should use first heading
+        },
+      },
     ],
     expectedPaths: ['empty-title.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Whitespace-only title (should use fallback)',
@@ -312,12 +312,12 @@ const testCases = [
         description: 'Test whitespace title',
         url: 'https://example.com/whitespace-title',
         frontMatter: {
-          title: '  \t  ' // Whitespace only - should use first heading
-        }
-      }
+          title: '  \t  ', // Whitespace only - should use first heading
+        },
+      },
     ],
     expectedPaths: ['whitespace-title.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Empty string description (should use fallback)',
@@ -329,12 +329,12 @@ const testCases = [
         description: '', // Empty description in frontmatter
         url: 'https://example.com/empty-description',
         frontMatter: {
-          description: '' // Empty string - should use first paragraph
-        }
-      }
+          description: '', // Empty string - should use first paragraph
+        },
+      },
     ],
     expectedPaths: ['empty-description.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Whitespace-only description (should use fallback)',
@@ -346,12 +346,12 @@ const testCases = [
         description: '', // Will be empty after trim
         url: 'https://example.com/whitespace-description',
         frontMatter: {
-          description: '   \n\t   ' // Whitespace only - should use first paragraph
-        }
-      }
+          description: '   \n\t   ', // Whitespace only - should use first paragraph
+        },
+      },
     ],
     expectedPaths: ['whitespace-description.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Empty string id (should fall back to path)',
@@ -363,12 +363,12 @@ const testCases = [
         description: 'Test empty id',
         url: 'https://example.com/empty-id',
         frontMatter: {
-          id: '' // Empty string - should fall back to path
-        }
-      }
+          id: '', // Empty string - should fall back to path
+        },
+      },
     ],
     expectedPaths: ['empty-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Whitespace-only id (should fall back to path)',
@@ -380,12 +380,12 @@ const testCases = [
         description: 'Test whitespace id',
         url: 'https://example.com/whitespace-id',
         frontMatter: {
-          id: '\t  \n  ' // Whitespace only - should fall back
-        }
-      }
+          id: '\t  \n  ', // Whitespace only - should fall back
+        },
+      },
     ],
     expectedPaths: ['whitespace-id.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Multiple empty frontmatter fields',
@@ -400,12 +400,12 @@ const testCases = [
           title: '',
           description: '  ',
           slug: '\t',
-          id: ''
-        }
-      }
+          id: '',
+        },
+      },
     ],
     expectedPaths: ['multiple-empty.md'],
-    siteUrl: 'https://example.com'
+    siteUrl: 'https://example.com',
   },
   {
     name: 'Nested path with non-string slug',
@@ -417,13 +417,13 @@ const testCases = [
         description: 'Test nested paths',
         url: 'https://example.com/nested',
         frontMatter: {
-          slug: { path: 'invalid' } // Object instead of string
-        }
-      }
+          slug: { path: 'invalid' }, // Object instead of string
+        },
+      },
     ],
     expectedPaths: ['guides/nested/deep.md'], // preserveDirectoryStructure=false strips only 'docs'
-    siteUrl: 'https://example.com'
-  }
+    siteUrl: 'https://example.com',
+  },
 ];
 
 async function runFrontmatterValidationTests() {
@@ -453,7 +453,7 @@ async function runFrontmatterValidationTests() {
           testCase.siteUrl,
           'docs',
           [],
-          false // Don't preserve directory structure for these tests
+          false, // Don't preserve directory structure for these tests
         );
 
         // Check that the expected files were created at the correct paths

@@ -61,7 +61,7 @@ const testCases = [
     name: 'No warnings when warnOnIgnoredFiles is false',
     warnOnIgnoredFiles: false,
     expectedWarningCount: 0,
-    expectedFiles: 3 // valid.md, valid.mdx, subdir/nested.md
+    expectedFiles: 3, // valid.md, valid.mdx, subdir/nested.md
   },
   {
     name: 'Warnings for files without extension when enabled',
@@ -75,9 +75,9 @@ const testCases = [
       /Ignoring file with unsupported extension.*script\.js/,
       /Ignoring file with unsupported extension.*style\.css/,
       /Ignoring file with unsupported extension.*document\.txt/,
-      /Ignoring file with unsupported extension.*config\.yaml/
-    ]
-  }
+      /Ignoring file with unsupported extension.*config\.yaml/,
+    ],
+  },
 ];
 
 async function runTests() {
@@ -103,7 +103,7 @@ async function runTests() {
           baseDir,
           [], // no ignore patterns
           'docs',
-          testCase.warnOnIgnoredFiles
+          testCase.warnOnIgnoredFiles,
         );
 
         restoreWarn();
@@ -116,7 +116,7 @@ async function runTests() {
         // Check warning count
         if (warnings.length !== testCase.expectedWarningCount) {
           throw new Error(
-            `Expected ${testCase.expectedWarningCount} warnings, got ${warnings.length}. Warnings: ${JSON.stringify(warnings)}`
+            `Expected ${testCase.expectedWarningCount} warnings, got ${warnings.length}. Warnings: ${JSON.stringify(warnings)}`,
           );
         }
 
@@ -126,7 +126,7 @@ async function runTests() {
             const found = warnings.some(warning => pattern.test(warning));
             if (!found) {
               throw new Error(
-                `Expected warning matching pattern ${pattern}, but not found in: ${JSON.stringify(warnings)}`
+                `Expected warning matching pattern ${pattern}, but not found in: ${JSON.stringify(warnings)}`,
               );
             }
           }

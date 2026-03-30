@@ -28,24 +28,24 @@ async function setupTestDocs() {
   // Create test markdown files
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'index.md'),
-    '---\ntitle: Home\n---\n\n# Home Page\n\nWelcome to the test docs.'
+    '---\ntitle: Home\n---\n\n# Home Page\n\nWelcome to the test docs.',
   );
 
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'tutorials', 'getting-started.md'),
-    '---\ntitle: Getting Started\n---\n\n# Getting Started\n\nThis is a getting started guide.'
+    '---\ntitle: Getting Started\n---\n\n# Getting Started\n\nThis is a getting started guide.',
   );
 
   // Create the draft file
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'tutorials', 'draft.md'),
-    '---\ntitle: Draft Tutorial\ndraft: true\n---\n\n# Draft Tutorial\n\nThis is a draft tutorial.'
+    '---\ntitle: Draft Tutorial\ndraft: true\n---\n\n# Draft Tutorial\n\nThis is a draft tutorial.',
   );
 
   // Create another regular file in tutorials
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'tutorials', 'advanced.md'),
-    '---\ntitle: Advanced Tutorial\n---\n\n# Advanced Tutorial\n\nThis is an advanced tutorial.'
+    '---\ntitle: Advanced Tutorial\n---\n\n# Advanced Tutorial\n\nThis is an advanced tutorial.',
   );
 }
 
@@ -103,7 +103,7 @@ async function testProcessFilesWithPatternsIgnore() {
     siteDir: TEST_DIR,
     siteUrl: 'https://example.com',
     docsDir: 'docs',
-    options: {}
+    options: {},
   };
 
   const docsDir = path.join(TEST_DIR, 'docs');
@@ -117,7 +117,7 @@ async function testProcessFilesWithPatternsIgnore() {
     [], // includePatterns
     [], // ignorePatterns
     [], // orderPatterns
-    true // includeUnmatched
+    true, // includeUnmatched
   );
 
   console.log(`Processed ${allProcessed.length} files:`);
@@ -136,7 +136,7 @@ async function testProcessFilesWithPatternsIgnore() {
     [], // includePatterns
     ['**/draft.md'], // ignorePatterns
     [], // orderPatterns
-    true // includeUnmatched
+    true, // includeUnmatched
   );
 
   console.log(`Processed ${withIgnorePattern.length} files:`);
@@ -160,13 +160,13 @@ async function testDraftFilteringVsIgnorePatterns() {
     siteDir: TEST_DIR,
     siteUrl: 'https://example.com',
     docsDir: 'docs',
-    options: {}
+    options: {},
   };
 
   // Create a non-draft file that matches draft pattern
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'tutorials', 'draft-naming.md'),
-    '---\ntitle: Draft Naming Convention\n---\n\n# Draft Naming Convention\n\nThis file has "draft" in its name but is not a draft.'
+    '---\ntitle: Draft Naming Convention\n---\n\n# Draft Naming Convention\n\nThis file has "draft" in its name but is not a draft.',
   );
 
   const docsDir = path.join(TEST_DIR, 'docs');
@@ -188,7 +188,7 @@ async function testDraftFilteringVsIgnorePatterns() {
     [],
     ['**/draft*.md'], // This will exclude files with "draft" in the name
     [],
-    true
+    true,
   );
   console.log(`Found ${withIgnore.length} files`);
   withIgnore.forEach(doc => {

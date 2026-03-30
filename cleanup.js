@@ -14,7 +14,7 @@ const toRemove = [
   'constants.js',
   'constants.d.ts',
   'helpers',
-  'remark-plugins'
+  'remark-plugins',
 ];
 
 // Helper to remove a directory recursively

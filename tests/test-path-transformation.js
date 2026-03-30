@@ -37,17 +37,17 @@ async function setupTestDocs() {
   // Create test markdown files
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'index.md'),
-    '---\ntitle: Home\ndescription: Welcome to the test docs.\n---\n\n# Home Page\n\nWelcome to the test docs.'
+    '---\ntitle: Home\ndescription: Welcome to the test docs.\n---\n\n# Home Page\n\nWelcome to the test docs.',
   );
 
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'getting-started.md'),
-    '---\ntitle: Getting Started\ndescription: This is a getting started guide.\n---\n\n# Getting Started\n\nThis is a getting started guide.'
+    '---\ntitle: Getting Started\ndescription: This is a getting started guide.\n---\n\n# Getting Started\n\nThis is a getting started guide.',
   );
 
   fs.writeFileSync(
     path.join(TEST_DIR, 'docs', 'api', 'overview.md'),
-    '---\ntitle: API Overview\ndescription: This is the API overview.\n---\n\n# API Overview\n\nThis is the API overview.'
+    '---\ntitle: API Overview\ndescription: This is the API overview.\n---\n\n# API Overview\n\nThis is the API overview.',
   );
 }
 
@@ -61,16 +61,16 @@ async function runTests() {
       title: 'Test Site',
       tagline: 'Testing docusaurus-plugin-llms',
       url: 'https://example.com',
-      baseUrl: '/'
+      baseUrl: '/',
     },
-    outDir: OUTPUT_DIR
+    outDir: OUTPUT_DIR,
   };
 
   // Test 1: Default behavior (no path transformation)
   console.log('\nTest 1: Default behavior');
   const plugin1 = plugin(mockContext, {
     llmsTxtFilename: 'llms-default.txt',
-    llmsFullTxtFilename: 'llms-full-default.txt'
+    llmsFullTxtFilename: 'llms-full-default.txt',
   });
   await plugin1.postBuild();
 
@@ -78,10 +78,10 @@ async function runTests() {
   console.log('\nTest 2: Ignore "docs" path');
   const plugin2 = plugin(mockContext, {
     pathTransformation: {
-      ignorePaths: ['docs']
+      ignorePaths: ['docs'],
     },
     llmsTxtFilename: 'llms-ignore-paths.txt',
-    llmsFullTxtFilename: 'llms-full-ignore-paths.txt'
+    llmsFullTxtFilename: 'llms-full-ignore-paths.txt',
   });
   await plugin2.postBuild();
 
@@ -89,10 +89,10 @@ async function runTests() {
   console.log('\nTest 3: Add "reference" path');
   const plugin3 = plugin(mockContext, {
     pathTransformation: {
-      addPaths: ['reference']
+      addPaths: ['reference'],
     },
     llmsTxtFilename: 'llms-add-paths.txt',
-    llmsFullTxtFilename: 'llms-full-add-paths.txt'
+    llmsFullTxtFilename: 'llms-full-add-paths.txt',
   });
   await plugin3.postBuild();
 
@@ -101,10 +101,10 @@ async function runTests() {
   const plugin4 = plugin(mockContext, {
     pathTransformation: {
       ignorePaths: ['docs'],
-      addPaths: ['reference']
+      addPaths: ['reference'],
     },
     llmsTxtFilename: 'llms-combined.txt',
-    llmsFullTxtFilename: 'llms-full-combined.txt'
+    llmsFullTxtFilename: 'llms-full-combined.txt',
   });
   await plugin4.postBuild();
 }
