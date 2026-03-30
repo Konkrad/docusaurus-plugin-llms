@@ -199,9 +199,7 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Whitespace Path Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -210,9 +208,7 @@ async function runTests() {
 // Run the tests
 runTests()
   .then(success => {
-    console.log(
-      success ? '🎉 All whitespace path tests passed!' : '❌ Some tests failed.'
-    );
+    console.log(success ? '🎉 All whitespace path tests passed!' : '❌ Some tests failed.');
     process.exit(success ? 0 : 1);
   })
   .catch(error => {

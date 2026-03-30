@@ -8,17 +8,8 @@ const fs = require('fs');
 const path = require('path');
 
 // Mock the generateLLMFile function from generator.ts
-function generateLLMFile(
-  docs,
-  outputPath,
-  fileTitle,
-  fileDescription,
-  includeFullContent,
-  version
-) {
-  console.log(
-    `Generating file: ${outputPath}, version: ${version || 'undefined'}`
-  );
+function generateLLMFile(docs, outputPath, fileTitle, fileDescription, includeFullContent, version) {
+  console.log(`Generating file: ${outputPath}, version: ${version || 'undefined'}`);
   const versionInfo = version ? `\n\nVersion: ${version}` : '';
 
   if (includeFullContent) {
@@ -44,8 +35,7 @@ function generateLLMFile(
         // Try to make it more descriptive by adding the file path info if available
         if (doc.path && counter === 2) {
           const pathParts = doc.path.split('/');
-          const folderName =
-            pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
+          const folderName = pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
           if (folderName) {
             uniqueHeader = `${headerText} (${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
           } else {
@@ -162,11 +152,7 @@ const testCases = [
         url: 'https://example.com/javascript/reference'
       }
     ],
-    expectedHeaders: [
-      'API Reference',
-      'API Reference (Python)',
-      'API Reference (Javascript)'
-    ]
+    expectedHeaders: ['API Reference', 'API Reference (Python)', 'API Reference (Javascript)']
   },
   {
     name: 'Headers without folder context fall back to numbers',

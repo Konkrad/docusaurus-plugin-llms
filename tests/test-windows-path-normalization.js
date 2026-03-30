@@ -42,11 +42,7 @@ runTest(
 );
 
 // Test 2: Unix path should remain unchanged
-runTest(
-  'Unix path with forward slashes should remain unchanged',
-  'docs/quickstart/file.md',
-  'docs/quickstart/file.md'
-);
+runTest('Unix path with forward slashes should remain unchanged', 'docs/quickstart/file.md', 'docs/quickstart/file.md');
 
 // Test 3: Mixed path separators
 runTest(
@@ -56,32 +52,16 @@ runTest(
 );
 
 // Test 4: Single backslash
-runTest(
-  'Single backslash should be converted to forward slash',
-  'docs\\file.md',
-  'docs/file.md'
-);
+runTest('Single backslash should be converted to forward slash', 'docs\\file.md', 'docs/file.md');
 
 // Test 5: Multiple consecutive backslashes
-runTest(
-  'Multiple consecutive backslashes should be normalized',
-  'docs\\\\api\\\\file.md',
-  'docs//api//file.md'
-);
+runTest('Multiple consecutive backslashes should be normalized', 'docs\\\\api\\\\file.md', 'docs//api//file.md');
 
 // Test 6: Path with drive letter (Windows absolute path)
-runTest(
-  'Windows absolute path with drive letter',
-  'C:\\Users\\docs\\file.md',
-  'C:/Users/docs/file.md'
-);
+runTest('Windows absolute path with drive letter', 'C:\\Users\\docs\\file.md', 'C:/Users/docs/file.md');
 
 // Test 7: UNC path (Windows network path)
-runTest(
-  'Windows UNC path should be normalized',
-  '\\\\server\\share\\docs\\file.md',
-  '//server/share/docs/file.md'
-);
+runTest('Windows UNC path should be normalized', '\\\\server\\share\\docs\\file.md', '//server/share/docs/file.md');
 
 // Test 8: Empty string
 runTest('Empty string should remain empty', '', '');
@@ -93,18 +73,10 @@ runTest('Single forward slash should remain unchanged', '/', '/');
 runTest('Single backslash should be converted to forward slash', '\\', '/');
 
 // Test 11: Relative path with backslashes
-runTest(
-  'Relative path with backslashes',
-  '..\\..\\docs\\file.md',
-  '../../docs/file.md'
-);
+runTest('Relative path with backslashes', '..\\..\\docs\\file.md', '../../docs/file.md');
 
 // Test 12: Path with spaces and backslashes
-runTest(
-  'Path with spaces and backslashes',
-  'docs\\My Documents\\file.md',
-  'docs/My Documents/file.md'
-);
+runTest('Path with spaces and backslashes', 'docs\\My Documents\\file.md', 'docs/My Documents/file.md');
 
 console.log('\n' + '='.repeat(80));
 console.log('SUMMARY');

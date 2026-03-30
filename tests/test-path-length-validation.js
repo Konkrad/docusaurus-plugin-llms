@@ -134,11 +134,7 @@ shortenTestCases.forEach(test => {
       });
     }
 
-    const result = shortenPathIfNeeded(
-      test.fullPath,
-      test.outputDir,
-      test.relativePath
-    );
+    const result = shortenPathIfNeeded(test.fullPath, test.outputDir, test.relativePath);
 
     if (test.shouldShorten) {
       // Should be shortened
@@ -203,9 +199,7 @@ try {
 
   // Create very long paths that exceed Windows limit
   const longPaths = paths.map(p => outputDir + '\\' + p);
-  const shortenedPaths = longPaths.map((fullPath, i) =>
-    shortenPathIfNeeded(fullPath, outputDir, paths[i])
-  );
+  const shortenedPaths = longPaths.map((fullPath, i) => shortenPathIfNeeded(fullPath, outputDir, paths[i]));
 
   // Check that all shortened paths are unique
   const uniquePaths = new Set(shortenedPaths);
@@ -216,9 +210,7 @@ try {
     passed++;
   } else {
     console.error('✗ Hash-based shortening produces duplicate paths');
-    console.error(
-      `  Expected ${shortenedPaths.length} unique paths, got ${uniquePaths.size}`
-    );
+    console.error(`  Expected ${shortenedPaths.length} unique paths, got ${uniquePaths.size}`);
     failed++;
   }
 } catch (error) {

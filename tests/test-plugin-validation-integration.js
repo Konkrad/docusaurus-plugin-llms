@@ -45,8 +45,7 @@ const testCases = [
       ]
     },
     shouldThrow: false,
-    description:
-      'Plugin should initialize when docsDir is an array of DocsSection objects'
+    description: 'Plugin should initialize when docsDir is an array of DocsSection objects'
   },
   {
     name: 'Valid docsDir as array without label',
@@ -54,8 +53,7 @@ const testCases = [
       docsDir: [{path: 'docs', routeBasePath: '/'}]
     },
     shouldThrow: false,
-    description:
-      'Plugin should initialize when docsDir array sections omit the optional label'
+    description: 'Plugin should initialize when docsDir array sections omit the optional label'
   },
   {
     name: 'Invalid includeOrder should throw',
@@ -127,8 +125,7 @@ const testCases = [
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].routeBasePath must be a string',
-    description:
-      'Plugin should reject docsDir array section with non-string routeBasePath'
+    description: 'Plugin should reject docsDir array section with non-string routeBasePath'
   },
   {
     name: 'Invalid customLLMFiles should throw',
@@ -142,8 +139,7 @@ const testCases = [
       ]
     },
     shouldThrow: true,
-    expectedError:
-      'customLLMFiles[0].includePatterns must be a non-empty array',
+    expectedError: 'customLLMFiles[0].includePatterns must be a non-empty array',
     description: 'Plugin should reject empty includePatterns'
   },
   {
@@ -205,9 +201,7 @@ testCases.forEach((testCase, index) => {
 });
 
 console.log('\n' + '='.repeat(50));
-console.log(
-  `Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`
-);
+console.log(`Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`);
 console.log('='.repeat(50));
 
 if (failedTests > 0) {

@@ -62,10 +62,7 @@ function testValidateRequired() {
     console.log('❌ FAIL: validateRequired should throw for null');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('null or undefined')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('null or undefined')) {
       console.log('✅ PASS: validateRequired throws for null');
       passed++;
     } else {
@@ -80,10 +77,7 @@ function testValidateRequired() {
     console.log('❌ FAIL: validateRequired should throw for undefined');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('null or undefined')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('null or undefined')) {
       console.log('✅ PASS: validateRequired throws for undefined');
       passed++;
     } else {
@@ -152,10 +146,7 @@ function testValidateString() {
     console.log('❌ FAIL: validateString should throw for non-string');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('must be a string')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('must be a string')) {
       console.log('✅ PASS: validateString throws for non-string');
       passed++;
     } else {
@@ -170,10 +161,7 @@ function testValidateString() {
     console.log('❌ FAIL: validateString should throw for string too short');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('at least')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('at least')) {
       console.log('✅ PASS: validateString validates minLength');
       passed++;
     } else {
@@ -188,10 +176,7 @@ function testValidateString() {
     console.log('❌ FAIL: validateString should throw for string too long');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('exceeds maximum length')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('exceeds maximum length')) {
       console.log('✅ PASS: validateString validates maxLength');
       passed++;
     } else {
@@ -206,10 +191,7 @@ function testValidateString() {
     console.log('❌ FAIL: validateString should throw for pattern mismatch');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('does not match')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('does not match')) {
       console.log('✅ PASS: validateString validates pattern');
       passed++;
     } else {
@@ -225,15 +207,11 @@ function testValidateString() {
       console.log('✅ PASS: validateString accepts matching pattern');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: validateString should return value for matching pattern'
-      );
+      console.log('❌ FAIL: validateString should return value for matching pattern');
       failed++;
     }
   } catch (error) {
-    console.log(
-      '❌ FAIL: validateString should not throw for matching pattern'
-    );
+    console.log('❌ FAIL: validateString should not throw for matching pattern');
     failed++;
   }
 
@@ -267,10 +245,7 @@ function testValidateArray() {
     console.log('❌ FAIL: validateArray should throw for non-array');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('must be an array')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('must be an array')) {
       console.log('✅ PASS: validateArray throws for non-array');
       passed++;
     } else {
@@ -281,24 +256,16 @@ function testValidateArray() {
 
   // Test element validator - all valid
   try {
-    const result = validateArray(
-      [1, 2, 3],
-      'testParam',
-      item => typeof item === 'number'
-    );
+    const result = validateArray([1, 2, 3], 'testParam', item => typeof item === 'number');
     if (Array.isArray(result) && result.length === 3) {
       console.log('✅ PASS: validateArray accepts array with valid elements');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: validateArray should return array with valid elements'
-      );
+      console.log('❌ FAIL: validateArray should return array with valid elements');
       failed++;
     }
   } catch (error) {
-    console.log(
-      '❌ FAIL: validateArray should not throw for array with valid elements'
-    );
+    console.log('❌ FAIL: validateArray should not throw for array with valid elements');
     failed++;
   }
 
@@ -308,16 +275,11 @@ function testValidateArray() {
     console.log('❌ FAIL: validateArray should throw for invalid element');
     failed++;
   } catch (error) {
-    if (
-      error instanceof ValidationError &&
-      error.message.includes('failed validation')
-    ) {
+    if (error instanceof ValidationError && error.message.includes('failed validation')) {
       console.log('✅ PASS: validateArray validates elements');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: validateArray throws wrong error for invalid element'
-      );
+      console.log('❌ FAIL: validateArray throws wrong error for invalid element');
       failed++;
     }
   }
@@ -357,9 +319,7 @@ function testSanitizeForFilenameValidation() {
       failed++;
     }
   } catch (error) {
-    console.log(
-      '❌ FAIL: sanitizeForFilename should not throw for valid inputs'
-    );
+    console.log('❌ FAIL: sanitizeForFilename should not throw for valid inputs');
     console.log(`   Error: ${error.message}`);
     failed++;
   }
@@ -389,9 +349,7 @@ function testSanitizeForFilenameValidation() {
       console.log('✅ PASS: sanitizeForFilename validates fallback type');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: sanitizeForFilename throws wrong error type for fallback'
-      );
+      console.log('❌ FAIL: sanitizeForFilename throws wrong error type for fallback');
       failed++;
     }
   }
@@ -406,9 +364,7 @@ function testSanitizeForFilenameValidation() {
       console.log('✅ PASS: sanitizeForFilename rejects empty fallback');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: sanitizeForFilename throws wrong error for empty fallback'
-      );
+      console.log('❌ FAIL: sanitizeForFilename throws wrong error for empty fallback');
       failed++;
     }
   }
@@ -434,9 +390,7 @@ function testEnsureUniqueIdentifierValidation() {
       failed++;
     }
   } catch (error) {
-    console.log(
-      '❌ FAIL: ensureUniqueIdentifier should not throw for valid inputs'
-    );
+    console.log('❌ FAIL: ensureUniqueIdentifier should not throw for valid inputs');
     console.log(`   Error: ${error.message}`);
     failed++;
   }
@@ -445,9 +399,7 @@ function testEnsureUniqueIdentifierValidation() {
   try {
     const usedIds = new Set();
     ensureUniqueIdentifier(123, usedIds);
-    console.log(
-      '❌ FAIL: ensureUniqueIdentifier should validate identifier type'
-    );
+    console.log('❌ FAIL: ensureUniqueIdentifier should validate identifier type');
     failed++;
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -463,18 +415,14 @@ function testEnsureUniqueIdentifierValidation() {
   try {
     const usedIds = new Set();
     ensureUniqueIdentifier('', usedIds);
-    console.log(
-      '❌ FAIL: ensureUniqueIdentifier should reject empty identifier'
-    );
+    console.log('❌ FAIL: ensureUniqueIdentifier should reject empty identifier');
     failed++;
   } catch (error) {
     if (error instanceof ValidationError) {
       console.log('✅ PASS: ensureUniqueIdentifier rejects empty identifier');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: ensureUniqueIdentifier throws wrong error for empty identifier'
-      );
+      console.log('❌ FAIL: ensureUniqueIdentifier throws wrong error for empty identifier');
       failed++;
     }
   }
@@ -482,20 +430,14 @@ function testEnsureUniqueIdentifierValidation() {
   // Test with non-Set usedIdentifiers
   try {
     ensureUniqueIdentifier('test', ['not', 'a', 'set']);
-    console.log(
-      '❌ FAIL: ensureUniqueIdentifier should validate usedIdentifiers type'
-    );
+    console.log('❌ FAIL: ensureUniqueIdentifier should validate usedIdentifiers type');
     failed++;
   } catch (error) {
     if (error instanceof ValidationError) {
-      console.log(
-        '✅ PASS: ensureUniqueIdentifier validates usedIdentifiers type'
-      );
+      console.log('✅ PASS: ensureUniqueIdentifier validates usedIdentifiers type');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: ensureUniqueIdentifier throws wrong error type for usedIdentifiers'
-      );
+      console.log('❌ FAIL: ensureUniqueIdentifier throws wrong error type for usedIdentifiers');
       failed++;
     }
   }
@@ -503,20 +445,14 @@ function testEnsureUniqueIdentifierValidation() {
   // Test with null usedIdentifiers
   try {
     ensureUniqueIdentifier('test', null);
-    console.log(
-      '❌ FAIL: ensureUniqueIdentifier should reject null usedIdentifiers'
-    );
+    console.log('❌ FAIL: ensureUniqueIdentifier should reject null usedIdentifiers');
     failed++;
   } catch (error) {
     if (error instanceof ValidationError) {
-      console.log(
-        '✅ PASS: ensureUniqueIdentifier rejects null usedIdentifiers'
-      );
+      console.log('✅ PASS: ensureUniqueIdentifier rejects null usedIdentifiers');
       passed++;
     } else {
-      console.log(
-        '❌ FAIL: ensureUniqueIdentifier throws wrong error for null usedIdentifiers'
-      );
+      console.log('❌ FAIL: ensureUniqueIdentifier throws wrong error for null usedIdentifiers');
       failed++;
     }
   }
@@ -609,7 +545,5 @@ function runAllTests() {
 
 // Execute tests
 const success = runAllTests();
-console.log(
-  success ? '🎉 All input validation tests passed!' : '❌ Some tests failed.'
-);
+console.log(success ? '🎉 All input validation tests passed!' : '❌ Some tests failed.');
 process.exit(success ? 0 : 1);

@@ -4,10 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {
-  processMarkdownFile,
-  processFilesWithPatterns
-} = require('../lib/processor');
+const {processMarkdownFile, processFilesWithPatterns} = require('../lib/processor');
 
 // Mock implementations
 const mockReadFile = content => Promise.resolve(content);
@@ -104,12 +101,7 @@ async function runDraftFilteringTests() {
       fs.writeFileSync(filePath, testCase.content);
 
       // Process the file
-      const result = await processMarkdownFile(
-        filePath,
-        docsDir,
-        'https://example.com',
-        'docs'
-      );
+      const result = await processMarkdownFile(filePath, docsDir, 'https://example.com', 'docs');
 
       // Validate result
       if (testCase.expectedResult === null) {
@@ -209,30 +201,22 @@ This is another published article.`
 
     if (processedDocs.length === expectedNonDraftCount) {
       console.log(`✅ processFilesWithPatterns correctly filtered draft pages`);
-      console.log(
-        `  Found ${processedDocs.length} non-draft pages out of ${allFiles.length} total`
-      );
+      console.log(`  Found ${processedDocs.length} non-draft pages out of ${allFiles.length} total`);
       passed++;
     } else {
       console.log(`❌ processFilesWithPatterns did not filter correctly`);
-      console.log(
-        `  Expected ${expectedNonDraftCount} non-draft pages but got ${processedDocs.length}`
-      );
+      console.log(`  Expected ${expectedNonDraftCount} non-draft pages but got ${processedDocs.length}`);
       failed++;
     }
 
     // Verify draft pages are not in the results
-    const draftTitles = processedDocs.filter(doc =>
-      doc.title.includes('Draft Article')
-    );
+    const draftTitles = processedDocs.filter(doc => doc.title.includes('Draft Article'));
 
     if (draftTitles.length === 0) {
       console.log(`✅ No draft pages found in processed documents`);
       passed++;
     } else {
-      console.log(
-        `❌ Found ${draftTitles.length} draft pages in processed documents`
-      );
+      console.log(`❌ Found ${draftTitles.length} draft pages in processed documents`);
       failed++;
     }
   } catch (error) {

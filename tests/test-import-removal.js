@@ -5,11 +5,7 @@
  */
 
 // Mock the cleanMarkdownContent function from utils.ts
-function cleanMarkdownContent(
-  content,
-  excludeImports = false,
-  removeDuplicateHeadings = false
-) {
+function cleanMarkdownContent(content, excludeImports = false, removeDuplicateHeadings = false) {
   let cleaned = content;
 
   // Remove import statements if requested
@@ -290,20 +286,15 @@ function runTests() {
 
       // Test with imports removed (excludeImports = true)
       const resultWithoutImports = cleanMarkdownContent(test.input, true);
-      const withoutImportsPass =
-        resultWithoutImports === test.expectedWithoutImports;
+      const withoutImportsPass = resultWithoutImports === test.expectedWithoutImports;
 
-      console.log(
-        `  With imports preserved: ${withImportsPass ? '✅ PASS' : '❌ FAIL'}`
-      );
+      console.log(`  With imports preserved: ${withImportsPass ? '✅ PASS' : '❌ FAIL'}`);
       if (!withImportsPass) {
         console.log(`    Expected: "${test.expectedWithImports}"`);
         console.log(`    Actual: "${resultWithImports}"`);
       }
 
-      console.log(
-        `  With imports removed: ${withoutImportsPass ? '✅ PASS' : '❌ FAIL'}`
-      );
+      console.log(`  With imports removed: ${withoutImportsPass ? '✅ PASS' : '❌ FAIL'}`);
       if (!withoutImportsPass) {
         console.log(`    Expected: "${test.expectedWithoutImports}"`);
         console.log(`    Actual: "${resultWithoutImports}"`);
@@ -413,9 +404,7 @@ This should not be removed.`
     console.log('');
   });
 
-  console.log(
-    `Duplicate Heading Results: ${passCount} of ${duplicateHeadingTests.length} tests passed.`
-  );
+  console.log(`Duplicate Heading Results: ${passCount} of ${duplicateHeadingTests.length} tests passed.`);
 
   if (passCount === duplicateHeadingTests.length) {
     console.log('🎉 All duplicate heading removal tests passed!');

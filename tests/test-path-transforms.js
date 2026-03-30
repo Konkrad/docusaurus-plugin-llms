@@ -35,10 +35,7 @@ function applyPathTransformations(urlPath, pathTransformation) {
 
     for (const addPath of pathsToAdd) {
       // Only add if not already present at the beginning
-      if (
-        !transformedPath.startsWith(addPath + '/') &&
-        transformedPath !== addPath
-      ) {
+      if (!transformedPath.startsWith(addPath + '/') && transformedPath !== addPath) {
         transformedPath = `${addPath}/${transformedPath}`;
       }
     }
@@ -147,17 +144,12 @@ function runTests() {
     if (test.pathPrefix) {
       console.log(`  Path prefix: "${test.pathPrefix}"`);
       let transformedPathPrefix = test.pathPrefix;
-      if (
-        test.pathPrefix &&
-        test.config?.ignorePaths?.includes(test.pathPrefix)
-      ) {
+      if (test.pathPrefix && test.config?.ignorePaths?.includes(test.pathPrefix)) {
         transformedPathPrefix = '';
       }
       console.log(`  Transformed prefix: "${transformedPathPrefix}"`);
       const expectedPrefix =
-        test.pathPrefix && test.config?.ignorePaths?.includes(test.pathPrefix)
-          ? ''
-          : test.pathPrefix;
+        test.pathPrefix && test.config?.ignorePaths?.includes(test.pathPrefix) ? '' : test.pathPrefix;
 
       if (transformedPathPrefix === expectedPrefix) {
         console.log('  ✅ PREFIX PASS');
@@ -289,9 +281,7 @@ async function testOrderingDocuments() {
       for (const pattern of options.includeOrder) {
         const matchingFiles = allDocFiles.filter(file => {
           const relativePath = file.replace('/mock/site/', '');
-          return (
-            mockMinimatch(relativePath, pattern) && !matchedFiles.has(file)
-          );
+          return mockMinimatch(relativePath, pattern) && !matchedFiles.has(file);
         });
 
         for (const file of matchingFiles) {
@@ -352,15 +342,10 @@ async function testOrderingDocuments() {
 
 // Test for excluding unmatched files
 async function testExcludeUnmatchedFiles() {
-  console.log(
-    'Test: Exclude unmatched files when includeUnmatchedLast is false'
-  );
+  console.log('Test: Exclude unmatched files when includeUnmatchedLast is false');
 
   // Sample files to test with
-  const mockFiles = [
-    '/mock/site/docs/public/public-doc.md',
-    '/mock/site/docs/private/internal-doc.md'
-  ];
+  const mockFiles = ['/mock/site/docs/public/public-doc.md', '/mock/site/docs/private/internal-doc.md'];
 
   // Mock file contents
   const mockContents = {
@@ -418,9 +403,7 @@ async function testExcludeUnmatchedFiles() {
       for (const pattern of options.includeOrder) {
         const matchingFiles = allDocFiles.filter(file => {
           const relativePath = file.replace('/mock/site/', '');
-          return (
-            mockMinimatch(relativePath, pattern) && !matchedFiles.has(file)
-          );
+          return mockMinimatch(relativePath, pattern) && !matchedFiles.has(file);
         });
 
         for (const file of matchingFiles) {
@@ -431,9 +414,7 @@ async function testExcludeUnmatchedFiles() {
 
       // Add remaining files if includeUnmatchedLast is true
       if (options.includeUnmatchedLast) {
-        const remainingFiles = allDocFiles.filter(
-          file => !matchedFiles.has(file)
-        );
+        const remainingFiles = allDocFiles.filter(file => !matchedFiles.has(file));
         filesToProcess.push(...remainingFiles);
       }
 
@@ -452,8 +433,7 @@ async function testExcludeUnmatchedFiles() {
     const actualFiles = processedFiles.map(path => path.split('/').pop());
 
     // Verify only public document was processed
-    const onlyPublicIncluded =
-      actualFiles.length === 1 && actualFiles[0] === 'public-doc.md';
+    const onlyPublicIncluded = actualFiles.length === 1 && actualFiles[0] === 'public-doc.md';
 
     if (onlyPublicIncluded) {
       console.log('  ✅ PASS: Only public document was included');
@@ -529,8 +509,7 @@ async function testCustomLLMFiles() {
     if (isPython) language = 'Python';
     if (isTutorial) language = 'Tutorial';
 
-    const fileContent =
-      mockContents[fileName] || `# Unknown\nThis is ${language} content`;
+    const fileContent = mockContents[fileName] || `# Unknown\nThis is ${language} content`;
     const title = fileContent.split('\n')[0].replace('# ', '');
 
     return Promise.resolve({
@@ -550,10 +529,8 @@ async function testCustomLLMFiles() {
   const mockMinimatch = (filePath, pattern) => {
     // Simple pattern matching for testing
     if (pattern.includes('python') && filePath.includes('python')) return true;
-    if (pattern.includes('javascript') && filePath.includes('javascript'))
-      return true;
-    if (pattern.includes('tutorials') && filePath.includes('tutorials'))
-      return true;
+    if (pattern.includes('javascript') && filePath.includes('javascript')) return true;
+    if (pattern.includes('tutorials') && filePath.includes('tutorials')) return true;
     return pattern === '**/*' || pattern === '**/*.md';
   };
 
@@ -568,10 +545,7 @@ async function testCustomLLMFiles() {
     },
     {
       filename: 'llms-javascript.txt',
-      includePatterns: [
-        'docs/api/javascript/**/*.md',
-        'docs/guides/javascript/*.md'
-      ],
+      includePatterns: ['docs/api/javascript/**/*.md', 'docs/guides/javascript/*.md'],
       fullContent: true,
       title: 'JavaScript API Documentation',
       description: 'Complete reference for JavaScript API'
@@ -595,9 +569,7 @@ async function testCustomLLMFiles() {
         // Filter files based on include patterns
         const filteredFiles = allDocFiles.filter(file => {
           const relativePath = file.replace('/mock/site/', '');
-          return customFile.includePatterns.some(pattern =>
-            mockMinimatch(relativePath, pattern)
-          );
+          return customFile.includePatterns.some(pattern => mockMinimatch(relativePath, pattern));
         });
 
         // Process each filtered file
@@ -612,17 +584,12 @@ async function testCustomLLMFiles() {
 
         if (customFile.fullContent) {
           // Full content
-          const sections = processedDocs.map(
-            doc => `## ${doc.title}\n\n${doc.content}`
-          );
+          const sections = processedDocs.map(doc => `## ${doc.title}\n\n${doc.content}`);
           content += `This file contains all documentation content in a single document.\n\n${sections.join('\n\n---\n\n')}`;
         } else {
           // Links only
-          content +=
-            'This file contains links to documentation sections.\n\n## Table of Contents\n\n';
-          const links = processedDocs.map(
-            doc => `- [${doc.title}](${doc.url})`
-          );
+          content += 'This file contains links to documentation sections.\n\n## Table of Contents\n\n';
+          const links = processedDocs.map(doc => `- [${doc.title}](${doc.url})`);
           content += links.join('\n');
         }
 
@@ -637,15 +604,9 @@ async function testCustomLLMFiles() {
     await mockPlugin.postBuild();
 
     // Check that all three custom files were generated
-    const pythonFile = Object.keys(generatedFiles).find(file =>
-      file.endsWith('llms-python.txt')
-    );
-    const javascriptFile = Object.keys(generatedFiles).find(file =>
-      file.endsWith('llms-javascript.txt')
-    );
-    const tutorialsFile = Object.keys(generatedFiles).find(file =>
-      file.endsWith('llms-tutorials.txt')
-    );
+    const pythonFile = Object.keys(generatedFiles).find(file => file.endsWith('llms-python.txt'));
+    const javascriptFile = Object.keys(generatedFiles).find(file => file.endsWith('llms-javascript.txt'));
+    const tutorialsFile = Object.keys(generatedFiles).find(file => file.endsWith('llms-tutorials.txt'));
 
     // Check Python file has correct content
     const pythonContent = generatedFiles[pythonFile] || '';
@@ -658,8 +619,7 @@ async function testCustomLLMFiles() {
     // Check JavaScript file has correct content
     const javascriptContent = generatedFiles[javascriptFile] || '';
     const javascriptSuccess =
-      javascriptContent.includes('JavaScript API Documentation') &&
-      javascriptContent.includes('Module 1');
+      javascriptContent.includes('JavaScript API Documentation') && javascriptContent.includes('Module 1');
 
     // Check tutorials file has correct content (links only)
     const tutorialsContent = generatedFiles[tutorialsFile] || '';
@@ -683,23 +643,16 @@ async function testCustomLLMFiles() {
     }
 
     if (tutorialsSuccess) {
-      console.log(
-        '  ✅ PASS: Tutorials LLM file generated correctly (links only)'
-      );
+      console.log('  ✅ PASS: Tutorials LLM file generated correctly (links only)');
     } else {
       console.log('  ❌ FAIL: Tutorials LLM file not generated correctly');
     }
 
-    const overallSuccess =
-      pythonSuccess && javascriptSuccess && tutorialsSuccess;
+    const overallSuccess = pythonSuccess && javascriptSuccess && tutorialsSuccess;
     if (overallSuccess) {
-      console.log(
-        '  ✅ OVERALL PASS: All custom LLM files generated correctly'
-      );
+      console.log('  ✅ OVERALL PASS: All custom LLM files generated correctly');
     } else {
-      console.log(
-        '  ❌ OVERALL FAIL: Some custom LLM files not generated correctly'
-      );
+      console.log('  ❌ OVERALL FAIL: Some custom LLM files not generated correctly');
     }
   } catch (error) {
     console.log('  ❌ FAIL: Error running test:', error);
@@ -774,7 +727,5 @@ function runDescriptionTests() {
     fs.rmdirSync(testDir);
   }
 
-  console.log(
-    `\nDescription tests completed: ${passed}/${testCases.length} passed`
-  );
+  console.log(`\nDescription tests completed: ${passed}/${testCases.length} passed`);
 }

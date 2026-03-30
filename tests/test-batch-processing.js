@@ -51,9 +51,7 @@ function createMockDocuments(count) {
  * Test 1: Verify batch processing with small batch size
  */
 async function testBatchProcessing() {
-  console.log(
-    '\nTest 1: Batch processing with 250 documents and batch size of 50'
-  );
+  console.log('\nTest 1: Batch processing with 250 documents and batch size of 50');
 
   const docCount = 250;
   const batchSize = 50;
@@ -94,9 +92,7 @@ async function testBatchProcessing() {
   // Count the number of document headers
   const headerMatches = content.match(/## Document \d+/g);
   if (!headerMatches || headerMatches.length !== docCount) {
-    throw new Error(
-      `Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`
-    );
+    throw new Error(`Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`);
   }
 
   console.log('✓ Successfully processed 250 documents with batch size of 50');
@@ -107,9 +103,7 @@ async function testBatchProcessing() {
  * Test 2: Verify batch processing with single document per batch
  */
 async function testSingleDocumentBatch() {
-  console.log(
-    '\nTest 2: Batch processing with 10 documents and batch size of 1'
-  );
+  console.log('\nTest 2: Batch processing with 10 documents and batch size of 1');
 
   const docCount = 10;
   const batchSize = 1;
@@ -139,9 +133,7 @@ async function testSingleDocumentBatch() {
   // Count the number of document headers
   const headerMatches = content.match(/## Document \d+/g);
   if (!headerMatches || headerMatches.length !== docCount) {
-    throw new Error(
-      `Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`
-    );
+    throw new Error(`Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`);
   }
 
   console.log('✓ Successfully processed 10 documents with batch size of 1');
@@ -151,9 +143,7 @@ async function testSingleDocumentBatch() {
  * Test 3: Verify batch processing with default batch size
  */
 async function testDefaultBatchSize() {
-  console.log(
-    '\nTest 3: Batch processing with 150 documents and default batch size'
-  );
+  console.log('\nTest 3: Batch processing with 150 documents and default batch size');
 
   const docCount = 150;
   const docs = createMockDocuments(docCount);
@@ -181,14 +171,10 @@ async function testDefaultBatchSize() {
   // Count the number of document headers
   const headerMatches = content.match(/## Document \d+/g);
   if (!headerMatches || headerMatches.length !== docCount) {
-    throw new Error(
-      `Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`
-    );
+    throw new Error(`Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`);
   }
 
-  console.log(
-    '✓ Successfully processed 150 documents with default batch size (100)'
-  );
+  console.log('✓ Successfully processed 150 documents with default batch size (100)');
 }
 
 /**
@@ -219,9 +205,7 @@ async function testBatchOrderPreservation() {
   // Extract all document headers in order
   const headerMatches = content.match(/## Document \d+/g);
   if (!headerMatches || headerMatches.length !== docCount) {
-    throw new Error(
-      `Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`
-    );
+    throw new Error(`Expected ${docCount} document headers, found ${headerMatches ? headerMatches.length : 0}`);
   }
 
   // Verify they are in sequential order
@@ -269,26 +253,18 @@ async function testBatchProcessingLinksOnly() {
   const content = await fs.readFile(outputPath, 'utf-8');
 
   // Links-only files should have markdown links
-  const linkMatches = content.match(
-    /\[Document \d+\]\(https:\/\/example\.com\/docs\/doc-\d+\)/g
-  );
+  const linkMatches = content.match(/\[Document \d+\]\(https:\/\/example\.com\/docs\/doc-\d+\)/g);
   if (!linkMatches || linkMatches.length !== docCount) {
-    throw new Error(
-      `Expected ${docCount} links, found ${linkMatches ? linkMatches.length : 0}`
-    );
+    throw new Error(`Expected ${docCount} links, found ${linkMatches ? linkMatches.length : 0}`);
   }
 
   // File should be smaller than full content version
   if (stats.size > 10000) {
     // Should be much smaller without full content
-    console.warn(
-      `Warning: Links-only file seems larger than expected (${stats.size} bytes)`
-    );
+    console.warn(`Warning: Links-only file seems larger than expected (${stats.size} bytes)`);
   }
 
-  console.log(
-    '✓ Links-only mode works correctly with batch processing parameter'
-  );
+  console.log('✓ Links-only mode works correctly with batch processing parameter');
 }
 
 // Run all tests

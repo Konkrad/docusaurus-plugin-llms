@@ -121,8 +121,7 @@ async function runTests() {
 
     // Check that partial content is present
     const hasPartialContent =
-      apiDoc.content.includes('Common Configuration') &&
-      apiDoc.content.includes("api: 'https://api.example.com'");
+      apiDoc.content.includes('Common Configuration') && apiDoc.content.includes("api: 'https://api.example.com'");
     if (hasPartialContent) {
       console.log('  ✅ PASS: Partial content was inlined');
     } else {

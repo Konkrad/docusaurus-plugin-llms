@@ -38,10 +38,7 @@ function validatePluginOptions(options) {
 
   // Validate pathTransformation
   if (options.pathTransformation !== undefined) {
-    if (
-      typeof options.pathTransformation !== 'object' ||
-      options.pathTransformation === null
-    ) {
+    if (typeof options.pathTransformation !== 'object' || options.pathTransformation === null) {
       throw new Error('pathTransformation must be an object');
     }
 
@@ -52,9 +49,7 @@ function validatePluginOptions(options) {
         throw new Error('pathTransformation.ignorePaths must be an array');
       }
       if (!ignorePaths.every(item => typeof item === 'string')) {
-        throw new Error(
-          'pathTransformation.ignorePaths must contain only strings'
-        );
+        throw new Error('pathTransformation.ignorePaths must contain only strings');
       }
     }
 
@@ -63,9 +58,7 @@ function validatePluginOptions(options) {
         throw new Error('pathTransformation.addPaths must be an array');
       }
       if (!addPaths.every(item => typeof item === 'string')) {
-        throw new Error(
-          'pathTransformation.addPaths must contain only strings'
-        );
+        throw new Error('pathTransformation.addPaths must contain only strings');
       }
     }
   }
@@ -90,13 +83,8 @@ function validatePluginOptions(options) {
 
   // Validate docsDir - accepts a string or an array of section objects
   if (options.docsDir !== undefined) {
-    if (
-      typeof options.docsDir !== 'string' &&
-      !Array.isArray(options.docsDir)
-    ) {
-      throw new Error(
-        'docsDir must be a string or an array of section objects'
-      );
+    if (typeof options.docsDir !== 'string' && !Array.isArray(options.docsDir)) {
+      throw new Error('docsDir must be a string or an array of section objects');
     }
     if (Array.isArray(options.docsDir)) {
       options.docsDir.forEach((section, index) => {
@@ -109,10 +97,7 @@ function validatePluginOptions(options) {
         if (typeof section.routeBasePath !== 'string') {
           throw new Error(`docsDir[${index}].routeBasePath must be a string`);
         }
-        if (
-          section.label !== undefined &&
-          (typeof section.label !== 'string' || section.label.trim() === '')
-        ) {
+        if (section.label !== undefined && (typeof section.label !== 'string' || section.label.trim() === '')) {
           throw new Error(`docsDir[${index}].label must be a non-empty string`);
         }
       });
@@ -174,25 +159,17 @@ function validatePluginOptions(options) {
       }
 
       if (!Array.isArray(file.includePatterns)) {
-        throw new Error(
-          `customLLMFiles[${index}].includePatterns must be an array`
-        );
+        throw new Error(`customLLMFiles[${index}].includePatterns must be an array`);
       }
       if (!file.includePatterns.every(item => typeof item === 'string')) {
-        throw new Error(
-          `customLLMFiles[${index}].includePatterns must contain only strings`
-        );
+        throw new Error(`customLLMFiles[${index}].includePatterns must contain only strings`);
       }
       if (file.includePatterns.length === 0) {
-        throw new Error(
-          `customLLMFiles[${index}].includePatterns cannot be empty`
-        );
+        throw new Error(`customLLMFiles[${index}].includePatterns cannot be empty`);
       }
 
       if (typeof file.fullContent !== 'boolean') {
-        throw new Error(
-          `customLLMFiles[${index}].fullContent must be a boolean`
-        );
+        throw new Error(`customLLMFiles[${index}].fullContent must be a boolean`);
       }
 
       // Optional fields
@@ -200,61 +177,38 @@ function validatePluginOptions(options) {
         throw new Error(`customLLMFiles[${index}].title must be a string`);
       }
 
-      if (
-        file.description !== undefined &&
-        typeof file.description !== 'string'
-      ) {
-        throw new Error(
-          `customLLMFiles[${index}].description must be a string`
-        );
+      if (file.description !== undefined && typeof file.description !== 'string') {
+        throw new Error(`customLLMFiles[${index}].description must be a string`);
       }
 
       if (file.ignorePatterns !== undefined) {
         if (!Array.isArray(file.ignorePatterns)) {
-          throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must be an array`
-          );
+          throw new Error(`customLLMFiles[${index}].ignorePatterns must be an array`);
         }
         if (!file.ignorePatterns.every(item => typeof item === 'string')) {
-          throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must contain only strings`
-          );
+          throw new Error(`customLLMFiles[${index}].ignorePatterns must contain only strings`);
         }
       }
 
       if (file.orderPatterns !== undefined) {
         if (!Array.isArray(file.orderPatterns)) {
-          throw new Error(
-            `customLLMFiles[${index}].orderPatterns must be an array`
-          );
+          throw new Error(`customLLMFiles[${index}].orderPatterns must be an array`);
         }
         if (!file.orderPatterns.every(item => typeof item === 'string')) {
-          throw new Error(
-            `customLLMFiles[${index}].orderPatterns must contain only strings`
-          );
+          throw new Error(`customLLMFiles[${index}].orderPatterns must contain only strings`);
         }
       }
 
-      if (
-        file.includeUnmatchedLast !== undefined &&
-        typeof file.includeUnmatchedLast !== 'boolean'
-      ) {
-        throw new Error(
-          `customLLMFiles[${index}].includeUnmatchedLast must be a boolean`
-        );
+      if (file.includeUnmatchedLast !== undefined && typeof file.includeUnmatchedLast !== 'boolean') {
+        throw new Error(`customLLMFiles[${index}].includeUnmatchedLast must be a boolean`);
       }
 
       if (file.version !== undefined && typeof file.version !== 'string') {
         throw new Error(`customLLMFiles[${index}].version must be a string`);
       }
 
-      if (
-        file.rootContent !== undefined &&
-        typeof file.rootContent !== 'string'
-      ) {
-        throw new Error(
-          `customLLMFiles[${index}].rootContent must be a string`
-        );
+      if (file.rootContent !== undefined && typeof file.rootContent !== 'string') {
+        throw new Error(`customLLMFiles[${index}].rootContent must be a string`);
       }
     });
   }
@@ -664,8 +618,7 @@ const testCases = [
       ]
     },
     shouldThrow: true,
-    expectedError:
-      'customLLMFiles[0].includePatterns must contain only strings',
+    expectedError: 'customLLMFiles[0].includePatterns must contain only strings',
     description: 'customLLMFiles[].includePatterns must contain only strings'
   },
   {
@@ -865,9 +818,7 @@ testCases.forEach((testCase, index) => {
 });
 
 console.log('\n' + '='.repeat(50));
-console.log(
-  `Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`
-);
+console.log(`Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`);
 console.log('='.repeat(50));
 
 if (failedTests > 0) {

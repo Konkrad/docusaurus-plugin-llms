@@ -145,10 +145,7 @@ This page is still being written and should not be published.`
     console.log('\nVerifying generated files...');
 
     const llmsTxt = fs.readFileSync(path.join(outputDir, 'llms.txt'), 'utf-8');
-    const llmsFullTxt = fs.readFileSync(
-      path.join(outputDir, 'llms-full.txt'),
-      'utf-8'
-    );
+    const llmsFullTxt = fs.readFileSync(path.join(outputDir, 'llms-full.txt'), 'utf-8');
 
     // Debug: Show what's in the files
     console.log('\nContent of llms.txt:');
@@ -183,9 +180,7 @@ This page is still being written and should not be published.`
         console.log(`✅ Published page "${publishedTitle}" is in llms.txt`);
         passed++;
       } else {
-        console.log(
-          `❌ Published page "${publishedTitle}" missing from llms.txt`
-        );
+        console.log(`❌ Published page "${publishedTitle}" missing from llms.txt`);
         failed++;
       }
     }

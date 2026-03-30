@@ -69,9 +69,7 @@ export async function generateLLMFile(
     throw new Error(`Output path exceeds maximum length: ${outputPath}`);
   }
 
-  logger.verbose(
-    `Generating file: ${outputPath}, version: ${version || 'undefined'}`
-  );
+  logger.verbose(`Generating file: ${outputPath}, version: ${version || 'undefined'}`);
   const versionInfo = version ? `\n\nVersion: ${version}` : '';
 
   if (includeFullContent) {
@@ -87,9 +85,7 @@ export async function generateLLMFile(
       const totalBatches = Math.ceil(docs.length / batchSize);
 
       if (totalBatches > 1) {
-        logger.verbose(
-          `Processing batch ${batchNumber}/${totalBatches} (${batch.length} documents)`
-        );
+        logger.verbose(`Processing batch ${batchNumber}/${totalBatches} (${batch.length} documents)`);
       }
 
       const batchSections = batch.map(doc => {
@@ -103,22 +99,17 @@ export async function generateLLMFile(
         const firstHeadingText = headingMatch ? headingMatch[1].trim() : null;
 
         // Generate unique header using the utility function
-        const uniqueHeader = ensureUniqueIdentifier(
-          doc.title,
-          usedHeaders,
-          (counter, base) => {
-            // Try to make it more descriptive by adding the file path info if available
-            if (isNonEmptyString(doc.path) && counter === 2) {
-              const pathParts = doc.path.split('/');
-              const folderName =
-                pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
-              if (isNonEmptyString(folderName)) {
-                return `(${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
-              }
+        const uniqueHeader = ensureUniqueIdentifier(doc.title, usedHeaders, (counter, base) => {
+          // Try to make it more descriptive by adding the file path info if available
+          if (isNonEmptyString(doc.path) && counter === 2) {
+            const pathParts = doc.path.split('/');
+            const folderName = pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
+            if (isNonEmptyString(folderName)) {
+              return `(${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
             }
-            return `(${counter})`;
           }
-        );
+          return `(${counter})`;
+        });
 
         if (firstHeadingText === doc.title) {
           // Content already has the same heading, replace it with our unique header
@@ -152,15 +143,12 @@ ${doc.content}`;
     try {
       await writeFile(outputPath, llmFileContent);
     } catch (error: unknown) {
-      throw new Error(
-        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`
-      );
+      throw new Error(`Failed to write file ${outputPath}: ${getErrorMessage(error)}`);
     }
   } else {
     // Generate links-only file
     const rootContent =
-      customRootContent ||
-      'This file contains links to documentation sections following the llmstxt.org standard.';
+      customRootContent || 'This file contains links to documentation sections following the llmstxt.org standard.';
 
     const docsHaveSections = docs.some(doc => doc.section);
     let tocBody: string;
@@ -205,9 +193,7 @@ ${doc.content}`;
     try {
       await writeFile(outputPath, llmFileContent);
     } catch (error: unknown) {
-      throw new Error(
-        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`
-      );
+      throw new Error(`Failed to write file ${outputPath}: ${getErrorMessage(error)}`);
     }
   }
 
@@ -249,30 +235,18 @@ export async function generateIndividualMarkdownFiles(
       //      cloud/guide.md (routeBasePath 'cloud') → cloud/guide.md (unchanged)
       const section = docsSections.find(s => {
         const prefix = s.path + '/';
-        return (
-          relativePath.startsWith(prefix) || relativePath === s.path + '.md'
-        );
+        return relativePath.startsWith(prefix) || relativePath === s.path + '.md';
       });
       if (section) {
         const prefix = section.path + '/';
-        const pathWithinSection = relativePath.startsWith(prefix)
-          ? relativePath.slice(prefix.length)
-          : relativePath;
-        const routeBase =
-          section.routeBasePath === '/'
-            ? ''
-            : section.routeBasePath.replace(/^\/|\/$/g, '');
-        relativePath = routeBase
-          ? `${routeBase}/${pathWithinSection}`
-          : pathWithinSection;
+        const pathWithinSection = relativePath.startsWith(prefix) ? relativePath.slice(prefix.length) : relativePath;
+        const routeBase = section.routeBasePath === '/' ? '' : section.routeBasePath.replace(/^\/|\/$/g, '');
+        relativePath = routeBase ? `${routeBase}/${pathWithinSection}` : pathWithinSection;
       }
     } else {
       // Legacy single-section mode: strip docsDir prefix when preserveDirectoryStructure is false
       if (!preserveDirectoryStructure) {
-        relativePath = relativePath.replace(
-          new RegExp(`^${docsDir.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`),
-          ''
-        ); // Remove configured docs dir prefix
+        relativePath = relativePath.replace(new RegExp(`^${docsDir.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`), ''); // Remove configured docs dir prefix
       }
     }
 
@@ -338,9 +312,7 @@ export async function generateIndividualMarkdownFiles(
         // Fallback to timestamp
         const timestamp = Date.now();
         uniquePath = `${basePath}-${timestamp}.${extension}`;
-        logger.warn(
-          `Maximum iterations reached for unique path. Using timestamp: ${uniquePath}`
-        );
+        logger.warn(`Maximum iterations reached for unique path. Using timestamp: ${uniquePath}`);
         break;
       }
     }
@@ -361,9 +333,7 @@ export async function generateIndividualMarkdownFiles(
     try {
       await fs.mkdir(directory, {recursive: true});
     } catch (error: unknown) {
-      throw new Error(
-        `Failed to create directory ${directory}: ${getErrorMessage(error)}`
-      );
+      throw new Error(`Failed to create directory ${directory}: ${getErrorMessage(error)}`);
     }
 
     // Extract preserved frontmatter if specified
@@ -382,18 +352,14 @@ export async function generateIndividualMarkdownFiles(
       doc.description,
       doc.content,
       true, // includeMetadata
-      Object.keys(preservedFrontMatter).length > 0
-        ? preservedFrontMatter
-        : undefined
+      Object.keys(preservedFrontMatter).length > 0 ? preservedFrontMatter : undefined
     );
 
     // Write the markdown file
     try {
       await writeFile(fullPath, markdownContent);
     } catch (error: unknown) {
-      throw new Error(
-        `Failed to write file ${fullPath}: ${getErrorMessage(error)}`
-      );
+      throw new Error(`Failed to write file ${fullPath}: ${getErrorMessage(error)}`);
     }
 
     // Create updated DocInfo with new URL pointing to the generated markdown file
@@ -418,10 +384,7 @@ export async function generateIndividualMarkdownFiles(
  * @param context - Plugin context
  * @param allDocFiles - Array of all document files
  */
-export async function generateStandardLLMFiles(
-  context: PluginContext,
-  allDocFiles: string[]
-): Promise<void> {
+export async function generateStandardLLMFiles(context: PluginContext, allDocFiles: string[]): Promise<void> {
   const {outDir, siteUrl, docTitle, docDescription, options} = context;
 
   const {
@@ -453,15 +416,11 @@ export async function generateStandardLLMFiles(
     includeUnmatchedLast
   );
 
-  logger.verbose(
-    `Processed ${processedDocs.length} documentation files for standard LLM files`
-  );
+  logger.verbose(`Processed ${processedDocs.length} documentation files for standard LLM files`);
 
   // Check if we have documents to process
   if (!isNonEmptyArray(processedDocs)) {
-    logger.warn(
-      'No documents found matching patterns for standard LLM files. Skipping.'
-    );
+    logger.warn('No documents found matching patterns for standard LLM files. Skipping.');
     return;
   }
 
@@ -515,17 +474,9 @@ export async function generateStandardLLMFiles(
  * @param context - Plugin context
  * @param allDocFiles - Array of all document files
  */
-export async function generateCustomLLMFiles(
-  context: PluginContext,
-  allDocFiles: string[]
-): Promise<void> {
+export async function generateCustomLLMFiles(context: PluginContext, allDocFiles: string[]): Promise<void> {
   const {outDir, siteUrl, docTitle, docDescription, options} = context;
-  const {
-    customLLMFiles = [],
-    ignoreFiles = [],
-    generateMarkdownFiles = false,
-    processingBatchSize = 100
-  } = options;
+  const {customLLMFiles = [], ignoreFiles = [], generateMarkdownFiles = false, processingBatchSize = 100} = options;
 
   if (customLLMFiles.length === 0) {
     logger.warn('No custom LLM files configured. Skipping.');
@@ -535,9 +486,7 @@ export async function generateCustomLLMFiles(
   logger.info(`Generating ${customLLMFiles.length} custom LLM files...`);
 
   for (const customFile of customLLMFiles) {
-    logger.verbose(
-      `Processing custom file: ${customFile.filename}, version: ${customFile.version || 'undefined'}`
-    );
+    logger.verbose(`Processing custom file: ${customFile.filename}, version: ${customFile.version || 'undefined'}`);
 
     // Combine global ignores with custom ignores
     const combinedIgnores = [...ignoreFiles];
@@ -558,9 +507,7 @@ export async function generateCustomLLMFiles(
     if (customDocs.length > 0) {
       // Generate individual markdown files if requested
       if (generateMarkdownFiles) {
-        logger.info(
-          `Generating individual markdown files for custom file: ${customFile.filename}...`
-        );
+        logger.info(`Generating individual markdown files for custom file: ${customFile.filename}...`);
         customDocs = await generateIndividualMarkdownFiles(
           customDocs,
           outDir,
@@ -589,13 +536,9 @@ export async function generateCustomLLMFiles(
         processingBatchSize
       );
 
-      logger.info(
-        `Generated custom LLM file: ${customFile.filename} with ${customDocs.length} documents`
-      );
+      logger.info(`Generated custom LLM file: ${customFile.filename} with ${customDocs.length} documents`);
     } else {
-      logger.warn(
-        `No matching documents found for custom LLM file: ${customFile.filename}`
-      );
+      logger.warn(`No matching documents found for custom LLM file: ${customFile.filename}`);
     }
   }
 }
@@ -605,15 +548,9 @@ export async function generateCustomLLMFiles(
  * @param context - Plugin context
  * @returns Array of file paths
  */
-export async function collectDocFiles(
-  context: PluginContext
-): Promise<string[]> {
+export async function collectDocFiles(context: PluginContext): Promise<string[]> {
   const {siteDir, docsSections, options} = context;
-  const {
-    ignoreFiles = [],
-    includeBlog = false,
-    warnOnIgnoredFiles = false
-  } = options;
+  const {ignoreFiles = [], includeBlog = false, warnOnIgnoredFiles = false} = options;
 
   const allDocFiles: string[] = [];
 
@@ -625,13 +562,7 @@ export async function collectDocFiles(
       await fs.access(fullDocsDir);
 
       // Collect all markdown files from this section's directory
-      const docFiles = await readMarkdownFiles(
-        fullDocsDir,
-        siteDir,
-        ignoreFiles,
-        section.path,
-        warnOnIgnoredFiles
-      );
+      const docFiles = await readMarkdownFiles(fullDocsDir, siteDir, ignoreFiles, section.path, warnOnIgnoredFiles);
       allDocFiles.push(...docFiles);
     } catch (err: unknown) {
       logger.warn(`Docs directory not found: ${fullDocsDir}`);
@@ -646,13 +577,7 @@ export async function collectDocFiles(
       await fs.access(blogDir);
 
       // Collect all markdown files from blog directory
-      const blogFiles = await readMarkdownFiles(
-        blogDir,
-        siteDir,
-        ignoreFiles,
-        'blog',
-        warnOnIgnoredFiles
-      );
+      const blogFiles = await readMarkdownFiles(blogDir, siteDir, ignoreFiles, 'blog', warnOnIgnoredFiles);
       allDocFiles.push(...blogFiles);
     } catch (err: unknown) {
       logger.warn(`Blog directory not found: ${blogDir}`);

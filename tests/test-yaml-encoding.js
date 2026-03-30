@@ -46,9 +46,7 @@ function validateYAMLEncoding(frontmatter, expectedValues) {
     }
 
     if (actualValue !== value) {
-      throw new Error(
-        `Expected "${key}" to be "${value}", got "${actualValue}"`
-      );
+      throw new Error(`Expected "${key}" to be "${value}", got "${actualValue}"`);
     }
   }
 }
@@ -65,20 +63,10 @@ function checkNoLineWrapping(frontmatter) {
       continue;
     }
     // If a line starts with a key (contains ':'), ensure the value is complete on the same line
-    if (
-      line.includes(':') &&
-      !line.trim().endsWith('"') &&
-      !line.trim().endsWith("'")
-    ) {
+    if (line.includes(':') && !line.trim().endsWith('"') && !line.trim().endsWith("'")) {
       // Check if next line is indented continuation (but not an array item starting with '-')
-      if (
-        i + 1 < lines.length &&
-        lines[i + 1].startsWith('  ') &&
-        !lines[i + 1].trim().startsWith('-')
-      ) {
-        throw new Error(
-          `Line wrapping detected: "${line}" continues on next line`
-        );
+      if (i + 1 < lines.length && lines[i + 1].startsWith('  ') && !lines[i + 1].trim().startsWith('-')) {
+        throw new Error(`Line wrapping detected: "${line}" continues on next line`);
       }
     }
   }
@@ -217,9 +205,7 @@ function runYAMLEncodingTests() {
 
       // Additional check: ensure frontmatter starts and ends properly
       if (!content.startsWith('---\n')) {
-        throw new Error(
-          'Content does not start with YAML frontmatter delimiter'
-        );
+        throw new Error('Content does not start with YAML frontmatter delimiter');
       }
 
       if (!content.includes('\n---\n')) {
@@ -236,9 +222,7 @@ function runYAMLEncodingTests() {
 
   console.log(`\n========================================`);
   console.log(`YAML Encoding Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -246,9 +230,5 @@ function runYAMLEncodingTests() {
 
 // Run the tests
 const success = runYAMLEncodingTests();
-console.log(
-  success
-    ? '🎉 All YAML encoding tests passed!'
-    : '❌ Some YAML encoding tests failed.'
-);
+console.log(success ? '🎉 All YAML encoding tests passed!' : '❌ Some YAML encoding tests failed.');
 if (!success) process.exit(1);

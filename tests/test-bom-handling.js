@@ -55,8 +55,7 @@ const testCases = [
   },
   {
     name: 'File with BOM and imports',
-    content:
-      '\uFEFFimport Component from "./Component";\n\n# Test\n\nContent here.',
+    content: '\uFEFFimport Component from "./Component";\n\n# Test\n\nContent here.',
     expected: 'import Component from "./Component";\n\n# Test\n\nContent here.',
     shouldHaveBOM: true
   },
@@ -95,9 +94,7 @@ async function runTests() {
         const hasBOM = rawContent.charCodeAt(0) === 0xfeff;
 
         if (test.shouldHaveBOM && !hasBOM) {
-          console.log(
-            '  ⚠️  WARNING: BOM was not written to file (this might be a Node.js/filesystem quirk)'
-          );
+          console.log('  ⚠️  WARNING: BOM was not written to file (this might be a Node.js/filesystem quirk)');
         }
 
         // Read the file with our BOM-stripping function
@@ -111,9 +108,7 @@ async function runTests() {
 
         if (!pass) {
           console.log(`    Expected: "${test.expected}"`);
-          console.log(
-            `    Expected first char code: ${test.expected.charCodeAt(0)}`
-          );
+          console.log(`    Expected first char code: ${test.expected.charCodeAt(0)}`);
           console.log(`    Actual: "${result}"`);
           console.log(`    Actual first char code: ${result.charCodeAt(0)}`);
           console.log(`    Result has BOM: ${resultHasBOM}`);
@@ -196,9 +191,7 @@ function testBOMDetection() {
 
       console.log(`  Detection: ${detectionPass ? '✅ PASS' : '❌ FAIL'}`);
       if (!detectionPass) {
-        console.log(
-          `    Expected hasBOM: ${test.expectedHasBOM}, Actual: ${hasBOM}`
-        );
+        console.log(`    Expected hasBOM: ${test.expectedHasBOM}, Actual: ${hasBOM}`);
       }
 
       console.log(`  Removal: ${removalPass ? '✅ PASS' : '❌ FAIL'}`);
@@ -217,9 +210,7 @@ function testBOMDetection() {
     console.log('');
   });
 
-  console.log(
-    `BOM Detection Results: ${passCount} of ${detectionTests.length} tests passed.`
-  );
+  console.log(`BOM Detection Results: ${passCount} of ${detectionTests.length} tests passed.`);
 
   if (passCount === detectionTests.length) {
     console.log('🎉 All BOM detection tests passed!');

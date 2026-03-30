@@ -57,13 +57,7 @@ const testCases = [
         url: 'https://example.com/docs/config'
       }
     ],
-    expectedPaths: [
-      'config.md',
-      'config-2.md',
-      'config-3.md',
-      'config-4.md',
-      'config-5.md'
-    ],
+    expectedPaths: ['config.md', 'config-2.md', 'config-3.md', 'config-4.md', 'config-5.md'],
     siteUrl: 'https://example.com',
     description: 'Should handle multiple collisions with counter increments'
   },
@@ -76,10 +70,7 @@ const testCases = [
       description: `Description ${i + 1}`,
       url: 'https://example.com/docs/same-path'
     })),
-    expectedPaths: [
-      'same-path.md',
-      ...Array.from({length: 99}, (_, i) => `same-path-${i + 2}.md`)
-    ],
+    expectedPaths: ['same-path.md', ...Array.from({length: 99}, (_, i) => `same-path-${i + 2}.md`)],
     siteUrl: 'https://example.com',
     description: 'Should handle 100 collisions without hanging'
   },
@@ -92,10 +83,7 @@ const testCases = [
       description: `Description ${i + 1}`,
       url: 'https://example.com/docs/collision'
     })),
-    expectedPaths: [
-      'collision.md',
-      ...Array.from({length: 999}, (_, i) => `collision-${i + 2}.md`)
-    ],
+    expectedPaths: ['collision.md', ...Array.from({length: 999}, (_, i) => `collision-${i + 2}.md`)],
     siteUrl: 'https://example.com',
     description: 'Should handle 1000 collisions efficiently'
   },
@@ -131,12 +119,7 @@ const testCases = [
         url: 'https://example.com/docs/api/reference'
       }
     ],
-    expectedPaths: [
-      'api/reference.md',
-      'api/reference-2.md',
-      'guide.md',
-      'api/reference-3.md'
-    ],
+    expectedPaths: ['api/reference.md', 'api/reference-2.md', 'guide.md', 'api/reference-3.md'],
     siteUrl: 'https://example.com',
     description: 'Should handle collisions in nested directories'
   }
@@ -174,9 +157,7 @@ async function runTests() {
 
       // Verify all files were created
       if (result.length !== testCase.docs.length) {
-        throw new Error(
-          `Expected ${testCase.docs.length} files, got ${result.length}`
-        );
+        throw new Error(`Expected ${testCase.docs.length} files, got ${result.length}`);
       }
 
       // Check that all expected files exist
@@ -201,9 +182,7 @@ async function runTests() {
           const actual = generatedPaths[i];
 
           if (actual !== expected) {
-            throw new Error(
-              `Path mismatch at index ${i}: expected "${expected}", got "${actual}"`
-            );
+            throw new Error(`Path mismatch at index ${i}: expected "${expected}", got "${actual}"`);
           }
         }
         console.log(`  ✓ All paths match expected values`);

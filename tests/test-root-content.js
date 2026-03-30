@@ -89,22 +89,14 @@ For questions, visit our support forum at https://example.com/support`;
     );
 
     const customLinksContent = await fs.readFile(customLinksPath, 'utf-8');
-    if (
-      customLinksContent.includes(
-        'Welcome to our comprehensive documentation system'
-      )
-    ) {
+    if (customLinksContent.includes('Welcome to our comprehensive documentation system')) {
       console.log('  ✅ PASS: Custom root content appears in links file');
     } else {
       console.log('  ❌ FAIL: Custom root content missing from links file');
       allTestsPassed = false;
     }
 
-    if (
-      !customLinksContent.includes(
-        'This file contains links to documentation sections'
-      )
-    ) {
+    if (!customLinksContent.includes('This file contains links to documentation sections')) {
       console.log('  ✅ PASS: Default content was replaced');
     } else {
       console.log('  ❌ FAIL: Default content still present');
@@ -130,13 +122,9 @@ For questions, visit our support forum at https://example.com/support`;
         'This file contains all documentation content in a single document following the llmstxt.org standard.'
       )
     ) {
-      console.log(
-        '  ✅ PASS: Default root content appears in full content file\n'
-      );
+      console.log('  ✅ PASS: Default root content appears in full content file\n');
     } else {
-      console.log(
-        '  ❌ FAIL: Default root content missing from full content file\n'
-      );
+      console.log('  ❌ FAIL: Default root content missing from full content file\n');
       allTestsPassed = false;
     }
 
@@ -162,26 +150,14 @@ All content below is organized by topic.`;
     );
 
     const customFullContent = await fs.readFile(customFullPath, 'utf-8');
-    if (
-      customFullContent.includes(
-        'Complete documentation bundle for offline AI processing'
-      )
-    ) {
-      console.log(
-        '  ✅ PASS: Custom root content appears in full content file'
-      );
+    if (customFullContent.includes('Complete documentation bundle for offline AI processing')) {
+      console.log('  ✅ PASS: Custom root content appears in full content file');
     } else {
-      console.log(
-        '  ❌ FAIL: Custom root content missing from full content file'
-      );
+      console.log('  ❌ FAIL: Custom root content missing from full content file');
       allTestsPassed = false;
     }
 
-    if (
-      !customFullContent.includes(
-        'This file contains all documentation content'
-      )
-    ) {
+    if (!customFullContent.includes('This file contains all documentation content')) {
       console.log('  ✅ PASS: Default content was replaced');
     } else {
       console.log('  ❌ FAIL: Default content still present');

@@ -79,11 +79,7 @@ const testCases = [
       }
     ],
     preserveDirectoryStructure: true,
-    expectedPaths: [
-      'docs/getting-started.md',
-      'docs/api/reference.md',
-      'docs/server/database/setup.md'
-    ],
+    expectedPaths: ['docs/getting-started.md', 'docs/api/reference.md', 'docs/server/database/setup.md'],
     expectedUrls: [
       'https://example.com/docs/getting-started.md',
       'https://example.com/docs/api/reference.md',
@@ -118,11 +114,7 @@ const testCases = [
       }
     ],
     preserveDirectoryStructure: false,
-    expectedPaths: [
-      'getting-started.md',
-      'api/reference.md',
-      'server/database/setup.md'
-    ],
+    expectedPaths: ['getting-started.md', 'api/reference.md', 'server/database/setup.md'],
     expectedUrls: [
       'https://example.com/getting-started.md',
       'https://example.com/api/reference.md',
@@ -287,9 +279,7 @@ async function runPreserveDirectoryStructureTests() {
           const fullPath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(fullPath)) {
-            console.log(
-              `❌ FAIL - Expected file at path "${expectedPath}" not found`
-            );
+            console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
             console.log(`   Full path checked: ${fullPath}`);
             pathsCorrect = false;
             break;
@@ -309,9 +299,7 @@ async function runPreserveDirectoryStructureTests() {
           const doc = result[i];
           const expectedUrl = testCase.expectedUrls[i];
           if (doc.url !== expectedUrl) {
-            console.log(
-              `❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`
-            );
+            console.log(`❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`);
             urlsCorrect = false;
             break;
           }
@@ -329,9 +317,7 @@ async function runPreserveDirectoryStructureTests() {
           const doc = result[i];
           const expectedPath = `/${testCase.expectedPaths[i]}`;
           if (doc.path !== expectedPath) {
-            console.log(
-              `❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`
-            );
+            console.log(`❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`);
             docPathsCorrect = false;
             break;
           }
@@ -354,20 +340,13 @@ async function runPreserveDirectoryStructureTests() {
 
           // Check that file contains expected elements
           if (!fileContent.includes(`# ${originalDoc.title}`)) {
-            console.log(
-              `❌ FAIL - File content missing title: "${originalDoc.title}"`
-            );
+            console.log(`❌ FAIL - File content missing title: "${originalDoc.title}"`);
             contentsCorrect = false;
             break;
           }
 
-          if (
-            originalDoc.description &&
-            !fileContent.includes(`> ${originalDoc.description}`)
-          ) {
-            console.log(
-              `❌ FAIL - File content missing description: "${originalDoc.description}"`
-            );
+          if (originalDoc.description && !fileContent.includes(`> ${originalDoc.description}`)) {
+            console.log(`❌ FAIL - File content missing description: "${originalDoc.description}"`);
             contentsCorrect = false;
             break;
           }

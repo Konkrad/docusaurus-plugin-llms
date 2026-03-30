@@ -73,17 +73,13 @@ async function testPathTransformations() {
     }
   }
 
-  console.log(
-    `\nPath Transformation Tests: ${passed} passed, ${failed} failed`
-  );
+  console.log(`\nPath Transformation Tests: ${passed} passed, ${failed} failed`);
   return failed === 0;
 }
 
 // Test processMarkdownFile with path transformations
 async function testProcessMarkdownFileWithTransformations() {
-  console.log(
-    '\n=== Testing processMarkdownFile with Path Transformations ===\n'
-  );
+  console.log('\n=== Testing processMarkdownFile with Path Transformations ===\n');
 
   const TEST_DIR = path.join(__dirname, '..', 'test-path-transform');
 
@@ -111,80 +107,47 @@ This is a test tutorial.`
 
   // Test 1: Default URL generation
   console.log('Test 1: Default URL generation');
-  const result1 = await processMarkdownFile(
-    testFile,
-    path.join(TEST_DIR, 'docs'),
-    'https://example.com',
-    'docs'
-  );
+  const result1 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs');
   console.log(`URL: ${result1.url}`);
   console.log(`Expected: https://example.com/docs/tutorials/draft`);
-  console.log(
-    `✅ Correct: ${result1.url === 'https://example.com/docs/tutorials/draft'}\n`
-  );
+  console.log(`✅ Correct: ${result1.url === 'https://example.com/docs/tutorials/draft'}\n`);
 
   // Test 2: With ignorePaths
   console.log('Test 2: With ignorePaths ["tutorials"]');
-  const result2 = await processMarkdownFile(
-    testFile,
-    path.join(TEST_DIR, 'docs'),
-    'https://example.com',
-    'docs',
-    {ignorePaths: ['tutorials']}
-  );
+  const result2 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
+    ignorePaths: ['tutorials']
+  });
   console.log(`URL: ${result2.url}`);
   console.log(`Expected: https://example.com/docs/draft`);
-  console.log(
-    `✅ Correct: ${result2.url === 'https://example.com/docs/draft'}\n`
-  );
+  console.log(`✅ Correct: ${result2.url === 'https://example.com/docs/draft'}\n`);
 
   // Test 3: Ignore the path prefix itself
   console.log('Test 3: With ignorePaths ["docs"]');
-  const result3 = await processMarkdownFile(
-    testFile,
-    path.join(TEST_DIR, 'docs'),
-    'https://example.com',
-    'docs',
-    {ignorePaths: ['docs']}
-  );
+  const result3 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
+    ignorePaths: ['docs']
+  });
   console.log(`URL: ${result3.url}`);
   console.log(`Expected: https://example.com/tutorials/draft`);
-  console.log(
-    `✅ Correct: ${result3.url === 'https://example.com/tutorials/draft'}\n`
-  );
+  console.log(`✅ Correct: ${result3.url === 'https://example.com/tutorials/draft'}\n`);
 
   // Test 4: Add paths
   console.log('Test 4: With addPaths ["reference"]');
-  const result4 = await processMarkdownFile(
-    testFile,
-    path.join(TEST_DIR, 'docs'),
-    'https://example.com',
-    'docs',
-    {addPaths: ['reference']}
-  );
+  const result4 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
+    addPaths: ['reference']
+  });
   console.log(`URL: ${result4.url}`);
   console.log(`Expected: https://example.com/docs/reference/tutorials/draft`);
-  console.log(
-    `✅ Correct: ${result4.url === 'https://example.com/docs/reference/tutorials/draft'}\n`
-  );
+  console.log(`✅ Correct: ${result4.url === 'https://example.com/docs/reference/tutorials/draft'}\n`);
 
   // Test 5: Combined transformations
   console.log('Test 5: With ignorePaths ["tutorials"] and addPaths ["api"]');
-  const result5 = await processMarkdownFile(
-    testFile,
-    path.join(TEST_DIR, 'docs'),
-    'https://example.com',
-    'docs',
-    {
-      ignorePaths: ['tutorials'],
-      addPaths: ['api']
-    }
-  );
+  const result5 = await processMarkdownFile(testFile, path.join(TEST_DIR, 'docs'), 'https://example.com', 'docs', {
+    ignorePaths: ['tutorials'],
+    addPaths: ['api']
+  });
   console.log(`URL: ${result5.url}`);
   console.log(`Expected: https://example.com/docs/api/draft`);
-  console.log(
-    `✅ Correct: ${result5.url === 'https://example.com/docs/api/draft'}\n`
-  );
+  console.log(`✅ Correct: ${result5.url === 'https://example.com/docs/api/draft'}\n`);
 
   // Cleanup
   if (fs.existsSync(TEST_DIR)) {
@@ -202,12 +165,8 @@ async function main() {
 
     console.log('\n========================================');
     console.log('Path Transformation Ignore Test Summary:');
-    console.log(
-      `Direct transformation tests: ${test1Success ? '✅ PASSED' : '❌ FAILED'}`
-    );
-    console.log(
-      `File processing tests: ${test2Success ? '✅ PASSED' : '❌ FAILED'}`
-    );
+    console.log(`Direct transformation tests: ${test1Success ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(`File processing tests: ${test2Success ? '✅ PASSED' : '❌ FAILED'}`);
     console.log('========================================');
 
     const allPassed = test1Success && test2Success;

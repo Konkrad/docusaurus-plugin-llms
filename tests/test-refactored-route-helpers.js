@@ -30,9 +30,7 @@ function createMockContext(options = {}) {
 
 // Test suite
 async function runTests() {
-  console.log(
-    'Running unit tests for refactored route resolution helpers...\n'
-  );
+  console.log('Running unit tests for refactored route resolution helpers...\n');
 
   let passCount = 0;
   let failCount = 0;
@@ -62,11 +60,7 @@ async function runTests() {
     // Test multiple segments
     const input2 = '01-category/02-file';
     const expected2 = 'category/file';
-    assert(
-      true,
-      'Multiple segment prefix removal',
-      'Tested through integration'
-    );
+    assert(true, 'Multiple segment prefix removal', 'Tested through integration');
 
     // Test already clean path
     const input3 = 'clean/path';
@@ -88,19 +82,11 @@ async function runTests() {
 
     // Test trailing slash variant
     const hasTrailing = routeMap.has('/docs/other/');
-    assert(
-      hasTrailing,
-      'Trailing slash route match',
-      'Should find route with trailing slash'
-    );
+    assert(hasTrailing, 'Trailing slash route match', 'Should find route with trailing slash');
 
     // Test non-existent route
     const hasNone = routeMap.has('/docs/nonexistent');
-    assert(
-      !hasNone,
-      'Non-existent route returns false',
-      'Should not find missing route'
-    );
+    assert(!hasNone, 'Non-existent route returns false', 'Should not find missing route');
   }
 
   // Test 3: tryExactRouteMatch function behavior
@@ -115,11 +101,7 @@ async function runTests() {
 
     // Test with docs prefix
     const hasDocsPrefix = routeMap.has('/docs/exact-match');
-    assert(
-      hasDocsPrefix,
-      'Match with docs prefix',
-      'Should find /docs/exact-match'
-    );
+    assert(hasDocsPrefix, 'Match with docs prefix', 'Should find /docs/exact-match');
 
     // Test without prefix
     const hasNoPrefix = routeMap.has('/other-path');
@@ -127,11 +109,7 @@ async function runTests() {
 
     // Test miss
     const hasMiss = routeMap.has('/docs/missing');
-    assert(
-      !hasMiss,
-      'No match for missing route',
-      'Should not find missing route'
-    );
+    assert(!hasMiss, 'No match for missing route', 'Should not find missing route');
   }
 
   // Test 4: tryNumberedPrefixResolution function behavior
@@ -146,11 +124,7 @@ async function runTests() {
 
     // Test basic prefix removal
     const hasBasic = routeMap.has('/docs/intro');
-    assert(
-      hasBasic,
-      'Basic prefix match',
-      'Should match intro after removing 01-'
-    );
+    assert(hasBasic, 'Basic prefix match', 'Should match intro after removing 01-');
 
     // Test nested prefix removal
     const hasNested = routeMap.has('/docs/category/file');
@@ -160,11 +134,7 @@ async function runTests() {
   // Test 5: tryRoutesPathsMatch function behavior
   console.log('\nTest Group 5: Routes paths array matching');
   {
-    const routesPaths = [
-      '/docs/intro',
-      '/docs/category/nested',
-      '/docs/another'
-    ];
+    const routesPaths = ['/docs/intro', '/docs/category/nested', '/docs/another'];
 
     const context = createMockContext({
       routeMap: new Map(),
@@ -173,11 +143,7 @@ async function runTests() {
 
     // Test case-insensitive matching
     const hasIntro = routesPaths.some(p => p.toLowerCase() === '/docs/intro');
-    assert(
-      hasIntro,
-      'Case-insensitive match',
-      'Should find route case-insensitively'
-    );
+    assert(hasIntro, 'Case-insensitive match', 'Should find route case-insensitively');
 
     // Test suffix matching
     const hasNested = routesPaths.some(p => p.endsWith('/nested'));
@@ -196,11 +162,7 @@ async function runTests() {
     });
 
     // When no route map, should return undefined (handled by processMarkdownFile fallback)
-    assert(
-      !context.routeMap,
-      'No route map returns undefined',
-      'Should return undefined when no route map'
-    );
+    assert(!context.routeMap, 'No route map returns undefined', 'Should return undefined when no route map');
   }
 
   // Test 7: Integration test - full resolution flow
@@ -221,27 +183,15 @@ async function runTests() {
 
     // Test exact match priority
     const hasExact = routeMap.has('/docs/simple');
-    assert(
-      hasExact,
-      'Exact match takes priority',
-      'Should find exact match first'
-    );
+    assert(hasExact, 'Exact match takes priority', 'Should find exact match first');
 
     // Test numbered prefix fallback
     const hasNumbered = routeMap.has('/docs/numbered');
-    assert(
-      hasNumbered,
-      'Numbered prefix fallback',
-      'Should fall back to prefix removal'
-    );
+    assert(hasNumbered, 'Numbered prefix fallback', 'Should fall back to prefix removal');
 
     // Test routes paths fallback
     const hasFallback = routesPaths.includes('/docs/fallback');
-    assert(
-      hasFallback,
-      'Routes paths fallback',
-      'Should fall back to routes paths array'
-    );
+    assert(hasFallback, 'Routes paths fallback', 'Should fall back to routes paths array');
   }
 
   // Test 8: Edge cases
@@ -250,20 +200,12 @@ async function runTests() {
     // Empty route map
     const emptyMap = new Map();
     const context1 = createMockContext({routeMap: emptyMap});
-    assert(
-      context1.routeMap.size === 0,
-      'Empty route map',
-      'Should handle empty map'
-    );
+    assert(context1.routeMap.size === 0, 'Empty route map', 'Should handle empty map');
 
     // Multiple numbered segments
     const routeMap2 = new Map([['/docs/section/item', '/resolved']]);
     const context2 = createMockContext({routeMap: routeMap2});
-    assert(
-      context2.routeMap.size === 1,
-      'Multiple numbered segments',
-      'Should handle multiple segments'
-    );
+    assert(context2.routeMap.size === 1, 'Multiple numbered segments', 'Should handle multiple segments');
 
     // Trailing slash variations
     const routeMap3 = new Map([
@@ -272,11 +214,7 @@ async function runTests() {
     ]);
     const hasWithout = routeMap3.has('/docs/test');
     const hasWith = routeMap3.has('/docs/test/');
-    assert(
-      hasWithout && hasWith,
-      'Trailing slash variations',
-      'Should handle both with and without trailing slash'
-    );
+    assert(hasWithout && hasWith, 'Trailing slash variations', 'Should handle both with and without trailing slash');
   }
 
   // Test 9: Path normalization
@@ -297,11 +235,7 @@ async function runTests() {
     const expectedBase = 'docs/intro';
     const withoutExt = indexPath.replace(/\.mdx?$/, '');
     const withoutIndex = withoutExt.replace(/\/index$/, '');
-    assert(
-      withoutIndex === expectedBase,
-      'Index file handling',
-      'Should remove /index from path'
-    );
+    assert(withoutIndex === expectedBase, 'Index file handling', 'Should remove /index from path');
 
     // Test file extension removal
     const mdPath = 'docs/file.md';
@@ -324,11 +258,7 @@ async function runTests() {
     // Test URL construction
     try {
       const fullUrl = new URL(resolvedPath, siteUrl).toString();
-      assert(
-        fullUrl === 'https://example.com/docs/test',
-        'URL construction',
-        'Should construct valid URL'
-      );
+      assert(fullUrl === 'https://example.com/docs/test', 'URL construction', 'Should construct valid URL');
     } catch (e) {
       assert(false, 'URL construction', 'Should not throw error');
     }
@@ -343,11 +273,7 @@ async function runTests() {
         'Should handle trailing slash'
       );
     } catch (e) {
-      assert(
-        false,
-        'URL construction with trailing slash',
-        'Should not throw error'
-      );
+      assert(false, 'URL construction with trailing slash', 'Should not throw error');
     }
   }
 

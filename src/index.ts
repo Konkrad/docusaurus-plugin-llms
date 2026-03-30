@@ -10,26 +10,9 @@
 
 import * as path from 'path';
 import type {LoadContext, Plugin, Props, RouteConfig} from '@docusaurus/types';
-import {
-  PluginOptions,
-  PluginContext,
-  CustomLLMFile,
-  DocsSection
-} from './types';
-import {
-  collectDocFiles,
-  generateStandardLLMFiles,
-  generateCustomLLMFiles
-} from './generator';
-import {
-  setLogLevel,
-  LogLevel,
-  logger,
-  getErrorMessage,
-  isDefined,
-  isNonEmptyString,
-  isNonEmptyArray
-} from './utils';
+import {PluginOptions, PluginContext, CustomLLMFile, DocsSection} from './types';
+import {collectDocFiles, generateStandardLLMFiles, generateCustomLLMFiles} from './generator';
+import {setLogLevel, LogLevel, logger, getErrorMessage, isDefined, isNonEmptyString, isNonEmptyArray} from './utils';
 
 /**
  * Validates plugin options to ensure they conform to expected types and constraints
@@ -59,13 +42,8 @@ function validatePluginOptions(options: PluginOptions): void {
 
   // Validate docsDir - accepts a string or an array of DocsSection objects
   if (options.docsDir !== undefined) {
-    if (
-      typeof options.docsDir !== 'string' &&
-      !Array.isArray(options.docsDir)
-    ) {
-      throw new Error(
-        'docsDir must be a string or an array of section objects'
-      );
+    if (typeof options.docsDir !== 'string' && !Array.isArray(options.docsDir)) {
+      throw new Error('docsDir must be a string or an array of section objects');
     }
     if (Array.isArray(options.docsDir)) {
       (options.docsDir as DocsSection[]).forEach((section, index) => {
@@ -78,10 +56,7 @@ function validatePluginOptions(options: PluginOptions): void {
         if (typeof section.routeBasePath !== 'string') {
           throw new Error(`docsDir[${index}].routeBasePath must be a string`);
         }
-        if (
-          section.label !== undefined &&
-          (typeof section.label !== 'string' || section.label.trim() === '')
-        ) {
+        if (section.label !== undefined && (typeof section.label !== 'string' || section.label.trim() === '')) {
           throw new Error(`docsDir[${index}].label must be a non-empty string`);
         }
       });
@@ -101,9 +76,7 @@ function validatePluginOptions(options: PluginOptions): void {
         throw new Error('pathTransformation.ignorePaths must be an array');
       }
       if (!ignorePaths.every(item => typeof item === 'string')) {
-        throw new Error(
-          'pathTransformation.ignorePaths must contain only strings'
-        );
+        throw new Error('pathTransformation.ignorePaths must contain only strings');
       }
     }
 
@@ -112,9 +85,7 @@ function validatePluginOptions(options: PluginOptions): void {
         throw new Error('pathTransformation.addPaths must be an array');
       }
       if (!addPaths.every(item => typeof item === 'string')) {
-        throw new Error(
-          'pathTransformation.addPaths must contain only strings'
-        );
+        throw new Error('pathTransformation.addPaths must contain only strings');
       }
     }
   }
@@ -185,86 +156,57 @@ function validatePluginOptions(options: PluginOptions): void {
 
       // Required fields
       if (!isNonEmptyString(file.filename)) {
-        throw new Error(
-          `customLLMFiles[${index}].filename must be a non-empty string`
-        );
+        throw new Error(`customLLMFiles[${index}].filename must be a non-empty string`);
       }
 
       if (!isNonEmptyArray(file.includePatterns)) {
-        throw new Error(
-          `customLLMFiles[${index}].includePatterns must be a non-empty array`
-        );
+        throw new Error(`customLLMFiles[${index}].includePatterns must be a non-empty array`);
       }
       if (!file.includePatterns.every(item => typeof item === 'string')) {
-        throw new Error(
-          `customLLMFiles[${index}].includePatterns must contain only strings`
-        );
+        throw new Error(`customLLMFiles[${index}].includePatterns must contain only strings`);
       }
 
       if (typeof file.fullContent !== 'boolean') {
-        throw new Error(
-          `customLLMFiles[${index}].fullContent must be a boolean`
-        );
+        throw new Error(`customLLMFiles[${index}].fullContent must be a boolean`);
       }
 
       // Optional fields
       if (isDefined(file.title) && !isNonEmptyString(file.title)) {
-        throw new Error(
-          `customLLMFiles[${index}].title must be a non-empty string`
-        );
+        throw new Error(`customLLMFiles[${index}].title must be a non-empty string`);
       }
 
       if (isDefined(file.description) && !isNonEmptyString(file.description)) {
-        throw new Error(
-          `customLLMFiles[${index}].description must be a non-empty string`
-        );
+        throw new Error(`customLLMFiles[${index}].description must be a non-empty string`);
       }
 
       if (file.ignorePatterns !== undefined) {
         if (!Array.isArray(file.ignorePatterns)) {
-          throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must be an array`
-          );
+          throw new Error(`customLLMFiles[${index}].ignorePatterns must be an array`);
         }
         if (!file.ignorePatterns.every(item => typeof item === 'string')) {
-          throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must contain only strings`
-          );
+          throw new Error(`customLLMFiles[${index}].ignorePatterns must contain only strings`);
         }
       }
 
       if (file.orderPatterns !== undefined) {
         if (!Array.isArray(file.orderPatterns)) {
-          throw new Error(
-            `customLLMFiles[${index}].orderPatterns must be an array`
-          );
+          throw new Error(`customLLMFiles[${index}].orderPatterns must be an array`);
         }
         if (!file.orderPatterns.every(item => typeof item === 'string')) {
-          throw new Error(
-            `customLLMFiles[${index}].orderPatterns must contain only strings`
-          );
+          throw new Error(`customLLMFiles[${index}].orderPatterns must contain only strings`);
         }
       }
 
-      if (
-        file.includeUnmatchedLast !== undefined &&
-        typeof file.includeUnmatchedLast !== 'boolean'
-      ) {
-        throw new Error(
-          `customLLMFiles[${index}].includeUnmatchedLast must be a boolean`
-        );
+      if (file.includeUnmatchedLast !== undefined && typeof file.includeUnmatchedLast !== 'boolean') {
+        throw new Error(`customLLMFiles[${index}].includeUnmatchedLast must be a boolean`);
       }
 
       if (isDefined(file.version) && !isNonEmptyString(file.version)) {
-        throw new Error(
-          `customLLMFiles[${index}].version must be a non-empty string`
-        );
+        throw new Error(`customLLMFiles[${index}].version must be a non-empty string`);
       }
 
       if (isDefined(file.rootContent) && !isNonEmptyString(file.rootContent)) {
-        throw new Error(
-          `customLLMFiles[${index}].rootContent must be a non-empty string`
-        );
+        throw new Error(`customLLMFiles[${index}].rootContent must be a non-empty string`);
       }
     });
   }
@@ -278,10 +220,7 @@ function validatePluginOptions(options: PluginOptions): void {
  * @param options - Plugin options
  * @returns Plugin object
  */
-export default function docusaurusPluginLLMs(
-  context: LoadContext,
-  options: PluginOptions = {}
-): Plugin<void> {
+export default function docusaurusPluginLLMs(context: LoadContext, options: PluginOptions = {}): Plugin<void> {
   // Validate options before processing
   validatePluginOptions(options);
   // Set default options
@@ -435,13 +374,9 @@ export default function docusaurusPluginLLMs(
         await generateCustomLLMFiles(enhancedContext, allDocFiles);
 
         // Output overall statistics
-        logger.info(
-          `Stats: ${allDocFiles.length} total available documents processed`
-        );
+        logger.info(`Stats: ${allDocFiles.length} total available documents processed`);
       } catch (err: unknown) {
-        logger.error(
-          `Error generating LLM documentation: ${getErrorMessage(err)}`
-        );
+        logger.error(`Error generating LLM documentation: ${getErrorMessage(err)}`);
       }
     }
   };

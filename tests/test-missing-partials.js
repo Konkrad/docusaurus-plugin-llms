@@ -53,10 +53,7 @@ Follow these steps:
 
 Done!`;
 
-  await fs.writeFile(
-    path.join(testDir, 'install-guide.md'),
-    namedImportContent
-  );
+  await fs.writeFile(path.join(testDir, 'install-guide.md'), namedImportContent);
 
   // Create a document with multiple missing partials
   const multipleContent = `---
@@ -122,9 +119,7 @@ async function runTests() {
     }
 
     // Check that surrounding content is still intact
-    const hasMainContent =
-      apiDoc.content.includes('Getting Started') &&
-      apiDoc.content.includes('Making Requests');
+    const hasMainContent = apiDoc.content.includes('Getting Started') && apiDoc.content.includes('Making Requests');
     if (hasMainContent) {
       console.log('  ✅ PASS: Surrounding content is intact');
     } else {
@@ -143,9 +138,7 @@ async function runTests() {
       'docs'
     );
 
-    const hasNamedImport = installDoc.content.includes(
-      'import { InstallSteps }'
-    );
+    const hasNamedImport = installDoc.content.includes('import { InstallSteps }');
     const hasNamedJSX = installDoc.content.includes('<InstallSteps');
 
     if (!hasNamedImport && !hasNamedJSX) {
@@ -178,10 +171,8 @@ async function runTests() {
       console.log('  ✅ PASS: All imports and JSX removed');
     } else {
       console.log('  ❌ FAIL: Some imports or JSX still present');
-      if (hasFirstImport)
-        console.log('    - FirstPartial import still present');
-      if (hasSecondImport)
-        console.log('    - SecondPartial import still present');
+      if (hasFirstImport) console.log('    - FirstPartial import still present');
+      if (hasSecondImport) console.log('    - SecondPartial import still present');
       if (hasFirstJSX) console.log('    - FirstPartial JSX still present');
       if (hasSecondJSX) console.log('    - SecondPartial JSX still present');
       console.log('  Content:', configDoc.content);

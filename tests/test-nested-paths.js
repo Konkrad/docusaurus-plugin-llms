@@ -192,9 +192,7 @@ async function runNestedPathTests() {
         // Validate URL
         const expectedUrl = `${siteUrl}/${testCase.expectedPath}`;
         if (result[0].url !== expectedUrl) {
-          throw new Error(
-            `Expected URL "${expectedUrl}", got "${result[0].url}"`
-          );
+          throw new Error(`Expected URL "${expectedUrl}", got "${result[0].url}"`);
         }
 
         console.log(`✅ PASS`);
@@ -214,9 +212,7 @@ async function runNestedPathTests() {
 
   console.log(`========================================`);
   console.log(`Nested Path Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -225,11 +221,7 @@ async function runNestedPathTests() {
 // Run the tests
 runNestedPathTests()
   .then(success => {
-    console.log(
-      success
-        ? '🎉 All nested path tests passed!'
-        : '❌ Some nested path tests failed.'
-    );
+    console.log(success ? '🎉 All nested path tests passed!' : '❌ Some nested path tests failed.');
     if (!success) process.exit(1);
   })
   .catch(error => {

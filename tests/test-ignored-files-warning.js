@@ -35,20 +35,11 @@ function setupTestDirectory(testDir) {
   fs.mkdirSync(testDir, {recursive: true});
 
   // Create valid markdown files
-  fs.writeFileSync(
-    path.join(testDir, 'valid.md'),
-    '# Valid Markdown\nContent here.'
-  );
-  fs.writeFileSync(
-    path.join(testDir, 'valid.mdx'),
-    '# Valid MDX\nContent here.'
-  );
+  fs.writeFileSync(path.join(testDir, 'valid.md'), '# Valid Markdown\nContent here.');
+  fs.writeFileSync(path.join(testDir, 'valid.mdx'), '# Valid MDX\nContent here.');
 
   // Create file without extension
-  fs.writeFileSync(
-    path.join(testDir, 'README'),
-    '# README file without extension'
-  );
+  fs.writeFileSync(path.join(testDir, 'README'), '# README file without extension');
 
   // Create files with unsupported extensions
   fs.writeFileSync(path.join(testDir, 'data.json'), '{"key": "value"}');
@@ -60,10 +51,7 @@ function setupTestDirectory(testDir) {
   const subDir = path.join(testDir, 'subdir');
   fs.mkdirSync(subDir, {recursive: true});
   fs.writeFileSync(path.join(subDir, 'nested.md'), '# Nested Markdown');
-  fs.writeFileSync(
-    path.join(subDir, 'LICENSE'),
-    'License text without extension'
-  );
+  fs.writeFileSync(path.join(subDir, 'LICENSE'), 'License text without extension');
   fs.writeFileSync(path.join(subDir, 'config.yaml'), 'key: value');
 }
 
@@ -122,9 +110,7 @@ async function runTests() {
 
         // Check file count
         if (files.length !== testCase.expectedFiles) {
-          throw new Error(
-            `Expected ${testCase.expectedFiles} files, got ${files.length}`
-          );
+          throw new Error(`Expected ${testCase.expectedFiles} files, got ${files.length}`);
         }
 
         // Check warning count
@@ -152,9 +138,7 @@ async function runTests() {
         const hasNestedMd = files.some(f => f.endsWith('nested.md'));
 
         if (!hasValidMd || !hasValidMdx || !hasNestedMd) {
-          throw new Error(
-            'Expected to find valid.md, valid.mdx, and nested.md in results'
-          );
+          throw new Error('Expected to find valid.md, valid.mdx, and nested.md in results');
         }
 
         console.log('✅ PASS');
@@ -174,9 +158,7 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Ignored Files Warning Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -185,11 +167,7 @@ async function runTests() {
 // Run the tests
 runTests()
   .then(success => {
-    console.log(
-      success
-        ? '🎉 All ignored files warning tests passed!'
-        : '❌ Some ignored files warning tests failed.'
-    );
+    console.log(success ? '🎉 All ignored files warning tests passed!' : '❌ Some ignored files warning tests failed.');
     if (!success) process.exit(1);
   })
   .catch(error => {

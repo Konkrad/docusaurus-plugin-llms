@@ -82,9 +82,7 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 1: Two labelled sections → grouped headings in llms.txt
   // -------------------------------------------------------------------------
-  console.log(
-    'Test 1: Two labelled sections produce grouped section headings in llms.txt'
-  );
+  console.log('Test 1: Two labelled sections produce grouped section headings in llms.txt');
   try {
     await plugin(createMockContext(), {
       docsDir: [
@@ -111,10 +109,7 @@ async function runTests() {
       },
       {
         desc: '"## Documentation" appears before "## API Reference"',
-        ok:
-          docsHeadingPos !== -1 &&
-          apiHeadingPos !== -1 &&
-          docsHeadingPos < apiHeadingPos
+        ok: docsHeadingPos !== -1 && apiHeadingPos !== -1 && docsHeadingPos < apiHeadingPos
       },
       {
         desc: '"Getting Started" link is present (from docs section)',
@@ -153,9 +148,7 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 2: Sections without labels fall back to the physical path name
   // -------------------------------------------------------------------------
-  console.log(
-    '\nTest 2: Sections without labels fall back to path as section heading'
-  );
+  console.log('\nTest 2: Sections without labels fall back to path as section heading');
   try {
     await plugin(createMockContext(), {
       docsDir: [
@@ -237,9 +230,7 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 4: Each section's files get URLs scoped to their routeBasePath
   // -------------------------------------------------------------------------
-  console.log(
-    "\nTest 4: Each section's files get URLs scoped to their routeBasePath"
-  );
+  console.log("\nTest 4: Each section's files get URLs scoped to their routeBasePath");
   try {
     // Reuses the file generated in Test 1
     const content = readOutput('llms-multi-labelled.txt');
@@ -314,9 +305,7 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 6: Single-element DocsSection array only scans that one directory
   // -------------------------------------------------------------------------
-  console.log(
-    '\nTest 6: Single-element DocsSection array scans only that directory'
-  );
+  console.log('\nTest 6: Single-element DocsSection array scans only that directory');
   try {
     await plugin(createMockContext(), {
       docsDir: [{path: 'api', routeBasePath: 'api', label: 'API Reference'}],

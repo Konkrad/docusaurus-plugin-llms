@@ -64,33 +64,21 @@ function runTests() {
     const usedIds = new Set(['base']);
     const malfunctioningSuffix = () => ''; // Always returns empty string
 
-    console.log(
-      '  Running iteration limit test (this should complete quickly)...'
-    );
+    console.log('  Running iteration limit test (this should complete quickly)...');
     const start = Date.now();
-    const result = ensureUniqueIdentifier(
-      'base',
-      usedIds,
-      malfunctioningSuffix
-    );
+    const result = ensureUniqueIdentifier('base', usedIds, malfunctioningSuffix);
     const duration = Date.now() - start;
 
     if (duration > 5000) {
-      throw new Error(
-        `Test took too long: ${duration}ms (possible infinite loop)`
-      );
+      throw new Error(`Test took too long: ${duration}ms (possible infinite loop)`);
     }
 
     // Result should be a fallback with timestamp and random
     if (!result.includes('base-') || usedIds.size !== 2) {
-      throw new Error(
-        `Expected fallback identifier with 'base-', got '${result}'`
-      );
+      throw new Error(`Expected fallback identifier with 'base-', got '${result}'`);
     }
 
-    console.log(
-      `✓ Test 3: Iteration limit prevents infinite loop (completed in ${duration}ms)`
-    );
+    console.log(`✓ Test 3: Iteration limit prevents infinite loop (completed in ${duration}ms)`);
     console.log(`  Fallback identifier: ${result}`);
     testsPassed++;
   } catch (error) {
@@ -123,16 +111,12 @@ function runTests() {
 
     const result1 = ensureUniqueIdentifier('Test', usedIds);
     if (result1 !== 'Test' || !usedIds.has('test')) {
-      throw new Error(
-        `Expected 'Test' with lowercase 'test' in set, got '${result1}'`
-      );
+      throw new Error(`Expected 'Test' with lowercase 'test' in set, got '${result1}'`);
     }
 
     const result2 = ensureUniqueIdentifier('test', usedIds);
     if (result2 !== 'test(2)') {
-      throw new Error(
-        `Expected 'test(2)' due to case insensitivity, got '${result2}'`
-      );
+      throw new Error(`Expected 'test(2)' due to case insensitivity, got '${result2}'`);
     }
 
     console.log('✓ Test 5: Case insensitivity works correctly');
@@ -156,9 +140,7 @@ function runTests() {
       throw new Error(`Expected 'test(102)', got '${result}'`);
     }
 
-    console.log(
-      '✓ Test 6: Handles large number of collisions (100+) correctly'
-    );
+    console.log('✓ Test 6: Handles large number of collisions (100+) correctly');
     testsPassed++;
   } catch (error) {
     console.error('✗ Test 6 FAILED:', error.message);
@@ -173,9 +155,7 @@ function runTests() {
     const result = ensureUniqueIdentifier('test', usedIds, brokenSuffix);
 
     if (!usedIds.has(result.toLowerCase())) {
-      throw new Error(
-        `Fallback identifier '${result}' was not added to usedIdentifiers set`
-      );
+      throw new Error(`Fallback identifier '${result}' was not added to usedIdentifiers set`);
     }
 
     console.log('✓ Test 7: Fallback identifier is added to used set');

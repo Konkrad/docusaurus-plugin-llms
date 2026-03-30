@@ -6,10 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {
-  processMarkdownFile,
-  processFilesWithPatterns
-} = require('../lib/processor');
+const {processMarkdownFile, processFilesWithPatterns} = require('../lib/processor');
 const {readMarkdownFiles} = require('../lib/utils');
 
 // Create test directory structure
@@ -69,9 +66,7 @@ async function testReadMarkdownFilesIgnore() {
 
   // Test with ignore pattern for draft.md
   console.log('\nReading files with ignore pattern "**/draft.md":');
-  const filesWithoutDraft = await readMarkdownFiles(docsDir, docsDir, [
-    '**/draft.md'
-  ]);
+  const filesWithoutDraft = await readMarkdownFiles(docsDir, docsDir, ['**/draft.md']);
   console.log(`Found ${filesWithoutDraft.length} files:`);
   filesWithoutDraft.forEach(file => {
     const relativePath = path.relative(docsDir, file);
@@ -80,9 +75,7 @@ async function testReadMarkdownFilesIgnore() {
 
   // Test with ignore pattern for entire tutorials directory
   console.log('\nReading files with ignore pattern "tutorials/**":');
-  const filesWithoutTutorials = await readMarkdownFiles(docsDir, docsDir, [
-    'tutorials/**'
-  ]);
+  const filesWithoutTutorials = await readMarkdownFiles(docsDir, docsDir, ['tutorials/**']);
   console.log(`Found ${filesWithoutTutorials.length} files:`);
   filesWithoutTutorials.forEach(file => {
     const relativePath = path.relative(docsDir, file);
@@ -92,25 +85,19 @@ async function testReadMarkdownFilesIgnore() {
   // Verify results
   const hasDraftInFirst = allFiles.some(f => f.includes('draft.md'));
   const hasDraftInSecond = filesWithoutDraft.some(f => f.includes('draft.md'));
-  const hasTutorialsInThird = filesWithoutTutorials.some(f =>
-    f.includes('tutorials')
-  );
+  const hasTutorialsInThird = filesWithoutTutorials.some(f => f.includes('tutorials'));
 
   console.log('\nVerification:');
   console.log(`✅ All files includes draft.md: ${hasDraftInFirst}`);
   console.log(`✅ Ignored pattern excludes draft.md: ${!hasDraftInSecond}`);
-  console.log(
-    `✅ Ignored pattern excludes tutorials dir: ${!hasTutorialsInThird}`
-  );
+  console.log(`✅ Ignored pattern excludes tutorials dir: ${!hasTutorialsInThird}`);
 
   return !hasDraftInSecond && !hasTutorialsInThird;
 }
 
 // Test 2: Test processFilesWithPatterns with ignore patterns
 async function testProcessFilesWithPatternsIgnore() {
-  console.log(
-    '\n=== Test 2: processFilesWithPatterns with ignore patterns ==='
-  );
+  console.log('\n=== Test 2: processFilesWithPatterns with ignore patterns ===');
 
   const mockContext = {
     siteDir: TEST_DIR,
@@ -135,9 +122,7 @@ async function testProcessFilesWithPatternsIgnore() {
 
   console.log(`Processed ${allProcessed.length} files:`);
   allProcessed.forEach(doc => {
-    console.log(
-      `  - ${doc.title} (${doc.path}) - Draft: ${doc.title.includes('Draft')}`
-    );
+    console.log(`  - ${doc.title} (${doc.path}) - Draft: ${doc.title.includes('Draft')}`);
   });
 
   // Note: Draft filtering happens in processMarkdownFile, not in processFilesWithPatterns ignore
@@ -160,12 +145,8 @@ async function testProcessFilesWithPatternsIgnore() {
   });
 
   // Verify results
-  const hasDraftInProcessed = withIgnorePattern.some(doc =>
-    doc.path.includes('draft.md')
-  );
-  console.log(
-    `\n✅ Ignore pattern excludes draft.md from processing: ${!hasDraftInProcessed}`
-  );
+  const hasDraftInProcessed = withIgnorePattern.some(doc => doc.path.includes('draft.md'));
+  console.log(`\n✅ Ignore pattern excludes draft.md from processing: ${!hasDraftInProcessed}`);
 
   return !hasDraftInProcessed;
 }
@@ -173,9 +154,7 @@ async function testProcessFilesWithPatternsIgnore() {
 // Test 3: Test draft filtering vs ignore patterns
 async function testDraftFilteringVsIgnorePatterns() {
   console.log('\n=== Test 3: Draft filtering vs Ignore patterns ===');
-  console.log(
-    'This test shows the difference between draft: true filtering and ignore patterns'
-  );
+  console.log('This test shows the difference between draft: true filtering and ignore patterns');
 
   const mockContext = {
     siteDir: TEST_DIR,
@@ -195,17 +174,8 @@ async function testDraftFilteringVsIgnorePatterns() {
 
   // Process without any filtering
   console.log('\n1. No filtering:');
-  const noFiltering = await processFilesWithPatterns(
-    mockContext,
-    allFiles,
-    [],
-    [],
-    [],
-    true
-  );
-  console.log(
-    `Found ${noFiltering.length} files (draft: true files are excluded by processMarkdownFile)`
-  );
+  const noFiltering = await processFilesWithPatterns(mockContext, allFiles, [], [], [], true);
+  console.log(`Found ${noFiltering.length} files (draft: true files are excluded by processMarkdownFile)`);
   noFiltering.forEach(doc => {
     console.log(`  - ${doc.title} (${doc.path})`);
   });
@@ -226,13 +196,9 @@ async function testDraftFilteringVsIgnorePatterns() {
   });
 
   console.log('\nKey differences:');
-  console.log(
-    '- draft: true filtering happens during markdown processing (content-based)'
-  );
+  console.log('- draft: true filtering happens during markdown processing (content-based)');
   console.log('- ignore patterns filter files before processing (path-based)');
-  console.log(
-    '- ignore patterns can exclude files regardless of their draft status'
-  );
+  console.log('- ignore patterns can exclude files regardless of their draft status');
 
   return true;
 }
@@ -248,15 +214,9 @@ async function main() {
 
     console.log('\n========================================');
     console.log('Test Summary:');
-    console.log(
-      `Test 1 (readMarkdownFiles): ${test1Success ? '✅ PASSED' : '❌ FAILED'}`
-    );
-    console.log(
-      `Test 2 (processFilesWithPatterns): ${test2Success ? '✅ PASSED' : '❌ FAILED'}`
-    );
-    console.log(
-      `Test 3 (Draft vs Ignore): ${test3Success ? '✅ PASSED' : '❌ FAILED'}`
-    );
+    console.log(`Test 1 (readMarkdownFiles): ${test1Success ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(`Test 2 (processFilesWithPatterns): ${test2Success ? '✅ PASSED' : '❌ FAILED'}`);
+    console.log(`Test 3 (Draft vs Ignore): ${test3Success ? '✅ PASSED' : '❌ FAILED'}`);
     console.log('========================================');
 
     // Clean up

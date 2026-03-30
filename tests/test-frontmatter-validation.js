@@ -291,8 +291,7 @@ const testCases = [
       {
         title: 'Empty Title',
         path: 'docs/empty-title.md',
-        content:
-          '# First Heading\n\nTest content with empty title in frontmatter',
+        content: '# First Heading\n\nTest content with empty title in frontmatter',
         description: 'Test empty title',
         url: 'https://example.com/empty-title',
         frontMatter: {
@@ -326,8 +325,7 @@ const testCases = [
       {
         title: 'Empty Description',
         path: 'docs/empty-description.md',
-        content:
-          'Test content with empty description.\n\nThis is the first paragraph.',
+        content: 'Test content with empty description.\n\nThis is the first paragraph.',
         description: '', // Empty description in frontmatter
         url: 'https://example.com/empty-description',
         frontMatter: {
@@ -466,13 +464,8 @@ async function runFrontmatterValidationTests() {
           const fullPath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(fullPath)) {
-            console.log(
-              `❌ FAIL - Expected file at path "${expectedPath}" not found`
-            );
-            console.log(
-              `   Available files:`,
-              fs.readdirSync(testDir, {recursive: true})
-            );
+            console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
+            console.log(`   Available files:`, fs.readdirSync(testDir, {recursive: true}));
             pathsCorrect = false;
             break;
           }
@@ -486,9 +479,7 @@ async function runFrontmatterValidationTests() {
 
         // Check that the result array has the correct length
         if (result.length !== testCase.expectedPaths.length) {
-          console.log(
-            `❌ FAIL - Expected ${testCase.expectedPaths.length} results, got ${result.length}`
-          );
+          console.log(`❌ FAIL - Expected ${testCase.expectedPaths.length} results, got ${result.length}`);
           failed++;
           await cleanupTestDirectory(testDir);
           continue;
@@ -501,9 +492,7 @@ async function runFrontmatterValidationTests() {
           const expectedPath = testCase.expectedPaths[i];
           const expectedUrl = `${testCase.siteUrl}/${expectedPath}`;
           if (doc.url !== expectedUrl) {
-            console.log(
-              `❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`
-            );
+            console.log(`❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`);
             urlsCorrect = false;
             break;
           }

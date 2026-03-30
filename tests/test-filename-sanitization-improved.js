@@ -275,11 +275,7 @@ function runTests() {
 
   for (const testCase of testCases) {
     try {
-      const result = sanitizeForFilename(
-        testCase.input,
-        testCase.fallback || 'untitled',
-        testCase.options
-      );
+      const result = sanitizeForFilename(testCase.input, testCase.fallback || 'untitled', testCase.options);
 
       if (result === testCase.expected) {
         console.log(`✅ PASS: ${testCase.name}`);
@@ -303,9 +299,7 @@ function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Improved Filename Sanitization Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -313,9 +307,5 @@ function runTests() {
 
 // Run the tests
 const success = runTests();
-console.log(
-  success
-    ? '🎉 All improved filename sanitization tests passed!'
-    : '❌ Some tests failed.'
-);
+console.log(success ? '🎉 All improved filename sanitization tests passed!' : '❌ Some tests failed.');
 process.exit(success ? 0 : 1);

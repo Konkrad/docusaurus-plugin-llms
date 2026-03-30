@@ -163,14 +163,7 @@ const testCases = [
   {
     name: 'getErrorStack returns undefined for non-Error types',
     test() {
-      const testValues = [
-        'string error',
-        42,
-        {message: 'object'},
-        null,
-        undefined,
-        ['array']
-      ];
+      const testValues = ['string error', 42, {message: 'object'}, null, undefined, ['array']];
 
       for (const error of testValues) {
         const result = getErrorStack(error);
@@ -234,9 +227,7 @@ const testCases = [
   {
     name: 'Error messages preserve details',
     test() {
-      const error = new Error(
-        'Detailed error: File not found at /path/to/file.txt'
-      );
+      const error = new Error('Detailed error: File not found at /path/to/file.txt');
       const result = getErrorMessage(error);
 
       if (result === 'Detailed error: File not found at /path/to/file.txt') {
@@ -281,9 +272,7 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Error Handling Utilities Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${testCases.length}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${testCases.length}`);
   console.log(`========================================\n`);
 
   return failed === 0;

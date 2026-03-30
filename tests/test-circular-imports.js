@@ -107,12 +107,7 @@ async function runTests() {
   try {
     // Test 1: Circular import between two partials should be detected
     console.log('Test 1: Circular import between two partials is detected');
-    const mainDoc = await processMarkdownFile(
-      path.join(testDir, 'main.md'),
-      testDir,
-      'https://example.com',
-      'docs'
-    );
+    const mainDoc = await processMarkdownFile(path.join(testDir, 'main.md'), testDir, 'https://example.com', 'docs');
 
     // The document should still be processed (not crash)
     if (mainDoc && mainDoc.content) {
@@ -132,9 +127,7 @@ async function runTests() {
     }
 
     // Should contain content from Partial A
-    const hasPartialAContent = mainDoc.content.includes(
-      'Content from Partial A'
-    );
+    const hasPartialAContent = mainDoc.content.includes('Content from Partial A');
     if (hasPartialAContent) {
       console.log('  ✅ PASS: Partial A content was included');
     } else {
@@ -143,9 +136,7 @@ async function runTests() {
     }
 
     // Should contain content from Partial B
-    const hasPartialBContent = mainDoc.content.includes(
-      'Content from Partial B'
-    );
+    const hasPartialBContent = mainDoc.content.includes('Content from Partial B');
     if (hasPartialBContent) {
       console.log('  ✅ PASS: Partial B content was included');
     } else {
@@ -157,9 +148,7 @@ async function runTests() {
     // We shouldn't see duplicate "Content from Partial A"
     const partialAMatches = mainDoc.content.match(/Content from Partial A/g);
     if (partialAMatches && partialAMatches.length === 1) {
-      console.log(
-        '  ✅ PASS: Circular import was prevented (no duplicate content)'
-      );
+      console.log('  ✅ PASS: Circular import was prevented (no duplicate content)');
     } else if (partialAMatches && partialAMatches.length > 1) {
       console.log('  ❌ FAIL: Circular import caused duplicate content');
       allTestsPassed = false;
@@ -181,9 +170,7 @@ async function runTests() {
 
     // The document should still be processed (not crash)
     if (selfDoc && selfDoc.content) {
-      console.log(
-        '  ✅ PASS: Document with self-import processed without crashing'
-      );
+      console.log('  ✅ PASS: Document with self-import processed without crashing');
     } else {
       console.log('  ❌ FAIL: Document with self-import processing failed');
       allTestsPassed = false;
@@ -192,9 +179,7 @@ async function runTests() {
     // Should contain the self-importing partial content once
     const selfImportMatches = selfDoc.content.match(/Self Importing Partial/g);
     if (selfImportMatches && selfImportMatches.length === 1) {
-      console.log(
-        '  ✅ PASS: Self-import was prevented (content appears once)'
-      );
+      console.log('  ✅ PASS: Self-import was prevented (content appears once)');
     } else if (selfImportMatches && selfImportMatches.length > 1) {
       console.log('  ❌ FAIL: Self-import caused duplicate content');
       allTestsPassed = false;

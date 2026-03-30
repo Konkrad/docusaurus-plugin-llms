@@ -68,10 +68,7 @@ export async function processMarkdownFile(
   }
 
   // Resolve partial imports before processing
-  const resolvedContent = await resolvePartialImports(
-    markdownContent,
-    filePath
-  );
+  const resolvedContent = await resolvePartialImports(markdownContent, filePath);
 
   const relativePath = path.relative(baseDir, filePath);
   // Convert to URL path format (replace backslashes with forward slashes on Windows)
@@ -84,14 +81,10 @@ export async function processMarkdownFile(
     try {
       fullUrl = new URL(resolvedUrl, siteUrl).toString();
     } catch (error: unknown) {
-      logger.warn(
-        `Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`
-      );
+      logger.warn(`Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`);
       // Fallback to string concatenation with proper path joining
       const baseUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
-      const urlPath = resolvedUrl.startsWith('/')
-        ? resolvedUrl
-        : `/${resolvedUrl}`;
+      const urlPath = resolvedUrl.startsWith('/') ? resolvedUrl : `/${resolvedUrl}`;
       fullUrl = baseUrl + urlPath;
     }
   } else {
@@ -100,9 +93,7 @@ export async function processMarkdownFile(
     const linkPathBase = normalizedPath.replace(/\.mdx?$/, '');
 
     // Handle index files specially
-    let linkPath = linkPathBase.endsWith('index')
-      ? linkPathBase.replace(/\/index$/, '')
-      : linkPathBase;
+    let linkPath = linkPathBase.endsWith('index') ? linkPathBase.replace(/\/index$/, '') : linkPathBase;
 
     // linkPath might include the pathPrefix (e.g., "docs/api/core")
     // We need to remove the pathPrefix before applying transformations, then add it back later
@@ -113,10 +104,7 @@ export async function processMarkdownFile(
     }
 
     // Apply path transformations to the clean link path (without pathPrefix)
-    const transformedLinkPath = applyPathTransformations(
-      linkPath,
-      pathTransformation
-    );
+    const transformedLinkPath = applyPathTransformations(linkPath, pathTransformation);
 
     // Also apply path transformations to the pathPrefix if it's not empty
     // This allows removing 'docs' from the path when specified in ignorePaths
@@ -154,9 +142,7 @@ export async function processMarkdownFile(
 
     // Construct URL by encoding path components, then combine with site URL
     // We don't use URL constructor for the full path because it decodes some characters
-    const pathPart = transformedPathPrefix
-      ? `${transformedPathPrefix}/${encodedLinkPath}`
-      : encodedLinkPath;
+    const pathPart = transformedPathPrefix ? `${transformedPathPrefix}/${encodedLinkPath}` : encodedLinkPath;
     try {
       const baseUrl = new URL(siteUrl);
       fullUrl = `${baseUrl.origin}/${pathPart}`;
@@ -207,10 +193,7 @@ export async function processMarkdownFile(
     description = description.replace(/^(#+)\s+/gm, '');
 
     // Special handling for description frontmatter with heading markers
-    if (
-      isNonEmptyString(data.description) &&
-      data.description.startsWith('#')
-    ) {
+    if (isNonEmptyString(data.description) && data.description.startsWith('#')) {
       // If the description in frontmatter starts with a heading marker,
       // we should preserve it in the extracted description
       description = description.replace(/^#+\s+/, '');
@@ -221,9 +204,7 @@ export async function processMarkdownFile(
 
     // Validate that the description doesn't contain markdown headings
     if (description.match(/^#+\s+/m)) {
-      logger.warn(
-        `Warning: Description for "${title}" may still contain heading markers`
-      );
+      logger.warn(`Warning: Description for "${title}" may still contain heading markers`);
     }
 
     // Warn if the description contains HTML tags
@@ -233,18 +214,12 @@ export async function processMarkdownFile(
 
     // Warn if the description is very long
     if (description.length > 500) {
-      logger.warn(
-        `Warning: Description for "${title}" is very long (${description.length} characters)`
-      );
+      logger.warn(`Warning: Description for "${title}" is very long (${description.length} characters)`);
     }
   }
 
   // Clean and process content (now with partials already resolved)
-  const cleanedContent = cleanMarkdownContent(
-    resolvedContent,
-    excludeImports,
-    removeDuplicateHeadings
-  );
+  const cleanedContent = cleanMarkdownContent(resolvedContent, excludeImports, removeDuplicateHeadings);
 
   return {
     title,
@@ -272,13 +247,9 @@ function removeNumberedPrefixes(path: string): string {
 /**
  * Try to find a route in the route map from a list of possible paths
  */
-function findRouteInMap(
-  routeMap: Map<string, string>,
-  possiblePaths: string[]
-): string | undefined {
+function findRouteInMap(routeMap: Map<string, string>, possiblePaths: string[]): string | undefined {
   for (const possiblePath of possiblePaths) {
-    const route =
-      routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
+    const route = routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
     if (route) {
       return route;
     }
@@ -337,11 +308,7 @@ function tryNumberedPrefixResolution(
 /**
  * Try finding best match using routes paths array
  */
-function tryRoutesPathsMatch(
-  routesPaths: string[],
-  relativePath: string,
-  pathPrefix: string
-): string | undefined {
+function tryRoutesPathsMatch(routesPaths: string[], relativePath: string, pathPrefix: string): string | undefined {
   const cleanPath = removeNumberedPrefixes(relativePath);
   const normalizedCleanPath = cleanPath.toLowerCase();
 
@@ -380,21 +347,13 @@ function resolveDocumentUrl(
     .replace(/\/index$/, '');
 
   // Try exact match first (respects Docusaurus's resolved routes)
-  const exactMatch = tryExactRouteMatch(
-    context.routeMap,
-    relativePath,
-    pathPrefix
-  );
+  const exactMatch = tryExactRouteMatch(context.routeMap, relativePath, pathPrefix);
   if (exactMatch) {
     return exactMatch;
   }
 
   // Try numbered prefix removal as fallback
-  const prefixMatch = tryNumberedPrefixResolution(
-    context.routeMap,
-    relativePath,
-    pathPrefix
-  );
+  const prefixMatch = tryNumberedPrefixResolution(context.routeMap, relativePath, pathPrefix);
   if (prefixMatch) {
     return prefixMatch;
   }
@@ -421,12 +380,7 @@ function resolveDocumentUrl(
  * Helper function to check if a file matches a pattern
  * Tries matching against multiple path variants for better usability
  */
-function matchesPattern(
-  file: string,
-  pattern: string,
-  siteDir: string,
-  docsDir: string
-): boolean {
+function matchesPattern(file: string, pattern: string, siteDir: string, docsDir: string): boolean {
   const minimatchOptions = {matchBase: true};
 
   // Get site-relative path (e.g., "docs/quickstart/file.md")
@@ -446,10 +400,7 @@ function matchesPattern(
   }
 
   // Try matching against docs-relative path if available
-  if (
-    docsRelativePath &&
-    minimatch(docsRelativePath, pattern, minimatchOptions)
-  ) {
+  if (docsRelativePath && minimatch(docsRelativePath, pattern, minimatchOptions)) {
     return true;
   }
 
@@ -471,18 +422,14 @@ export async function processFilesWithPatterns(
 
   if (includePatterns.length > 0) {
     filteredFiles = allFiles.filter(file => {
-      return includePatterns.some(pattern =>
-        matchesPattern(file, pattern, siteDir, docsDir)
-      );
+      return includePatterns.some(pattern => matchesPattern(file, pattern, siteDir, docsDir));
     });
   }
 
   // Apply ignore patterns
   if (ignorePatterns.length > 0) {
     filteredFiles = filteredFiles.filter(file => {
-      return !ignorePatterns.some(pattern =>
-        matchesPattern(file, pattern, siteDir, docsDir)
-      );
+      return !ignorePatterns.some(pattern => matchesPattern(file, pattern, siteDir, docsDir));
     });
   }
 
@@ -495,10 +442,7 @@ export async function processFilesWithPatterns(
     // Process files according to orderPatterns
     for (const pattern of orderPatterns) {
       const matchingFiles = filteredFiles.filter(file => {
-        return (
-          matchesPattern(file, pattern, siteDir, docsDir) &&
-          !matchedFiles.has(file)
-        );
+        return matchesPattern(file, pattern, siteDir, docsDir) && !matchedFiles.has(file);
       });
 
       for (const file of matchingFiles) {
@@ -509,9 +453,7 @@ export async function processFilesWithPatterns(
 
     // Add remaining files if includeUnmatched is true
     if (includeUnmatched) {
-      const remainingFiles = filteredFiles.filter(
-        file => !matchedFiles.has(file)
-      );
+      const remainingFiles = filteredFiles.filter(file => !matchedFiles.has(file));
       filesToProcess.push(...remainingFiles);
     }
   } else {
@@ -524,9 +466,7 @@ export async function processFilesWithPatterns(
       try {
         // Determine if this is a blog or docs file
         const blogDir = path.join(siteDir, 'blog');
-        const isBlogFile =
-          filePath.startsWith(blogDir + path.sep) ||
-          filePath.startsWith(blogDir + '/');
+        const isBlogFile = filePath.startsWith(blogDir + path.sep) || filePath.startsWith(blogDir + '/');
         // Use siteDir as baseDir to preserve full directory structure (docs/path/file.md instead of just path/file.md)
         const baseDir = siteDir;
 
@@ -538,10 +478,7 @@ export async function processFilesWithPatterns(
           // The physical path is the correct prefix for stripping in URL fallback construction.
           const section = context.docsSections.find(s => {
             const sectionDir = path.join(siteDir, s.path);
-            return (
-              filePath.startsWith(sectionDir + path.sep) ||
-              filePath.startsWith(sectionDir + '/')
-            );
+            return filePath.startsWith(sectionDir + path.sep) || filePath.startsWith(sectionDir + '/');
           });
           pathPrefix = section ? section.path : docsDir;
         } else {
@@ -549,12 +486,7 @@ export async function processFilesWithPatterns(
         }
 
         // Try to find the resolved URL for this file from the route map
-        const resolvedUrl = resolveDocumentUrl(
-          filePath,
-          baseDir,
-          pathPrefix,
-          context
-        );
+        const resolvedUrl = resolveDocumentUrl(filePath, baseDir, pathPrefix, context);
 
         // Log when we successfully resolve a URL using Docusaurus routes
         if (resolvedUrl && context.routeMap) {
@@ -563,9 +495,7 @@ export async function processFilesWithPatterns(
             .replace(/\/index$/, '');
           const expectedFallback = `/${pathPrefix}/${relativePath}`;
           if (resolvedUrl !== expectedFallback) {
-            logger.verbose(
-              `Resolved URL for ${path.basename(filePath)}: ${resolvedUrl} (was: ${expectedFallback})`
-            );
+            logger.verbose(`Resolved URL for ${path.basename(filePath)}: ${resolvedUrl} (was: ${expectedFallback})`);
           }
         }
 
@@ -579,17 +509,10 @@ export async function processFilesWithPatterns(
           context.options.removeDuplicateHeadings || false,
           resolvedUrl
         );
-        if (
-          docInfo !== null &&
-          !isBlogFile &&
-          context.docsSections?.length > 0
-        ) {
+        if (docInfo !== null && !isBlogFile && context.docsSections?.length > 0) {
           const matchedSection = context.docsSections.find(s => {
             const sectionDir = path.join(siteDir, s.path);
-            return (
-              filePath.startsWith(sectionDir + path.sep) ||
-              filePath.startsWith(sectionDir + '/')
-            );
+            return filePath.startsWith(sectionDir + path.sep) || filePath.startsWith(sectionDir + '/');
           });
           if (matchedSection) {
             docInfo.section = matchedSection.label || matchedSection.path;
@@ -605,10 +528,7 @@ export async function processFilesWithPatterns(
 
   // Filter successful results and non-null DocInfo objects
   const processedDocs = results
-    .filter(
-      (r): r is PromiseFulfilledResult<DocInfo | null> =>
-        r.status === 'fulfilled' && r.value !== null
-    )
+    .filter((r): r is PromiseFulfilledResult<DocInfo | null> => r.status === 'fulfilled' && r.value !== null)
     .map(r => r.value as DocInfo);
 
   return processedDocs;

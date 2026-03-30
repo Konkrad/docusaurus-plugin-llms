@@ -8,11 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Import the ensureUniqueIdentifier utility
-function ensureUniqueIdentifier(
-  baseIdentifier,
-  usedIdentifiers,
-  suffixGenerator
-) {
+function ensureUniqueIdentifier(baseIdentifier, usedIdentifiers, suffixGenerator) {
   let identifier = baseIdentifier;
   let counter = 1;
 
@@ -27,17 +23,8 @@ function ensureUniqueIdentifier(
 }
 
 // Mock the generateLLMFile function from generator.ts with the fixed logic
-function generateLLMFile(
-  docs,
-  outputPath,
-  fileTitle,
-  fileDescription,
-  includeFullContent,
-  version
-) {
-  console.log(
-    `Generating file: ${outputPath}, version: ${version || 'undefined'}`
-  );
+function generateLLMFile(docs, outputPath, fileTitle, fileDescription, includeFullContent, version) {
+  console.log(`Generating file: ${outputPath}, version: ${version || 'undefined'}`);
   const versionInfo = version ? `\n\nVersion: ${version}` : '';
 
   if (includeFullContent) {
@@ -53,23 +40,18 @@ function generateLLMFile(
       const firstHeadingText = headingMatch ? headingMatch[1].trim() : null;
 
       // Generate unique header using the utility function
-      const uniqueHeader = ensureUniqueIdentifier(
-        doc.title,
-        usedHeaders,
-        (counter, base) => {
-          // Try to make it more descriptive by adding the file path info if available
-          if (doc.path && counter === 2) {
-            const pathParts = doc.path.split('/');
-            // FIXED: Changed from > 1 to >= 2 to properly check array bounds
-            const folderName =
-              pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
-            if (folderName) {
-              return `(${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
-            }
+      const uniqueHeader = ensureUniqueIdentifier(doc.title, usedHeaders, (counter, base) => {
+        // Try to make it more descriptive by adding the file path info if available
+        if (doc.path && counter === 2) {
+          const pathParts = doc.path.split('/');
+          // FIXED: Changed from > 1 to >= 2 to properly check array bounds
+          const folderName = pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
+          if (folderName) {
+            return `(${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
           }
-          return `(${counter})`;
         }
-      );
+        return `(${counter})`;
+      });
 
       if (firstHeadingText === doc.title) {
         // Content already has the same heading, replace it with our unique header
@@ -121,8 +103,7 @@ const testCases = [
       }
     ],
     expectedHeaders: ['Tutorial', 'Tutorial (2)'], // Should fall back to numeric counter
-    description:
-      'Single element paths should not cause array bounds issues and should fall back to numeric counters'
+    description: 'Single element paths should not cause array bounds issues and should fall back to numeric counters'
   },
   {
     name: 'Empty path (edge case)',
@@ -143,8 +124,7 @@ const testCases = [
       }
     ],
     expectedHeaders: ['Guide', 'Guide (2)'], // Should fall back to numeric counter
-    description:
-      'Empty paths should not cause crashes and should use numeric counters'
+    description: 'Empty paths should not cause crashes and should use numeric counters'
   },
   {
     name: 'Root level path with leading slash',
@@ -165,8 +145,7 @@ const testCases = [
       }
     ],
     expectedHeaders: ['README', 'README (2)'], // Should fall back to numeric counter
-    description:
-      'Root level paths with leading slashes should be handled correctly'
+    description: 'Root level paths with leading slashes should be handled correctly'
   },
   {
     name: 'Normal two-level path (should use folder name)',
@@ -187,8 +166,7 @@ const testCases = [
       }
     ],
     expectedHeaders: ['Configuration', 'Configuration (Guides)'], // Should use folder name
-    description:
-      'Two-level paths should correctly extract and use the folder name'
+    description: 'Two-level paths should correctly extract and use the folder name'
   },
   {
     name: 'Mixed path lengths',

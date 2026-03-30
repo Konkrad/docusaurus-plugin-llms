@@ -114,22 +114,10 @@ function verifyResults() {
   console.log('\nVerifying results...');
 
   // Read the generated files
-  const defaultFile = fs.readFileSync(
-    path.join(OUTPUT_DIR, 'llms-default.txt'),
-    'utf8'
-  );
-  const ignorePathFile = fs.readFileSync(
-    path.join(OUTPUT_DIR, 'llms-ignore-paths.txt'),
-    'utf8'
-  );
-  const addPathFile = fs.readFileSync(
-    path.join(OUTPUT_DIR, 'llms-add-paths.txt'),
-    'utf8'
-  );
-  const combinedFile = fs.readFileSync(
-    path.join(OUTPUT_DIR, 'llms-combined.txt'),
-    'utf8'
-  );
+  const defaultFile = fs.readFileSync(path.join(OUTPUT_DIR, 'llms-default.txt'), 'utf8');
+  const ignorePathFile = fs.readFileSync(path.join(OUTPUT_DIR, 'llms-ignore-paths.txt'), 'utf8');
+  const addPathFile = fs.readFileSync(path.join(OUTPUT_DIR, 'llms-add-paths.txt'), 'utf8');
+  const combinedFile = fs.readFileSync(path.join(OUTPUT_DIR, 'llms-combined.txt'), 'utf8');
 
   // Display link patterns for verification
   console.log('\nDefault file URLs:');
@@ -148,9 +136,7 @@ function verifyResults() {
   const combinedUrls = combinedFile.match(/\[.*?\]\((.*?)\)/g);
   combinedUrls?.forEach(url => console.log(url));
 
-  console.log(
-    '\nTest completed. Please verify the URL patterns in the output files.'
-  );
+  console.log('\nTest completed. Please verify the URL patterns in the output files.');
 }
 
 // Clean up test files

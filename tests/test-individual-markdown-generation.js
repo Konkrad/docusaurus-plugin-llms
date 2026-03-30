@@ -25,8 +25,7 @@ const testCases = [
       {
         title: 'Getting Started',
         path: 'docs/getting-started.md',
-        content:
-          'This is the getting started guide.\n\nFollow these steps to begin.',
+        content: 'This is the getting started guide.\n\nFollow these steps to begin.',
         description: 'Introduction to the system',
         url: 'https://example.com/docs/getting-started'
       }
@@ -40,8 +39,7 @@ const testCases = [
       {
         title: 'API Reference: v2.0 (Beta)',
         path: 'docs/api/reference.md',
-        content:
-          'This is the API reference documentation.\n\nVersion 2.0 beta features.',
+        content: 'This is the API reference documentation.\n\nVersion 2.0 beta features.',
         description: 'API reference documentation for version 2.0',
         url: 'https://example.com/docs/api/reference'
       }
@@ -55,16 +53,14 @@ const testCases = [
       {
         title: 'Configuration',
         path: 'docs/basic/configuration.md',
-        content:
-          'Basic configuration options.\n\nThese are the basic settings.',
+        content: 'Basic configuration options.\n\nThese are the basic settings.',
         description: 'Basic configuration guide',
         url: 'https://example.com/docs/basic/configuration'
       },
       {
         title: 'Different Configuration',
         path: 'docs/basic/configuration.md', // Same path, different content
-        content:
-          'Different configuration options.\n\nThese are different settings.',
+        content: 'Different configuration options.\n\nThese are different settings.',
         description: 'Different configuration guide',
         url: 'https://example.com/docs/basic/configuration'
       }
@@ -78,8 +74,7 @@ const testCases = [
       {
         title: 'Troubleshooting Guide',
         path: '',
-        content:
-          'This is a troubleshooting guide.\n\nCommon issues and solutions.',
+        content: 'This is a troubleshooting guide.\n\nCommon issues and solutions.',
         description: 'How to troubleshoot common issues',
         url: 'https://example.com/troubleshooting'
       }
@@ -93,8 +88,7 @@ const testCases = [
       {
         title: 'Quick Start',
         path: 'docs/quick-start.md',
-        content:
-          'Get started quickly with our platform.\n\nJust a few simple steps.',
+        content: 'Get started quickly with our platform.\n\nJust a few simple steps.',
         description: 'Quick start guide for new users',
         url: 'https://example.com/docs/quick-start'
       },
@@ -108,17 +102,12 @@ const testCases = [
       {
         title: 'Tutorial #2',
         path: 'guides/advanced/tutorial-2.md',
-        content:
-          'Second tutorial building on the first.\n\nAdvanced concepts covered.',
+        content: 'Second tutorial building on the first.\n\nAdvanced concepts covered.',
         description: 'Advanced tutorial building on basics',
         url: 'https://example.com/guides/advanced/tutorial-2'
       }
     ],
-    expectedPaths: [
-      'quick-start.md',
-      'tutorials/tutorial-1.md',
-      'guides/advanced/tutorial-2.md'
-    ],
+    expectedPaths: ['quick-start.md', 'tutorials/tutorial-1.md', 'guides/advanced/tutorial-2.md'],
     siteUrl: 'https://example.com'
   },
   {
@@ -127,8 +116,7 @@ const testCases = [
       {
         title: 'Deep Nested Document',
         path: 'docs/level1/level2/level3/document.mdx',
-        content:
-          'Content in a deeply nested structure.\n\nThis tests deep directory creation.',
+        content: 'Content in a deeply nested structure.\n\nThis tests deep directory creation.',
         description: 'Testing deep nested paths',
         url: 'https://example.com/docs/level1/level2/level3/document'
       }
@@ -177,9 +165,7 @@ async function runIndividualMarkdownGenerationTests() {
           const fullPath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(fullPath)) {
-            console.log(
-              `❌ FAIL - Expected file at path "${expectedPath}" not found`
-            );
+            console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
             pathsCorrect = false;
             break;
           }
@@ -201,9 +187,7 @@ async function runIndividualMarkdownGenerationTests() {
           const expectedPath = testCase.expectedPaths[i];
           const expectedUrl = `${testCase.siteUrl}/${expectedPath}`;
           if (doc.url !== expectedUrl) {
-            console.log(
-              `❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`
-            );
+            console.log(`❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`);
             urlsCorrect = false;
             break;
           }
@@ -222,9 +206,7 @@ async function runIndividualMarkdownGenerationTests() {
           const filepath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(filepath)) {
-            console.log(
-              `❌ FAIL - Generated file "${expectedPath}" does not exist`
-            );
+            console.log(`❌ FAIL - Generated file "${expectedPath}" does not exist`);
             contentsCorrect = false;
             break;
           }
@@ -234,20 +216,13 @@ async function runIndividualMarkdownGenerationTests() {
 
           // Check that file contains expected elements
           if (!fileContent.includes(`# ${originalDoc.title}`)) {
-            console.log(
-              `❌ FAIL - File content missing title: "${originalDoc.title}"`
-            );
+            console.log(`❌ FAIL - File content missing title: "${originalDoc.title}"`);
             contentsCorrect = false;
             break;
           }
 
-          if (
-            originalDoc.description &&
-            !fileContent.includes(`> ${originalDoc.description}`)
-          ) {
-            console.log(
-              `❌ FAIL - File content missing description: "${originalDoc.description}"`
-            );
+          if (originalDoc.description && !fileContent.includes(`> ${originalDoc.description}`)) {
+            console.log(`❌ FAIL - File content missing description: "${originalDoc.description}"`);
             contentsCorrect = false;
             break;
           }
@@ -271,9 +246,7 @@ async function runIndividualMarkdownGenerationTests() {
           const doc = result[i];
           const expectedPath = `/${testCase.expectedPaths[i]}`;
           if (doc.path !== expectedPath) {
-            console.log(
-              `❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`
-            );
+            console.log(`❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`);
             docPathsCorrect = false;
             break;
           }
@@ -389,9 +362,7 @@ async function testEdgeCases() {
           console.log(`✅ PASS`);
           passed++;
         } else {
-          console.log(
-            `❌ FAIL - Expected ${testCase.expectedPaths.length} files, got ${result.length}`
-          );
+          console.log(`❌ FAIL - Expected ${testCase.expectedPaths.length} files, got ${result.length}`);
           failed++;
         }
 
@@ -409,9 +380,7 @@ async function testEdgeCases() {
     }
   }
 
-  console.log(
-    `\nEdge Case Results: ${passed} of ${edgeCases.length} tests passed.`
-  );
+  console.log(`\nEdge Case Results: ${passed} of ${edgeCases.length} tests passed.`);
   return failed === 0;
 }
 
@@ -498,15 +467,7 @@ async function testKeepFrontMatter() {
           }
         }
       ],
-      keepFrontMatter: [
-        'sidebar_label',
-        'sidebar_position',
-        'keywords',
-        'tags',
-        'author',
-        'draft',
-        'difficulty_level'
-      ],
+      keepFrontMatter: ['sidebar_label', 'sidebar_position', 'keywords', 'tags', 'author', 'draft', 'difficulty_level'],
       expectedFrontmatter: {
         sidebar_label: 'Complete Reference',
         sidebar_position: 1,
@@ -533,12 +494,7 @@ async function testKeepFrontMatter() {
           }
         }
       ],
-      keepFrontMatter: [
-        'sidebar_label',
-        'keywords',
-        'non_existent_field',
-        'another_missing'
-      ],
+      keepFrontMatter: ['sidebar_label', 'keywords', 'non_existent_field', 'another_missing'],
       expectedFrontmatter: {
         sidebar_label: 'Partial Label',
         keywords: ['partial', 'test']
@@ -566,13 +522,7 @@ async function testKeepFrontMatter() {
           }
         }
       ],
-      keepFrontMatter: [
-        'title_override',
-        'position',
-        'is_published',
-        'tags',
-        'metadata'
-      ],
+      keepFrontMatter: ['title_override', 'position', 'is_published', 'tags', 'metadata'],
       expectedFrontmatter: {
         title_override: 'String Value',
         position: 42,
@@ -630,9 +580,7 @@ async function testKeepFrontMatter() {
           if (expectedKeys.length === 0) {
             // Should not have frontmatter
             if (fileContent.startsWith('---')) {
-              console.log(
-                `❌ FAIL - Unexpected frontmatter found when none expected`
-              );
+              console.log(`❌ FAIL - Unexpected frontmatter found when none expected`);
               frontmatterCorrect = false;
               break;
             }
@@ -649,9 +597,7 @@ async function testKeepFrontMatter() {
             const parsedContent = matter(fileContent);
 
             // Check each expected field
-            for (const [key, expectedValue] of Object.entries(
-              testCase.expectedFrontmatter
-            )) {
+            for (const [key, expectedValue] of Object.entries(testCase.expectedFrontmatter)) {
               if (!(key in parsedContent.data)) {
                 console.log(`❌ FAIL - Missing frontmatter field: ${key}`);
                 frontmatterCorrect = false;
@@ -659,9 +605,7 @@ async function testKeepFrontMatter() {
               }
 
               const actualValue = parsedContent.data[key];
-              if (
-                JSON.stringify(actualValue) !== JSON.stringify(expectedValue)
-              ) {
+              if (JSON.stringify(actualValue) !== JSON.stringify(expectedValue)) {
                 console.log(`❌ FAIL - Frontmatter field "${key}" mismatch:`);
                 console.log(`   Expected: ${JSON.stringify(expectedValue)}`);
                 console.log(`   Actual: ${JSON.stringify(actualValue)}`);
@@ -676,9 +620,7 @@ async function testKeepFrontMatter() {
             const actualKeys = Object.keys(parsedContent.data);
             for (const actualKey of actualKeys) {
               if (!expectedKeys.includes(actualKey)) {
-                console.log(
-                  `❌ FAIL - Unexpected frontmatter field: ${actualKey}`
-                );
+                console.log(`❌ FAIL - Unexpected frontmatter field: ${actualKey}`);
                 frontmatterCorrect = false;
                 break;
               }
@@ -707,9 +649,7 @@ async function testKeepFrontMatter() {
     }
   }
 
-  console.log(
-    `\nFrontmatter Test Results: ${passed} of ${frontmatterTestCases.length} tests passed.`
-  );
+  console.log(`\nFrontmatter Test Results: ${passed} of ${frontmatterTestCases.length} tests passed.`);
   return failed === 0;
 }
 

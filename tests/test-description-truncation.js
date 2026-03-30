@@ -103,8 +103,7 @@ const tests = [
   },
   {
     name: 'Multi-line description (only first line used)',
-    input:
-      'First line that is quite long and should be used\nSecond line should be ignored',
+    input: 'First line that is quite long and should be used\nSecond line should be ignored',
     expected: 'First line that is quite long and should be used',
     expectsTruncation: false
   },
@@ -140,10 +139,7 @@ const tests = [
   },
   {
     name: 'Word boundary at exactly 80% threshold',
-    input:
-      'a'.repeat(Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO)) +
-      ' ' +
-      'b'.repeat(100),
+    input: 'a'.repeat(Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO)) + ' ' + 'b'.repeat(100),
     expected: function (result) {
       // The space is at position 120, which equals 120 (80% of 150)
       // Since lastSpace (120) > MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO (120), condition is true
@@ -154,12 +150,7 @@ const tests = [
   },
   {
     name: 'Word boundary just above 80% threshold',
-    input:
-      'a'.repeat(
-        Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO) + 1
-      ) +
-      ' ' +
-      'b'.repeat(100),
+    input: 'a'.repeat(Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO) + 1) + ' ' + 'b'.repeat(100),
     expected: function (result) {
       // Should truncate at the space
       return result.endsWith('...') && !result.includes('b');
@@ -175,9 +166,7 @@ function runTests() {
   console.log(`  MAX_DESCRIPTION_LENGTH: ${MAX_DESCRIPTION_LENGTH}`);
   console.log(`  DESCRIPTION_TRUNCATE_AT: ${DESCRIPTION_TRUNCATE_AT}`);
   console.log(`  WORD_BOUNDARY_MIN_RATIO: ${WORD_BOUNDARY_MIN_RATIO}`);
-  console.log(
-    `  Minimum word boundary position: ${Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO)}\n`
-  );
+  console.log(`  Minimum word boundary position: ${Math.floor(MAX_DESCRIPTION_LENGTH * WORD_BOUNDARY_MIN_RATIO)}\n`);
 
   let passed = 0;
   let failed = 0;
@@ -188,9 +177,7 @@ function runTests() {
 
     const result = cleanDescriptionForToc(test.input);
     console.log(`  Output length: ${result.length}`);
-    console.log(
-      `  Output preview: "${result.substring(0, 50)}${result.length > 50 ? '...' : ''}"`
-    );
+    console.log(`  Output preview: "${result.substring(0, 50)}${result.length > 50 ? '...' : ''}"`);
 
     let testPassed = false;
 
@@ -208,16 +195,10 @@ function runTests() {
       testPassed = result === test.expected;
       if (!testPassed) {
         console.log(`  ❌ FAIL`);
-        console.log(
-          `  Expected: "${test.expected.substring(0, 50)}${test.expected.length > 50 ? '...' : ''}"`
-        );
-        console.log(
-          `  Got:      "${result.substring(0, 50)}${result.length > 50 ? '...' : ''}"`
-        );
+        console.log(`  Expected: "${test.expected.substring(0, 50)}${test.expected.length > 50 ? '...' : ''}"`);
+        console.log(`  Got:      "${result.substring(0, 50)}${result.length > 50 ? '...' : ''}"`);
         if (result.length !== test.expected.length) {
-          console.log(
-            `  Length mismatch: expected ${test.expected.length}, got ${result.length}`
-          );
+          console.log(`  Length mismatch: expected ${test.expected.length}, got ${result.length}`);
         }
       } else {
         console.log(`  ✅ PASS`);
@@ -227,17 +208,13 @@ function runTests() {
     // Verify truncation occurred as expected
     const hasTruncation = result.endsWith('...');
     if (test.expectsTruncation !== hasTruncation) {
-      console.log(
-        `  ⚠️  WARNING: Expected truncation=${test.expectsTruncation}, but got truncation=${hasTruncation}`
-      );
+      console.log(`  ⚠️  WARNING: Expected truncation=${test.expectsTruncation}, but got truncation=${hasTruncation}`);
       testPassed = false;
     }
 
     // Verify output is within max length
     if (result.length > MAX_DESCRIPTION_LENGTH) {
-      console.log(
-        `  ❌ ERROR: Output exceeds MAX_DESCRIPTION_LENGTH (${result.length} > ${MAX_DESCRIPTION_LENGTH})`
-      );
+      console.log(`  ❌ ERROR: Output exceeds MAX_DESCRIPTION_LENGTH (${result.length} > ${MAX_DESCRIPTION_LENGTH})`);
       testPassed = false;
     }
 
@@ -288,10 +265,7 @@ function runIntegrationTests() {
   // String is > 150, so needs truncation. After taking 147 chars, we have 'a'*145 + ' t'
   // lastIndexOf(' ') will find the space at position 145, which is > 120 (80% of 150)
   // So it will truncate at position 145
-  assert(
-    result.length <= MAX_DESCRIPTION_LENGTH,
-    'Should be within max length'
-  );
+  assert(result.length <= MAX_DESCRIPTION_LENGTH, 'Should be within max length');
   assert(result.endsWith('...'), 'Should end with ellipsis');
   // Should not include 'test' since we truncate at the space before it
   assert(!result.includes('test'), 'Should truncate before "test"');
@@ -301,15 +275,9 @@ function runIntegrationTests() {
   console.log('Test: Truncation without word boundary');
   const noSpaceStr = 'a'.repeat(200);
   const result2 = cleanDescriptionForToc(noSpaceStr);
-  assert(
-    result2.length === MAX_DESCRIPTION_LENGTH,
-    `Should be exactly ${MAX_DESCRIPTION_LENGTH} chars`
-  );
+  assert(result2.length === MAX_DESCRIPTION_LENGTH, `Should be exactly ${MAX_DESCRIPTION_LENGTH} chars`);
   assert(result2.endsWith('...'), 'Should end with ellipsis');
-  assert(
-    result2 === 'a'.repeat(DESCRIPTION_TRUNCATE_AT) + '...',
-    'Should truncate at DESCRIPTION_TRUNCATE_AT'
-  );
+  assert(result2 === 'a'.repeat(DESCRIPTION_TRUNCATE_AT) + '...', 'Should truncate at DESCRIPTION_TRUNCATE_AT');
   console.log('  ✅ PASS: No word boundary truncation works\n');
 
   console.log('✅ All integration tests passed!');

@@ -17,32 +17,17 @@ async function setupTestFiles() {
   await fs.ensureDir(DOCS_DIR);
 
   // Create test files with different naming patterns
-  await fs.writeFile(
-    path.join(DOCS_DIR, 'simple.md'),
-    '# Simple\n\nSimple test file.'
-  );
+  await fs.writeFile(path.join(DOCS_DIR, 'simple.md'), '# Simple\n\nSimple test file.');
 
-  await fs.writeFile(
-    path.join(DOCS_DIR, '01-numbered.md'),
-    '# Numbered\n\nNumbered prefix file.'
-  );
+  await fs.writeFile(path.join(DOCS_DIR, '01-numbered.md'), '# Numbered\n\nNumbered prefix file.');
 
-  await fs.writeFile(
-    path.join(DOCS_DIR, '02-another.md'),
-    '# Another\n\nAnother numbered file.'
-  );
+  await fs.writeFile(path.join(DOCS_DIR, '02-another.md'), '# Another\n\nAnother numbered file.');
 
   // Nested folder with numbered prefix
   await fs.ensureDir(path.join(DOCS_DIR, '01-category'));
-  await fs.writeFile(
-    path.join(DOCS_DIR, '01-category', 'nested.md'),
-    '# Nested\n\nNested file in numbered category.'
-  );
+  await fs.writeFile(path.join(DOCS_DIR, '01-category', 'nested.md'), '# Nested\n\nNested file in numbered category.');
 
-  await fs.writeFile(
-    path.join(DOCS_DIR, '01-category', '01-double.md'),
-    '# Double\n\nDouble numbered file.'
-  );
+  await fs.writeFile(path.join(DOCS_DIR, '01-category', '01-double.md'), '# Double\n\nDouble numbered file.');
 }
 
 async function cleanupTestFiles() {
@@ -71,18 +56,13 @@ async function runTests() {
         routeMap
       };
 
-      const allFiles = [
-        path.join(DOCS_DIR, 'simple.md'),
-        path.join(DOCS_DIR, '01-numbered.md')
-      ];
+      const allFiles = [path.join(DOCS_DIR, 'simple.md'), path.join(DOCS_DIR, '01-numbered.md')];
 
       const results = await processFilesWithPatterns(context, allFiles);
 
       // Verify that exact matches are found
       const simpleDoc = results.find(doc => doc.path === 'docs/simple.md');
-      const numberedDoc = results.find(
-        doc => doc.path === 'docs/01-numbered.md'
-      );
+      const numberedDoc = results.find(doc => doc.path === 'docs/01-numbered.md');
 
       if (simpleDoc && simpleDoc.url === 'https://example.com/simple') {
         console.log('  ✓ PASS: Exact match for simple.md');
@@ -94,9 +74,7 @@ async function runTests() {
       if (numberedDoc && numberedDoc.url === 'https://example.com/numbered') {
         console.log('  ✓ PASS: Exact match for numbered file');
       } else {
-        console.log(
-          '  ✗ FAIL: Expected 01-numbered.md to resolve to /numbered'
-        );
+        console.log('  ✗ FAIL: Expected 01-numbered.md to resolve to /numbered');
         console.log(`    Got: ${numberedDoc?.url}`);
       }
     }
@@ -156,9 +134,7 @@ async function runTests() {
       if (doc && doc.url === 'https://example.com/category/nested') {
         console.log('  ✓ PASS: Segment-wise match removes folder prefix');
       } else {
-        console.log(
-          '  ✗ FAIL: Expected nested file to resolve to /category/nested'
-        );
+        console.log('  ✗ FAIL: Expected nested file to resolve to /category/nested');
         console.log(`    Got: ${doc?.url}`);
       }
     }
@@ -184,9 +160,7 @@ async function runTests() {
       if (doc && doc.url === 'https://example.com/category/double') {
         console.log('  ✓ PASS: Double numbered prefixes handled correctly');
       } else {
-        console.log(
-          '  ✗ FAIL: Expected double numbered file to resolve correctly'
-        );
+        console.log('  ✗ FAIL: Expected double numbered file to resolve correctly');
         console.log(`    Got: ${doc?.url}`);
       }
     }
@@ -220,11 +194,7 @@ async function runTests() {
     console.log('\nTest 6: Best route match with routesPaths');
     {
       const routeMap = new Map(); // Empty route map
-      const routesPaths = [
-        '/docs/another',
-        '/docs/category/nested',
-        '/docs/simple'
-      ];
+      const routesPaths = ['/docs/another', '/docs/category/nested', '/docs/simple'];
 
       const context = {
         siteDir: TEST_DIR,

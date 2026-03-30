@@ -266,9 +266,7 @@ function requireParameter_BAD(value: string | undefined | null): void {
 /**
  * When checking if a value should be used (but preserving falsy values)
  */
-function explicitCheck_GOOD(
-  value: string | number | boolean | undefined | null
-): void {
+function explicitCheck_GOOD(value: string | number | boolean | undefined | null): void {
   if (value !== undefined && value !== null) {
     // Now can use value = 0, '', false safely
     console.log(value);
@@ -278,9 +276,7 @@ function explicitCheck_GOOD(
 /**
  * AVOID: Truthy check when falsy values are valid
  */
-function explicitCheck_BAD(
-  value: string | number | boolean | undefined | null
-): void {
+function explicitCheck_BAD(value: string | number | boolean | undefined | null): void {
   if (value) {
     // PROBLEM: Rejects value = 0, '', false
     console.log(value);

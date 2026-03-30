@@ -22,14 +22,10 @@ function constructUrlWithResolvedUrl(resolvedUrl, siteUrl) {
   try {
     return new URL(resolvedUrl, siteUrl).toString();
   } catch (error) {
-    console.warn(
-      `Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`
-    );
+    console.warn(`Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`);
     // Fallback to string concatenation with proper path joining
     const baseUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
-    const urlPath = resolvedUrl.startsWith('/')
-      ? resolvedUrl
-      : `/${resolvedUrl}`;
+    const urlPath = resolvedUrl.startsWith('/') ? resolvedUrl : `/${resolvedUrl}`;
     return baseUrl + urlPath;
   }
 }
@@ -216,10 +212,7 @@ let failedTests = 0;
 
 resolvedUrlTestCases.forEach((testCase, index) => {
   try {
-    const result = constructUrlWithResolvedUrl(
-      testCase.resolvedUrl,
-      testCase.siteUrl
-    );
+    const result = constructUrlWithResolvedUrl(testCase.resolvedUrl, testCase.siteUrl);
 
     if (testCase.shouldSucceed) {
       // Check if result matches expected output or pattern
@@ -227,16 +220,12 @@ resolvedUrlTestCases.forEach((testCase, index) => {
       if (testCase.expectedOutput) {
         matches = result === testCase.expectedOutput;
         if (!matches) {
-          throw new Error(
-            `Expected "${testCase.expectedOutput}" but got "${result}"`
-          );
+          throw new Error(`Expected "${testCase.expectedOutput}" but got "${result}"`);
         }
       } else if (testCase.expectedPattern) {
         matches = testCase.expectedPattern.test(result);
         if (!matches) {
-          throw new Error(
-            `Expected to match ${testCase.expectedPattern} but got "${result}"`
-          );
+          throw new Error(`Expected to match ${testCase.expectedPattern} but got "${result}"`);
         }
       } else {
         // Just verify it doesn't throw
@@ -244,18 +233,14 @@ resolvedUrlTestCases.forEach((testCase, index) => {
       }
 
       console.log(`✓ Test ${index + 1} passed: ${testCase.name}`);
-      console.log(
-        `  Input: resolvedUrl="${testCase.resolvedUrl}", siteUrl="${testCase.siteUrl}"`
-      );
+      console.log(`  Input: resolvedUrl="${testCase.resolvedUrl}", siteUrl="${testCase.siteUrl}"`);
       console.log(`  Output: "${result}"`);
       console.log(`  ${testCase.description}\n`);
       passedTests++;
     }
   } catch (error) {
     console.error(`✗ Test ${index + 1} failed: ${testCase.name}`);
-    console.error(
-      `  Input: resolvedUrl="${testCase.resolvedUrl}", siteUrl="${testCase.siteUrl}"`
-    );
+    console.error(`  Input: resolvedUrl="${testCase.resolvedUrl}", siteUrl="${testCase.siteUrl}"`);
     console.error(`  ${error.message}\n`);
     failedTests++;
   }
@@ -266,10 +251,7 @@ console.log('\nTesting URL construction with fallback path...\n');
 
 fallbackUrlTestCases.forEach((testCase, index) => {
   try {
-    const result = constructUrlWithFallback(
-      testCase.siteUrl,
-      testCase.pathPart
-    );
+    const result = constructUrlWithFallback(testCase.siteUrl, testCase.pathPart);
 
     if (testCase.shouldSucceed) {
       // Check if result matches expected output or pattern
@@ -277,39 +259,27 @@ fallbackUrlTestCases.forEach((testCase, index) => {
       if (testCase.expectedOutput) {
         matches = result === testCase.expectedOutput;
         if (!matches) {
-          throw new Error(
-            `Expected "${testCase.expectedOutput}" but got "${result}"`
-          );
+          throw new Error(`Expected "${testCase.expectedOutput}" but got "${result}"`);
         }
       } else if (testCase.expectedPattern) {
         matches = testCase.expectedPattern.test(result);
         if (!matches) {
-          throw new Error(
-            `Expected to match ${testCase.expectedPattern} but got "${result}"`
-          );
+          throw new Error(`Expected to match ${testCase.expectedPattern} but got "${result}"`);
         }
       } else {
         // Just verify it doesn't throw
         matches = true;
       }
 
-      console.log(
-        `✓ Test ${index + resolvedUrlTestCases.length + 1} passed: ${testCase.name}`
-      );
-      console.log(
-        `  Input: siteUrl="${testCase.siteUrl}", pathPart="${testCase.pathPart}"`
-      );
+      console.log(`✓ Test ${index + resolvedUrlTestCases.length + 1} passed: ${testCase.name}`);
+      console.log(`  Input: siteUrl="${testCase.siteUrl}", pathPart="${testCase.pathPart}"`);
       console.log(`  Output: "${result}"`);
       console.log(`  ${testCase.description}\n`);
       passedTests++;
     }
   } catch (error) {
-    console.error(
-      `✗ Test ${index + resolvedUrlTestCases.length + 1} failed: ${testCase.name}`
-    );
-    console.error(
-      `  Input: siteUrl="${testCase.siteUrl}", pathPart="${testCase.pathPart}"`
-    );
+    console.error(`✗ Test ${index + resolvedUrlTestCases.length + 1} failed: ${testCase.name}`);
+    console.error(`  Input: siteUrl="${testCase.siteUrl}", pathPart="${testCase.pathPart}"`);
     console.error(`  ${error.message}\n`);
     failedTests++;
   }
@@ -318,9 +288,7 @@ fallbackUrlTestCases.forEach((testCase, index) => {
 // Summary
 console.log('='.repeat(60));
 console.log(`Test Summary:`);
-console.log(
-  `  Total tests: ${resolvedUrlTestCases.length + fallbackUrlTestCases.length}`
-);
+console.log(`  Total tests: ${resolvedUrlTestCases.length + fallbackUrlTestCases.length}`);
 console.log(`  Passed: ${passedTests}`);
 console.log(`  Failed: ${failedTests}`);
 console.log('='.repeat(60));

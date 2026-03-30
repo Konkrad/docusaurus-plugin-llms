@@ -17,8 +17,7 @@ const testCases = [
     input: 'docs/backup/test',
     config: {ignorePaths: ['docs.backup']},
     expected: 'docs/backup/test', // Should NOT match because . is literal
-    description:
-      'docs.backup should only match literal "docs.backup", not "docs/backup"'
+    description: 'docs.backup should only match literal "docs.backup", not "docs/backup"'
   },
   {
     name: 'Literal dot should match when present',
@@ -195,18 +194,12 @@ function runTests() {
   });
 
   console.log('='.repeat(80));
-  console.log(
-    `SUMMARY: ${passCount} passed, ${failCount} failed out of ${testCases.length} tests`
-  );
+  console.log(`SUMMARY: ${passCount} passed, ${failCount} failed out of ${testCases.length} tests`);
   console.log('='.repeat(80));
 
   if (failCount > 0) {
-    console.log(
-      '\n⚠️  Some tests failed. This indicates a security or correctness issue.'
-    );
-    console.log(
-      'Special regex characters must be escaped to prevent regex injection.'
-    );
+    console.log('\n⚠️  Some tests failed. This indicates a security or correctness issue.');
+    console.log('Special regex characters must be escaped to prevent regex injection.');
     process.exit(1);
   } else {
     console.log('\n✅ All tests passed! Regex escaping is working correctly.');

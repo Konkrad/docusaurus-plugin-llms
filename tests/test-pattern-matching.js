@@ -41,8 +41,7 @@ async function setupTestDocs() {
   const files = [
     {
       path: path.join(TEST_DIR, 'docs', 'index.md'),
-      content:
-        '---\ntitle: Home\ndescription: Welcome page\n---\n\n# Home\n\nWelcome.'
+      content: '---\ntitle: Home\ndescription: Welcome page\n---\n\n# Home\n\nWelcome.'
     },
     {
       path: path.join(TEST_DIR, 'docs', 'quickstart', 'installation.md'),
@@ -51,13 +50,11 @@ async function setupTestDocs() {
     },
     {
       path: path.join(TEST_DIR, 'docs', 'quickstart', 'setup.md'),
-      content:
-        '---\ntitle: Setup\ndescription: Setup guide\n---\n\n# Setup\n\nConfigure your environment.'
+      content: '---\ntitle: Setup\ndescription: Setup guide\n---\n\n# Setup\n\nConfigure your environment.'
     },
     {
       path: path.join(TEST_DIR, 'docs', 'guides', 'basic.md'),
-      content:
-        '---\ntitle: Basic Guide\ndescription: Basic usage guide\n---\n\n# Basic Guide\n\nBasic usage.'
+      content: '---\ntitle: Basic Guide\ndescription: Basic usage guide\n---\n\n# Basic Guide\n\nBasic usage.'
     },
     {
       path: path.join(TEST_DIR, 'docs', 'guides', 'advanced', 'performance.md'),
@@ -66,8 +63,7 @@ async function setupTestDocs() {
     },
     {
       path: path.join(TEST_DIR, 'docs', 'api', 'core.md'),
-      content:
-        '---\ntitle: Core API\ndescription: Core API reference\n---\n\n# Core API\n\nCore API documentation.'
+      content: '---\ntitle: Core API\ndescription: Core API reference\n---\n\n# Core API\n\nCore API documentation.'
     },
     {
       path: path.join(TEST_DIR, 'docs', 'tutorials', 'first-app.md'),
@@ -75,13 +71,7 @@ async function setupTestDocs() {
         '---\ntitle: First App\ndescription: Build your first app\n---\n\n# First App\n\nBuild your first application.'
     },
     {
-      path: path.join(
-        TEST_DIR,
-        'docs',
-        'tutorials',
-        'beginner',
-        'hello-world.md'
-      ),
+      path: path.join(TEST_DIR, 'docs', 'tutorials', 'beginner', 'hello-world.md'),
       content:
         '---\ntitle: Hello World\ndescription: Hello world tutorial\n---\n\n# Hello World\n\nCreate a hello world app.'
     }
@@ -135,9 +125,7 @@ async function runTests() {
 
   // Test 3: Nested directory pattern (docs-relative)
   console.log('Test 3: Nested pattern "guides/**/*"');
-  console.log(
-    'Expected: Should match all files in guides directory (including nested subdirectories)\n'
-  );
+  console.log('Expected: Should match all files in guides directory (including nested subdirectories)\n');
   const plugin3 = plugin(mockContext, {
     includeOrder: ['guides/**/*'],
     includeUnmatchedLast: false,
@@ -159,9 +147,7 @@ async function runTests() {
 
   // Test 5: Deep nested pattern
   console.log('Test 5: Deep nested pattern "tutorials/**/*"');
-  console.log(
-    'Expected: Should match all files in tutorials directory and subdirectories\n'
-  );
+  console.log('Expected: Should match all files in tutorials directory and subdirectories\n');
   const plugin5 = plugin(mockContext, {
     includeOrder: ['tutorials/**/*'],
     includeUnmatchedLast: false,

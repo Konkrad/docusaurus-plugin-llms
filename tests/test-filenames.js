@@ -41,9 +41,7 @@ function validateFilePaths(testDir, expectedPath, fallbackPath) {
   }
 
   if (expectedPath !== fallbackPath && fs.existsSync(fallbackFullPath)) {
-    throw new Error(
-      `Fallback file at path "${fallbackPath}" should not exist when frontmatter is used`
-    );
+    throw new Error(`Fallback file at path "${fallbackPath}" should not exist when frontmatter is used`);
   }
 }
 
@@ -103,18 +101,12 @@ async function runFilenameTests() {
         );
 
         // Validate file paths
-        validateFilePaths(
-          testDir,
-          testCase.expectedPath,
-          testCase.fallbackPath
-        );
+        validateFilePaths(testDir, testCase.expectedPath, testCase.fallbackPath);
 
         // Validate URL
         const expectedUrl = `${siteUrl}/${testCase.expectedPath}`;
         if (result[0].url !== expectedUrl) {
-          throw new Error(
-            `Expected URL "${expectedUrl}", got "${result[0].url}"`
-          );
+          throw new Error(`Expected URL "${expectedUrl}", got "${result[0].url}"`);
         }
 
         console.log(`✅ PASS`);
@@ -132,9 +124,7 @@ async function runFilenameTests() {
 
   console.log(`\n========================================`);
   console.log(`Filename Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -143,11 +133,7 @@ async function runFilenameTests() {
 // Run the tests
 runFilenameTests()
   .then(success => {
-    console.log(
-      success
-        ? '🎉 All filename tests passed!'
-        : '❌ Some filename tests failed.'
-    );
+    console.log(success ? '🎉 All filename tests passed!' : '❌ Some filename tests failed.');
     if (!success) process.exit(1);
   })
   .catch(error => {

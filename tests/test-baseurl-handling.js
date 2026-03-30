@@ -116,24 +116,16 @@ testCases.forEach((testCase, index) => {
   try {
     const result = constructSiteUrl(testCase.url, testCase.baseUrl);
 
-    assert.strictEqual(
-      result,
-      testCase.expected,
-      `Expected "${testCase.expected}" but got "${result}"`
-    );
+    assert.strictEqual(result, testCase.expected, `Expected "${testCase.expected}" but got "${result}"`);
 
     console.log(`✓ Test ${index + 1} passed: ${testCase.name}`);
-    console.log(
-      `  Input: url="${testCase.url}", baseUrl="${testCase.baseUrl}"`
-    );
+    console.log(`  Input: url="${testCase.url}", baseUrl="${testCase.baseUrl}"`);
     console.log(`  Output: "${result}"`);
     console.log(`  ${testCase.description}\n`);
     passedTests++;
   } catch (error) {
     console.error(`✗ Test ${index + 1} failed: ${testCase.name}`);
-    console.error(
-      `  Input: url="${testCase.url}", baseUrl="${testCase.baseUrl}"`
-    );
+    console.error(`  Input: url="${testCase.url}", baseUrl="${testCase.baseUrl}"`);
     console.error(`  ${error.message}\n`);
     failedTests++;
   }

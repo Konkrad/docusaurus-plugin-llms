@@ -44,8 +44,7 @@ const testCases = [
     name: 'Encodes spaces in filename',
     filename: 'hello world.md',
     expectedUrlPath: '/docs/hello%20world',
-    content:
-      '# Hello World\n\nThis is a test document with spaces in the filename.'
+    content: '# Hello World\n\nThis is a test document with spaces in the filename.'
   },
   {
     name: 'Encodes unicode characters',
@@ -75,8 +74,7 @@ const testCases = [
     name: 'Encodes spaces in nested path',
     filename: 'my folder/my file.md',
     expectedUrlPath: '/docs/my%20folder/my%20file',
-    content:
-      '# Nested File\n\nThis is a nested file with spaces in both directory and filename.'
+    content: '# Nested File\n\nThis is a nested file with spaces in both directory and filename.'
   },
   {
     name: 'Encodes multiple special characters',
@@ -124,8 +122,7 @@ const testCases = [
     name: 'Prevents double-encoding of already encoded special chars',
     filename: 'rock%26roll.md',
     expectedUrlPath: '/docs/rock%26roll',
-    content:
-      '# Pre-encoded Ampersand\n\nThis filename has already encoded ampersand.'
+    content: '# Pre-encoded Ampersand\n\nThis filename has already encoded ampersand.'
   },
   {
     name: 'Handles mixed encoded and unencoded segments',
@@ -137,8 +134,7 @@ const testCases = [
     name: 'Handles unreserved characters without encoding',
     filename: 'test-file_name.md',
     expectedUrlPath: '/docs/test-file_name',
-    content:
-      '# Unreserved Characters\n\nDashes and underscores should not be encoded.'
+    content: '# Unreserved Characters\n\nDashes and underscores should not be encoded.'
   },
   {
     name: 'Handles tilde character (unreserved)',
@@ -150,8 +146,7 @@ const testCases = [
     name: 'Preserves valid partial encoding',
     filename: 'bad%2encoding.md',
     expectedUrlPath: '/docs/bad%2encoding',
-    content:
-      '# Partial Encoding\n\nThis has valid percent encoding (%2e) and is preserved.'
+    content: '# Partial Encoding\n\nThis has valid percent encoding (%2e) and is preserved.'
   },
   {
     name: 'Encodes brackets',
@@ -187,8 +182,7 @@ const testCases = [
     name: 'Handles truly malformed encoding',
     filename: 'bad%ZZencoding.md',
     expectedUrlPath: '/docs/bad%25ZZencoding',
-    content:
-      '# Truly Malformed\n\nThis has truly malformed percent encoding that will throw an error.'
+    content: '# Truly Malformed\n\nThis has truly malformed percent encoding that will throw an error.'
   }
 ];
 
@@ -215,19 +209,12 @@ async function runUrlEncodingTests() {
         await createTestFile(filePath, testCase.content);
 
         // Process the markdown file
-        const docInfo = await processMarkdownFile(
-          filePath,
-          baseDir,
-          siteUrl,
-          'docs'
-        );
+        const docInfo = await processMarkdownFile(filePath, baseDir, siteUrl, 'docs');
 
         // Validate the URL
         const expectedUrl = `${siteUrl}${testCase.expectedUrlPath}`;
         if (docInfo.url !== expectedUrl) {
-          throw new Error(
-            `Expected URL "${expectedUrl}", got "${docInfo.url}"`
-          );
+          throw new Error(`Expected URL "${expectedUrl}", got "${docInfo.url}"`);
         }
 
         // Validate that the URL is properly encoded by attempting to construct it
@@ -253,9 +240,7 @@ async function runUrlEncodingTests() {
 
   console.log(`\n========================================`);
   console.log(`URL Encoding Tests Summary:`);
-  console.log(
-    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
-  );
+  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -264,11 +249,7 @@ async function runUrlEncodingTests() {
 // Run the tests
 runUrlEncodingTests()
   .then(success => {
-    console.log(
-      success
-        ? '🎉 All URL encoding tests passed!'
-        : '❌ Some URL encoding tests failed.'
-    );
+    console.log(success ? '🎉 All URL encoding tests passed!' : '❌ Some URL encoding tests failed.');
     if (!success) process.exit(1);
   })
   .catch(error => {

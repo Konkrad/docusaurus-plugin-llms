@@ -233,10 +233,7 @@ function runEdgeCaseValidation() {
       test: () => {
         const emptyString = '';
         try {
-          const result =
-            emptyString.length > 150
-              ? emptyString.substring(0, 147) + '...'
-              : emptyString;
+          const result = emptyString.length > 150 ? emptyString.substring(0, 147) + '...' : emptyString;
           return result === '';
         } catch (error) {
           return false;
@@ -265,9 +262,7 @@ function runEdgeCaseValidation() {
     }
   });
 
-  console.log(
-    `\nEdge Case Validation: ${validationPass}/${validationPass + validationFail} passed`
-  );
+  console.log(`\nEdge Case Validation: ${validationPass}/${validationPass + validationFail} passed`);
 
   return validationFail === 0;
 }
