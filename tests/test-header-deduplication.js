@@ -1,6 +1,6 @@
 /**
  * Tests for header deduplication functionality
- * 
+ *
  * Run with: node test-header-deduplication.js
  */
 
@@ -8,10 +8,19 @@ const fs = require('fs');
 const path = require('path');
 
 // Mock the generateLLMFile function from generator.ts
-function generateLLMFile(docs, outputPath, fileTitle, fileDescription, includeFullContent, version) {
-  console.log(`Generating file: ${outputPath}, version: ${version || 'undefined'}`);
+function generateLLMFile(
+  docs,
+  outputPath,
+  fileTitle,
+  fileDescription,
+  includeFullContent,
+  version
+) {
+  console.log(
+    `Generating file: ${outputPath}, version: ${version || 'undefined'}`
+  );
   const versionInfo = version ? `\n\nVersion: ${version}` : '';
-  
+
   if (includeFullContent) {
     // Generate full content file with header deduplication
     const usedHeaders = new Set();
@@ -19,23 +28,24 @@ function generateLLMFile(docs, outputPath, fileTitle, fileDescription, includeFu
       // Check if content already starts with the same heading to avoid duplication
       const trimmedContent = doc.content.trim();
       const firstLine = trimmedContent.split('\n')[0];
-      
+
       // Check if the first line is a heading that matches our title
       const headingMatch = firstLine.match(/^#+\s+(.+)$/);
       const firstHeadingText = headingMatch ? headingMatch[1].trim() : null;
-      
+
       // Determine the header text to use (original title or make it unique)
       let headerText = doc.title;
       let uniqueHeader = headerText;
       let counter = 1;
-      
+
       // If this header has been used before, make it unique by adding a suffix
       while (usedHeaders.has(uniqueHeader.toLowerCase())) {
         counter++;
         // Try to make it more descriptive by adding the file path info if available
         if (doc.path && counter === 2) {
           const pathParts = doc.path.split('/');
-          const folderName = pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
+          const folderName =
+            pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
           if (folderName) {
             uniqueHeader = `${headerText} (${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
           } else {
@@ -45,9 +55,9 @@ function generateLLMFile(docs, outputPath, fileTitle, fileDescription, includeFu
           uniqueHeader = `${headerText} (${counter})`;
         }
       }
-      
+
       usedHeaders.add(uniqueHeader.toLowerCase());
-      
+
       if (firstHeadingText === doc.title) {
         // Content already has the same heading, replace it with our unique header if needed
         if (uniqueHeader !== doc.title) {
@@ -81,7 +91,7 @@ ${fullContentSections.join('\n\n---\n\n')}
 
     return llmFileContent;
   }
-  
+
   return '';
 }
 
@@ -152,7 +162,11 @@ const testCases = [
         url: 'https://example.com/javascript/reference'
       }
     ],
-    expectedHeaders: ['API Reference', 'API Reference (Python)', 'API Reference (Javascript)']
+    expectedHeaders: [
+      'API Reference',
+      'API Reference (Python)',
+      'API Reference (Javascript)'
+    ]
   },
   {
     name: 'Headers without folder context fall back to numbers',
@@ -198,12 +212,12 @@ const testCases = [
 
 function runTests() {
   console.log('Running header deduplication tests...\n');
-  
+
   let passCount = 0;
-  
+
   testCases.forEach((test, index) => {
     console.log(`Test ${index + 1}: ${test.name}`);
-    
+
     try {
       const output = generateLLMFile(
         test.docs,
@@ -213,21 +227,22 @@ function runTests() {
         true,
         'test-version'
       );
-      
+
       // Extract H2 headers from the output (document sections should be H2)
       const headerMatches = output.match(/^## .+$/gm) || [];
       const actualHeaders = headerMatches.map(h => h.replace(/^## /, ''));
-      
+
       // All document sections should be H2, so we use all found headers
       const contentHeaders = actualHeaders;
-      
+
       console.log(`  Expected headers: ${test.expectedHeaders.join(', ')}`);
       console.log(`  Actual headers: ${contentHeaders.join(', ')}`);
-      
+
       // Check if headers match expected
-      const headersMatch = contentHeaders.length === test.expectedHeaders.length &&
-                          contentHeaders.every((header, i) => header === test.expectedHeaders[i]);
-      
+      const headersMatch =
+        contentHeaders.length === test.expectedHeaders.length &&
+        contentHeaders.every((header, i) => header === test.expectedHeaders[i]);
+
       if (headersMatch) {
         console.log('  ✅ PASS');
         passCount++;
@@ -236,16 +251,15 @@ function runTests() {
         console.log(`    Expected: [${test.expectedHeaders.join(', ')}]`);
         console.log(`    Actual: [${contentHeaders.join(', ')}]`);
       }
-      
     } catch (error) {
       console.log('  ❌ ERROR:', error.message);
     }
-    
+
     console.log('');
   });
-  
+
   console.log(`Results: ${passCount} of ${testCases.length} tests passed.`);
-  
+
   if (passCount === testCases.length) {
     console.log('🎉 All header deduplication tests passed!');
   } else {

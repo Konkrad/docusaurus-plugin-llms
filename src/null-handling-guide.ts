@@ -46,7 +46,7 @@ function checkIfDefined_BAD(value: string | undefined | null): void {
  * Use optional chaining when accessing properties on values that might be
  * null or undefined. This avoids TypeError exceptions.
  */
-function safePropertyAccess_GOOD(obj: { prop?: string } | undefined): void {
+function safePropertyAccess_GOOD(obj: {prop?: string} | undefined): void {
   const value = obj?.prop;
   if (value !== undefined && value !== null) {
     console.log(value);
@@ -56,7 +56,7 @@ function safePropertyAccess_GOOD(obj: { prop?: string } | undefined): void {
 /**
  * AVOID: Manual null checks before property access (verbose)
  */
-function safePropertyAccess_BAD(obj: { prop?: string } | undefined): void {
+function safePropertyAccess_BAD(obj: {prop?: string} | undefined): void {
   if (obj && obj.prop) {
     // Verbose and misses the case where prop is explicitly false/0
     console.log(obj.prop);
@@ -266,7 +266,9 @@ function requireParameter_BAD(value: string | undefined | null): void {
 /**
  * When checking if a value should be used (but preserving falsy values)
  */
-function explicitCheck_GOOD(value: string | number | boolean | undefined | null): void {
+function explicitCheck_GOOD(
+  value: string | number | boolean | undefined | null
+): void {
   if (value !== undefined && value !== null) {
     // Now can use value = 0, '', false safely
     console.log(value);
@@ -276,7 +278,9 @@ function explicitCheck_GOOD(value: string | number | boolean | undefined | null)
 /**
  * AVOID: Truthy check when falsy values are valid
  */
-function explicitCheck_BAD(value: string | number | boolean | undefined | null): void {
+function explicitCheck_BAD(
+  value: string | number | boolean | undefined | null
+): void {
   if (value) {
     // PROBLEM: Rejects value = 0, '', false
     console.log(value);

@@ -8,24 +8,19 @@
  * The plugin runs during the Docusaurus build process and scans all Markdown files in the docs directory.
  */
 
-import * as path from "path";
-import type {
-  LoadContext,
-  Plugin,
-  Props,
-  RouteConfig,
-} from "@docusaurus/types";
+import * as path from 'path';
+import type {LoadContext, Plugin, Props, RouteConfig} from '@docusaurus/types';
 import {
   PluginOptions,
   PluginContext,
   CustomLLMFile,
-  DocsSection,
-} from "./types";
+  DocsSection
+} from './types';
 import {
   collectDocFiles,
   generateStandardLLMFiles,
-  generateCustomLLMFiles,
-} from "./generator";
+  generateCustomLLMFiles
+} from './generator';
 import {
   setLogLevel,
   LogLevel,
@@ -33,8 +28,8 @@ import {
   getErrorMessage,
   isDefined,
   isNonEmptyString,
-  isNonEmptyArray,
-} from "./utils";
+  isNonEmptyArray
+} from './utils';
 
 /**
  * Validates plugin options to ensure they conform to expected types and constraints
@@ -45,47 +40,47 @@ function validatePluginOptions(options: PluginOptions): void {
   // Validate includeOrder
   if (options.includeOrder !== undefined) {
     if (!Array.isArray(options.includeOrder)) {
-      throw new Error("includeOrder must be an array");
+      throw new Error('includeOrder must be an array');
     }
-    if (!options.includeOrder.every((item) => typeof item === "string")) {
-      throw new Error("includeOrder must contain only strings");
+    if (!options.includeOrder.every(item => typeof item === 'string')) {
+      throw new Error('includeOrder must contain only strings');
     }
   }
 
   // Validate ignoreFiles
   if (options.ignoreFiles !== undefined) {
     if (!Array.isArray(options.ignoreFiles)) {
-      throw new Error("ignoreFiles must be an array");
+      throw new Error('ignoreFiles must be an array');
     }
-    if (!options.ignoreFiles.every((item) => typeof item === "string")) {
-      throw new Error("ignoreFiles must contain only strings");
+    if (!options.ignoreFiles.every(item => typeof item === 'string')) {
+      throw new Error('ignoreFiles must contain only strings');
     }
   }
 
   // Validate docsDir - accepts a string or an array of DocsSection objects
   if (options.docsDir !== undefined) {
     if (
-      typeof options.docsDir !== "string" &&
+      typeof options.docsDir !== 'string' &&
       !Array.isArray(options.docsDir)
     ) {
       throw new Error(
-        "docsDir must be a string or an array of section objects",
+        'docsDir must be a string or an array of section objects'
       );
     }
     if (Array.isArray(options.docsDir)) {
       (options.docsDir as DocsSection[]).forEach((section, index) => {
-        if (!isDefined(section) || typeof section !== "object") {
+        if (!isDefined(section) || typeof section !== 'object') {
           throw new Error(`docsDir[${index}] must be an object`);
         }
-        if (typeof section.path !== "string" || section.path.trim() === "") {
+        if (typeof section.path !== 'string' || section.path.trim() === '') {
           throw new Error(`docsDir[${index}].path must be a non-empty string`);
         }
-        if (typeof section.routeBasePath !== "string") {
+        if (typeof section.routeBasePath !== 'string') {
           throw new Error(`docsDir[${index}].routeBasePath must be a string`);
         }
         if (
           section.label !== undefined &&
-          (typeof section.label !== "string" || section.label.trim() === "")
+          (typeof section.label !== 'string' || section.label.trim() === '')
         ) {
           throw new Error(`docsDir[${index}].label must be a non-empty string`);
         }
@@ -95,30 +90,30 @@ function validatePluginOptions(options: PluginOptions): void {
 
   // Validate pathTransformation
   if (isDefined(options.pathTransformation)) {
-    if (typeof options.pathTransformation !== "object") {
-      throw new Error("pathTransformation must be an object");
+    if (typeof options.pathTransformation !== 'object') {
+      throw new Error('pathTransformation must be an object');
     }
 
-    const { ignorePaths, addPaths } = options.pathTransformation;
+    const {ignorePaths, addPaths} = options.pathTransformation;
 
     if (ignorePaths !== undefined) {
       if (!Array.isArray(ignorePaths)) {
-        throw new Error("pathTransformation.ignorePaths must be an array");
+        throw new Error('pathTransformation.ignorePaths must be an array');
       }
-      if (!ignorePaths.every((item) => typeof item === "string")) {
+      if (!ignorePaths.every(item => typeof item === 'string')) {
         throw new Error(
-          "pathTransformation.ignorePaths must contain only strings",
+          'pathTransformation.ignorePaths must contain only strings'
         );
       }
     }
 
     if (addPaths !== undefined) {
       if (!Array.isArray(addPaths)) {
-        throw new Error("pathTransformation.addPaths must be an array");
+        throw new Error('pathTransformation.addPaths must be an array');
       }
-      if (!addPaths.every((item) => typeof item === "string")) {
+      if (!addPaths.every(item => typeof item === 'string')) {
         throw new Error(
-          "pathTransformation.addPaths must contain only strings",
+          'pathTransformation.addPaths must contain only strings'
         );
       }
     }
@@ -126,35 +121,35 @@ function validatePluginOptions(options: PluginOptions): void {
 
   // Validate boolean options
   const booleanOptions = [
-    "generateLLMsTxt",
-    "generateLLMsFullTxt",
-    "includeBlog",
-    "includeUnmatchedLast",
-    "excludeImports",
-    "removeDuplicateHeadings",
-    "generateMarkdownFiles",
-    "preserveDirectoryStructure",
+    'generateLLMsTxt',
+    'generateLLMsFullTxt',
+    'includeBlog',
+    'includeUnmatchedLast',
+    'excludeImports',
+    'removeDuplicateHeadings',
+    'generateMarkdownFiles',
+    'preserveDirectoryStructure'
   ] as const;
 
   for (const option of booleanOptions) {
-    if (options[option] !== undefined && typeof options[option] !== "boolean") {
+    if (options[option] !== undefined && typeof options[option] !== 'boolean') {
       throw new Error(`${option} must be a boolean`);
     }
   }
 
   // Validate string options
   const stringOptions = [
-    "title",
-    "description",
-    "llmsTxtFilename",
-    "llmsFullTxtFilename",
-    "version",
-    "rootContent",
-    "fullRootContent",
+    'title',
+    'description',
+    'llmsTxtFilename',
+    'llmsFullTxtFilename',
+    'version',
+    'rootContent',
+    'fullRootContent'
   ] as const;
 
   for (const option of stringOptions) {
-    if (options[option] !== undefined && typeof options[option] !== "string") {
+    if (options[option] !== undefined && typeof options[option] !== 'string') {
       throw new Error(`${option} must be a string`);
     }
   }
@@ -162,78 +157,78 @@ function validatePluginOptions(options: PluginOptions): void {
   // Validate keepFrontMatter
   if (options.keepFrontMatter !== undefined) {
     if (!Array.isArray(options.keepFrontMatter)) {
-      throw new Error("keepFrontMatter must be an array");
+      throw new Error('keepFrontMatter must be an array');
     }
-    if (!options.keepFrontMatter.every((item) => typeof item === "string")) {
-      throw new Error("keepFrontMatter must contain only strings");
+    if (!options.keepFrontMatter.every(item => typeof item === 'string')) {
+      throw new Error('keepFrontMatter must contain only strings');
     }
   }
 
   // Validate logLevel
   if (options.logLevel !== undefined) {
-    const validLogLevels = ["quiet", "normal", "verbose"];
+    const validLogLevels = ['quiet', 'normal', 'verbose'];
     if (!validLogLevels.includes(options.logLevel)) {
-      throw new Error(`logLevel must be one of: ${validLogLevels.join(", ")}`);
+      throw new Error(`logLevel must be one of: ${validLogLevels.join(', ')}`);
     }
   }
 
   // Validate customLLMFiles
   if (options.customLLMFiles !== undefined) {
     if (!Array.isArray(options.customLLMFiles)) {
-      throw new Error("customLLMFiles must be an array");
+      throw new Error('customLLMFiles must be an array');
     }
 
     options.customLLMFiles.forEach((file, index) => {
-      if (!isDefined(file) || typeof file !== "object") {
+      if (!isDefined(file) || typeof file !== 'object') {
         throw new Error(`customLLMFiles[${index}] must be an object`);
       }
 
       // Required fields
       if (!isNonEmptyString(file.filename)) {
         throw new Error(
-          `customLLMFiles[${index}].filename must be a non-empty string`,
+          `customLLMFiles[${index}].filename must be a non-empty string`
         );
       }
 
       if (!isNonEmptyArray(file.includePatterns)) {
         throw new Error(
-          `customLLMFiles[${index}].includePatterns must be a non-empty array`,
+          `customLLMFiles[${index}].includePatterns must be a non-empty array`
         );
       }
-      if (!file.includePatterns.every((item) => typeof item === "string")) {
+      if (!file.includePatterns.every(item => typeof item === 'string')) {
         throw new Error(
-          `customLLMFiles[${index}].includePatterns must contain only strings`,
+          `customLLMFiles[${index}].includePatterns must contain only strings`
         );
       }
 
-      if (typeof file.fullContent !== "boolean") {
+      if (typeof file.fullContent !== 'boolean') {
         throw new Error(
-          `customLLMFiles[${index}].fullContent must be a boolean`,
+          `customLLMFiles[${index}].fullContent must be a boolean`
         );
       }
 
       // Optional fields
       if (isDefined(file.title) && !isNonEmptyString(file.title)) {
         throw new Error(
-          `customLLMFiles[${index}].title must be a non-empty string`,
+          `customLLMFiles[${index}].title must be a non-empty string`
         );
       }
 
       if (isDefined(file.description) && !isNonEmptyString(file.description)) {
         throw new Error(
-          `customLLMFiles[${index}].description must be a non-empty string`,
+          `customLLMFiles[${index}].description must be a non-empty string`
         );
       }
 
       if (file.ignorePatterns !== undefined) {
         if (!Array.isArray(file.ignorePatterns)) {
           throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must be an array`,
+            `customLLMFiles[${index}].ignorePatterns must be an array`
           );
         }
-        if (!file.ignorePatterns.every((item) => typeof item === "string")) {
+        if (!file.ignorePatterns.every(item => typeof item === 'string')) {
           throw new Error(
-            `customLLMFiles[${index}].ignorePatterns must contain only strings`,
+            `customLLMFiles[${index}].ignorePatterns must contain only strings`
           );
         }
       }
@@ -241,34 +236,34 @@ function validatePluginOptions(options: PluginOptions): void {
       if (file.orderPatterns !== undefined) {
         if (!Array.isArray(file.orderPatterns)) {
           throw new Error(
-            `customLLMFiles[${index}].orderPatterns must be an array`,
+            `customLLMFiles[${index}].orderPatterns must be an array`
           );
         }
-        if (!file.orderPatterns.every((item) => typeof item === "string")) {
+        if (!file.orderPatterns.every(item => typeof item === 'string')) {
           throw new Error(
-            `customLLMFiles[${index}].orderPatterns must contain only strings`,
+            `customLLMFiles[${index}].orderPatterns must contain only strings`
           );
         }
       }
 
       if (
         file.includeUnmatchedLast !== undefined &&
-        typeof file.includeUnmatchedLast !== "boolean"
+        typeof file.includeUnmatchedLast !== 'boolean'
       ) {
         throw new Error(
-          `customLLMFiles[${index}].includeUnmatchedLast must be a boolean`,
+          `customLLMFiles[${index}].includeUnmatchedLast must be a boolean`
         );
       }
 
       if (isDefined(file.version) && !isNonEmptyString(file.version)) {
         throw new Error(
-          `customLLMFiles[${index}].version must be a non-empty string`,
+          `customLLMFiles[${index}].version must be a non-empty string`
         );
       }
 
       if (isDefined(file.rootContent) && !isNonEmptyString(file.rootContent)) {
         throw new Error(
-          `customLLMFiles[${index}].rootContent must be a non-empty string`,
+          `customLLMFiles[${index}].rootContent must be a non-empty string`
         );
       }
     });
@@ -285,7 +280,7 @@ function validatePluginOptions(options: PluginOptions): void {
  */
 export default function docusaurusPluginLLMs(
   context: LoadContext,
-  options: PluginOptions = {},
+  options: PluginOptions = {}
 ): Plugin<void> {
   // Validate options before processing
   validatePluginOptions(options);
@@ -293,12 +288,12 @@ export default function docusaurusPluginLLMs(
   const {
     generateLLMsTxt = true,
     generateLLMsFullTxt = true,
-    docsDir = "docs",
+    docsDir = 'docs',
     ignoreFiles = [],
     title,
     description,
-    llmsTxtFilename = "llms.txt",
-    llmsFullTxtFilename = "llms-full.txt",
+    llmsTxtFilename = 'llms.txt',
+    llmsFullTxtFilename = 'llms-full.txt',
     includeBlog = false,
     pathTransformation,
     includeOrder = [],
@@ -310,22 +305,22 @@ export default function docusaurusPluginLLMs(
     keepFrontMatter = [],
     rootContent,
     fullRootContent,
-    logLevel = "normal",
+    logLevel = 'normal'
   } = options;
 
   // Initialize logging level
   const logLevelMap = {
     quiet: LogLevel.QUIET,
     normal: LogLevel.NORMAL,
-    verbose: LogLevel.VERBOSE,
+    verbose: LogLevel.VERBOSE
   };
   setLogLevel(logLevelMap[logLevel] || LogLevel.NORMAL);
 
-  const { siteDir, siteConfig, outDir } = context;
+  const {siteDir, siteConfig, outDir} = context;
 
   // Normalize baseUrl: remove trailing slash unless it's root '/'
-  let normalizedBaseUrl = siteConfig.baseUrl || "/";
-  if (normalizedBaseUrl !== "/" && normalizedBaseUrl.endsWith("/")) {
+  let normalizedBaseUrl = siteConfig.baseUrl || '/';
+  if (normalizedBaseUrl !== '/' && normalizedBaseUrl.endsWith('/')) {
     normalizedBaseUrl = normalizedBaseUrl.slice(0, -1);
   }
   const siteUrl = siteConfig.url + normalizedBaseUrl;
@@ -337,15 +332,15 @@ export default function docusaurusPluginLLMs(
       ? (docsDir as DocsSection[])
       : [
           {
-            path: typeof docsDir === "string" ? docsDir : "docs",
-            routeBasePath: typeof docsDir === "string" ? docsDir : "docs",
-          },
+            path: typeof docsDir === 'string' ? docsDir : 'docs',
+            routeBasePath: typeof docsDir === 'string' ? docsDir : 'docs'
+          }
         ];
 
   // Resolve a plain string version of docsDir for internal helpers that still
   // expect a single path string (PluginContext.docsDir, generateIndividualMarkdownFiles, etc.).
   const resolvedDocsDirString: string = Array.isArray(docsDir)
-    ? ((docsDir as DocsSection[])[0]?.path ?? "docs")
+    ? ((docsDir as DocsSection[])[0]?.path ?? 'docs')
     : (docsDir as string);
 
   // Create a plugin context object with processed options
@@ -356,7 +351,7 @@ export default function docusaurusPluginLLMs(
     docsDir: resolvedDocsDirString,
     docsSections,
     docTitle: title || siteConfig.title,
-    docDescription: description || siteConfig.tagline || "",
+    docDescription: description || siteConfig.tagline || '',
     options: {
       generateLLMsTxt,
       generateLLMsFullTxt,
@@ -376,18 +371,18 @@ export default function docusaurusPluginLLMs(
       generateMarkdownFiles,
       keepFrontMatter,
       rootContent,
-      fullRootContent,
-    },
+      fullRootContent
+    }
   };
 
   return {
-    name: "docusaurus-plugin-llms",
+    name: 'docusaurus-plugin-llms',
 
     /**
      * Generates LLM-friendly documentation files after the build is complete
      */
-    async postBuild(props?: Props & { content: unknown }): Promise<void> {
-      logger.info("Generating LLM-friendly documentation...");
+    async postBuild(props?: Props & {content: unknown}): Promise<void> {
+      logger.info('Generating LLM-friendly documentation...');
 
       try {
         let enhancedContext = pluginContext;
@@ -399,7 +394,7 @@ export default function docusaurusPluginLLMs(
 
           // Helper function to recursively process routes
           const processRoutes = (routes: RouteConfig[]) => {
-            routes.forEach((route) => {
+            routes.forEach(route => {
               if (route.path) {
                 // Store the actual resolved path
                 routeMap.set(route.path, route.path);
@@ -420,7 +415,7 @@ export default function docusaurusPluginLLMs(
             ...pluginContext,
             routesPaths: props.routesPaths,
             routes: props.routes,
-            routeMap,
+            routeMap
           };
         }
 
@@ -429,7 +424,7 @@ export default function docusaurusPluginLLMs(
 
         // Skip further processing if no documents were found
         if (!isNonEmptyArray(allDocFiles)) {
-          logger.warn("No documents found to process. Skipping.");
+          logger.warn('No documents found to process. Skipping.');
           return;
         }
 
@@ -441,15 +436,15 @@ export default function docusaurusPluginLLMs(
 
         // Output overall statistics
         logger.info(
-          `Stats: ${allDocFiles.length} total available documents processed`,
+          `Stats: ${allDocFiles.length} total available documents processed`
         );
       } catch (err: unknown) {
         logger.error(
-          `Error generating LLM documentation: ${getErrorMessage(err)}`,
+          `Error generating LLM documentation: ${getErrorMessage(err)}`
         );
       }
-    },
+    }
   };
 }
 
-export type { PluginOptions };
+export type {PluginOptions};

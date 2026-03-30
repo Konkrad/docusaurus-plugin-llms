@@ -5,7 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { normalizePath } = require('../lib/utils');
+const {normalizePath} = require('../lib/utils');
 
 console.log('Running Windows path normalization tests...\n');
 console.log('='.repeat(80));
@@ -84,25 +84,13 @@ runTest(
 );
 
 // Test 8: Empty string
-runTest(
-  'Empty string should remain empty',
-  '',
-  ''
-);
+runTest('Empty string should remain empty', '', '');
 
 // Test 9: Single forward slash
-runTest(
-  'Single forward slash should remain unchanged',
-  '/',
-  '/'
-);
+runTest('Single forward slash should remain unchanged', '/', '/');
 
 // Test 10: Single backslash
-runTest(
-  'Single backslash should be converted to forward slash',
-  '\\',
-  '/'
-);
+runTest('Single backslash should be converted to forward slash', '\\', '/');
 
 // Test 11: Relative path with backslashes
 runTest(

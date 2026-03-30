@@ -18,13 +18,13 @@
 
 'use strict';
 
-const fs   = require('fs');
+const fs = require('fs');
 const path = require('path');
 
 const pluginModule = require('../lib/index');
-const plugin       = pluginModule.default;
+const plugin = pluginModule.default;
 
-const TEST_DIR   = path.join(__dirname, '..', 'test-docs');
+const TEST_DIR = path.join(__dirname, '..', 'test-docs');
 const OUTPUT_DIR = path.join(__dirname, '..', 'test-output');
 
 // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ const OUTPUT_DIR = path.join(__dirname, '..', 'test-output');
 
 function ensureOutputDir() {
   if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    fs.mkdirSync(OUTPUT_DIR, {recursive: true});
   }
 }
 
@@ -41,12 +41,12 @@ function createMockContext() {
   return {
     siteDir: TEST_DIR,
     siteConfig: {
-      title:   'Multi-Doc Test Site',
+      title: 'Multi-Doc Test Site',
       tagline: 'Testing multi-section documentation support',
-      url:     'https://example.com',
-      baseUrl: '/',
+      url: 'https://example.com',
+      baseUrl: '/'
     },
-    outDir: OUTPUT_DIR,
+    outDir: OUTPUT_DIR
   };
 }
 
@@ -56,7 +56,7 @@ function readOutput(filename) {
 
 function runChecks(checks) {
   let allPassed = true;
-  for (const { desc, ok } of checks) {
+  for (const {desc, ok} of checks) {
     if (!ok) {
       console.log(`  ❌ FAIL – ${desc}`);
       allPassed = false;
@@ -82,58 +82,68 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 1: Two labelled sections → grouped headings in llms.txt
   // -------------------------------------------------------------------------
-  console.log('Test 1: Two labelled sections produce grouped section headings in llms.txt');
+  console.log(
+    'Test 1: Two labelled sections produce grouped section headings in llms.txt'
+  );
   try {
     await plugin(createMockContext(), {
       docsDir: [
-        { path: 'docs', routeBasePath: 'docs', label: 'Documentation' },
-        { path: 'api',  routeBasePath: 'api',  label: 'API Reference' },
+        {path: 'docs', routeBasePath: 'docs', label: 'Documentation'},
+        {path: 'api', routeBasePath: 'api', label: 'API Reference'}
       ],
-      llmsTxtFilename:     'llms-multi-labelled.txt',
-      llmsFullTxtFilename: 'llms-full-multi-labelled.txt',
+      llmsTxtFilename: 'llms-multi-labelled.txt',
+      llmsFullTxtFilename: 'llms-full-multi-labelled.txt'
     }).postBuild();
 
     const content = readOutput('llms-multi-labelled.txt');
 
     const docsHeadingPos = content.indexOf('## Documentation');
-    const apiHeadingPos  = content.indexOf('## API Reference');
+    const apiHeadingPos = content.indexOf('## API Reference');
 
     const allPassed = runChecks([
       {
         desc: 'has "## Documentation" section heading',
-        ok:   docsHeadingPos !== -1,
+        ok: docsHeadingPos !== -1
       },
       {
         desc: 'has "## API Reference" section heading',
-        ok:   apiHeadingPos !== -1,
+        ok: apiHeadingPos !== -1
       },
       {
         desc: '"## Documentation" appears before "## API Reference"',
-        ok:   docsHeadingPos !== -1 && apiHeadingPos !== -1 && docsHeadingPos < apiHeadingPos,
+        ok:
+          docsHeadingPos !== -1 &&
+          apiHeadingPos !== -1 &&
+          docsHeadingPos < apiHeadingPos
       },
       {
         desc: '"Getting Started" link is present (from docs section)',
-        ok:   content.includes('Getting Started'),
+        ok: content.includes('Getting Started')
       },
       {
         desc: '"Authentication" link is present (from api section)',
-        ok:   content.includes('Authentication'),
+        ok: content.includes('Authentication')
       },
       {
         desc: '"Endpoints" link is present (from api section)',
-        ok:   content.includes('Endpoints'),
+        ok: content.includes('Endpoints')
       },
       {
         desc: 'docs section URLs use /docs/ prefix',
-        ok:   content.includes('https://example.com/docs/'),
+        ok: content.includes('https://example.com/docs/')
       },
       {
         desc: 'api section URLs use /api/ prefix',
-        ok:   content.includes('https://example.com/api/'),
-      },
+        ok: content.includes('https://example.com/api/')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);
@@ -143,15 +153,17 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 2: Sections without labels fall back to the physical path name
   // -------------------------------------------------------------------------
-  console.log('\nTest 2: Sections without labels fall back to path as section heading');
+  console.log(
+    '\nTest 2: Sections without labels fall back to path as section heading'
+  );
   try {
     await plugin(createMockContext(), {
       docsDir: [
-        { path: 'docs', routeBasePath: 'docs' },
-        { path: 'api',  routeBasePath: 'api' },
+        {path: 'docs', routeBasePath: 'docs'},
+        {path: 'api', routeBasePath: 'api'}
       ],
-      llmsTxtFilename:     'llms-multi-nolabel.txt',
-      llmsFullTxtFilename: 'llms-full-multi-nolabel.txt',
+      llmsTxtFilename: 'llms-multi-nolabel.txt',
+      llmsFullTxtFilename: 'llms-full-multi-nolabel.txt'
     }).postBuild();
 
     const content = readOutput('llms-multi-nolabel.txt');
@@ -159,15 +171,20 @@ async function runTests() {
     const allPassed = runChecks([
       {
         desc: 'has "## docs" section heading (path fallback)',
-        ok:   content.includes('## docs'),
+        ok: content.includes('## docs')
       },
       {
         desc: 'has "## api" section heading (path fallback)',
-        ok:   content.includes('## api'),
-      },
+        ok: content.includes('## api')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);
@@ -185,27 +202,32 @@ async function runTests() {
     const allPassed = runChecks([
       {
         desc: 'contains docs-section content ("Getting Started")',
-        ok:   content.includes('Getting Started'),
+        ok: content.includes('Getting Started')
       },
       {
         desc: 'contains api-section content ("Authentication")',
-        ok:   content.includes('Authentication'),
+        ok: content.includes('Authentication')
       },
       {
         desc: 'contains api-section content ("Endpoints")',
-        ok:   content.includes('Endpoints'),
+        ok: content.includes('Endpoints')
       },
       {
         desc: 'contains api endpoint detail from endpoints.md ("GET /items")',
-        ok:   content.includes('GET /items'),
+        ok: content.includes('GET /items')
       },
       {
         desc: 'contains api auth detail from authentication.md ("Authorization")',
-        ok:   content.includes('Authorization'),
-      },
+        ok: content.includes('Authorization')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);
@@ -215,7 +237,9 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 4: Each section's files get URLs scoped to their routeBasePath
   // -------------------------------------------------------------------------
-  console.log('\nTest 4: Each section\'s files get URLs scoped to their routeBasePath');
+  console.log(
+    "\nTest 4: Each section's files get URLs scoped to their routeBasePath"
+  );
   try {
     // Reuses the file generated in Test 1
     const content = readOutput('llms-multi-labelled.txt');
@@ -223,19 +247,24 @@ async function runTests() {
     const allPassed = runChecks([
       {
         desc: 'api/authentication.md URL is under /api/',
-        ok:   content.includes('https://example.com/api/authentication'),
+        ok: content.includes('https://example.com/api/authentication')
       },
       {
         desc: 'api/endpoints.md URL is under /api/',
-        ok:   content.includes('https://example.com/api/endpoints'),
+        ok: content.includes('https://example.com/api/endpoints')
       },
       {
         desc: 'docs/getting-started.md URL is under /docs/',
-        ok:   content.includes('https://example.com/docs/getting-started'),
-      },
+        ok: content.includes('https://example.com/docs/getting-started')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);
@@ -248,9 +277,9 @@ async function runTests() {
   console.log('\nTest 5: String docsDir still works (backward compatibility)');
   try {
     await plugin(createMockContext(), {
-      docsDir:             'docs',
-      llmsTxtFilename:     'llms-single-compat.txt',
-      llmsFullTxtFilename: 'llms-full-single-compat.txt',
+      docsDir: 'docs',
+      llmsTxtFilename: 'llms-single-compat.txt',
+      llmsFullTxtFilename: 'llms-full-single-compat.txt'
     }).postBuild();
 
     const content = readOutput('llms-single-compat.txt');
@@ -258,19 +287,24 @@ async function runTests() {
     const allPassed = runChecks([
       {
         desc: 'contains docs content ("Getting Started")',
-        ok:   content.includes('Getting Started'),
+        ok: content.includes('Getting Started')
       },
       {
         desc: 'does NOT contain api-section URLs (/api/authentication)',
-        ok:   !content.includes('https://example.com/api/authentication'),
+        ok: !content.includes('https://example.com/api/authentication')
       },
       {
         desc: 'does NOT contain api-section URLs (/api/endpoints)',
-        ok:   !content.includes('https://example.com/api/endpoints'),
-      },
+        ok: !content.includes('https://example.com/api/endpoints')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);
@@ -280,14 +314,14 @@ async function runTests() {
   // -------------------------------------------------------------------------
   // Test 6: Single-element DocsSection array only scans that one directory
   // -------------------------------------------------------------------------
-  console.log('\nTest 6: Single-element DocsSection array scans only that directory');
+  console.log(
+    '\nTest 6: Single-element DocsSection array scans only that directory'
+  );
   try {
     await plugin(createMockContext(), {
-      docsDir: [
-        { path: 'api', routeBasePath: 'api', label: 'API Reference' },
-      ],
-      llmsTxtFilename:     'llms-single-array.txt',
-      llmsFullTxtFilename: 'llms-full-single-array.txt',
+      docsDir: [{path: 'api', routeBasePath: 'api', label: 'API Reference'}],
+      llmsTxtFilename: 'llms-single-array.txt',
+      llmsFullTxtFilename: 'llms-full-single-array.txt'
     }).postBuild();
 
     const content = readOutput('llms-single-array.txt');
@@ -295,23 +329,28 @@ async function runTests() {
     const allPassed = runChecks([
       {
         desc: 'contains "## API Reference" section heading',
-        ok:   content.includes('## API Reference'),
+        ok: content.includes('## API Reference')
       },
       {
         desc: 'contains "Authentication" link from api/',
-        ok:   content.includes('Authentication'),
+        ok: content.includes('Authentication')
       },
       {
         desc: 'contains "Endpoints" link from api/',
-        ok:   content.includes('Endpoints'),
+        ok: content.includes('Endpoints')
       },
       {
         desc: 'does NOT contain docs-only content (getting-started URL)',
-        ok:   !content.includes('https://example.com/docs/getting-started'),
-      },
+        ok: !content.includes('https://example.com/docs/getting-started')
+      }
     ]);
 
-    if (allPassed) { console.log('  ✅ PASS'); passed++; } else { failed++; }
+    if (allPassed) {
+      console.log('  ✅ PASS');
+      passed++;
+    } else {
+      failed++;
+    }
   } catch (err) {
     console.log(`  ❌ ERROR – ${err.message}`);
     console.error(err.stack);

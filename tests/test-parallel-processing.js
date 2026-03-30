@@ -7,19 +7,22 @@
 const fs = require('fs/promises');
 const path = require('path');
 const os = require('os');
-const { processFilesWithPatterns } = require('../lib/processor');
+const {processFilesWithPatterns} = require('../lib/processor');
 
 // Helper to create a temporary test directory
 async function createTempDir() {
-  const tmpDir = path.join(os.tmpdir(), `llm-plugin-test-parallel-${Date.now()}`);
-  await fs.mkdir(tmpDir, { recursive: true });
+  const tmpDir = path.join(
+    os.tmpdir(),
+    `llm-plugin-test-parallel-${Date.now()}`
+  );
+  await fs.mkdir(tmpDir, {recursive: true});
   return tmpDir;
 }
 
 // Helper to cleanup test directory
 async function cleanupTempDir(tmpDir) {
   try {
-    await fs.rm(tmpDir, { recursive: true, force: true });
+    await fs.rm(tmpDir, {recursive: true, force: true});
   } catch (error) {
     // Ignore cleanup errors
   }
@@ -28,7 +31,7 @@ async function cleanupTempDir(tmpDir) {
 // Helper to create test markdown files
 async function createTestFiles(tmpDir, numFiles) {
   const docsDir = path.join(tmpDir, 'docs');
-  await fs.mkdir(docsDir, { recursive: true });
+  await fs.mkdir(docsDir, {recursive: true});
 
   const files = [];
   for (let i = 0; i < numFiles; i++) {
@@ -52,7 +55,7 @@ This is test content for document ${i}.
 // Helper to create test files with some that will fail
 async function createMixedTestFiles(tmpDir) {
   const docsDir = path.join(tmpDir, 'docs');
-  await fs.mkdir(docsDir, { recursive: true });
+  await fs.mkdir(docsDir, {recursive: true});
 
   const files = [];
 
@@ -152,8 +155,10 @@ const testCases = [
           }
         }
 
-        console.log(`   Processed ${result.length} files in ${endTime - startTime}ms`);
-        return { passed: true };
+        console.log(
+          `   Processed ${result.length} files in ${endTime - startTime}ms`
+        );
+        return {passed: true};
       } finally {
         await cleanupTempDir(tmpDir);
       }
@@ -217,8 +222,10 @@ const testCases = [
             }
           }
 
-          console.log(`   Successfully processed ${result.length} valid files despite errors`);
-          return { passed: true };
+          console.log(
+            `   Successfully processed ${result.length} valid files despite errors`
+          );
+          return {passed: true};
         } finally {
           console.warn = originalWarn;
         }
@@ -264,11 +271,13 @@ const testCases = [
           };
         }
 
-        console.log(`   Processed ${result.length} files in ${parallelTime}ms using parallel processing`);
+        console.log(
+          `   Processed ${result.length} files in ${parallelTime}ms using parallel processing`
+        );
 
         // We can't reliably test that it's faster without a sequential implementation,
         // but we can verify that it completed successfully with all files
-        return { passed: true };
+        return {passed: true};
       } finally {
         await cleanupTempDir(tmpDir);
       }
@@ -281,7 +290,7 @@ const testCases = [
 
       try {
         const docsDir = path.join(tmpDir, 'docs');
-        await fs.mkdir(docsDir, { recursive: true });
+        await fs.mkdir(docsDir, {recursive: true});
 
         const context = {
           siteDir: tmpDir,
@@ -309,7 +318,7 @@ const testCases = [
           };
         }
 
-        return { passed: true };
+        return {passed: true};
       } finally {
         await cleanupTempDir(tmpDir);
       }
@@ -359,7 +368,13 @@ const testCases = [
         }
 
         // Verify the order matches the pattern order
-        const expectedOrder = ['Test Document 4', 'Test Document 2', 'Test Document 0', 'Test Document 3', 'Test Document 1'];
+        const expectedOrder = [
+          'Test Document 4',
+          'Test Document 2',
+          'Test Document 0',
+          'Test Document 3',
+          'Test Document 1'
+        ];
         for (let i = 0; i < result.length; i++) {
           if (result[i].title !== expectedOrder[i]) {
             return {
@@ -369,8 +384,10 @@ const testCases = [
           }
         }
 
-        console.log(`   Files processed in correct order despite parallel processing`);
-        return { passed: true };
+        console.log(
+          `   Files processed in correct order despite parallel processing`
+        );
+        return {passed: true};
       } finally {
         await cleanupTempDir(tmpDir);
       }
@@ -408,7 +425,9 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Parallel Processing Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${testCases.length}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${testCases.length}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;

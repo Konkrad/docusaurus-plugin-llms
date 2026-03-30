@@ -4,7 +4,7 @@
  * Run with: node test-path-length-validation.js
  */
 
-const { validatePathLength, shortenPathIfNeeded } = require('../lib/utils');
+const {validatePathLength, shortenPathIfNeeded} = require('../lib/utils');
 const path = require('path');
 const os = require('os');
 
@@ -134,7 +134,11 @@ shortenTestCases.forEach(test => {
       });
     }
 
-    const result = shortenPathIfNeeded(test.fullPath, test.outputDir, test.relativePath);
+    const result = shortenPathIfNeeded(
+      test.fullPath,
+      test.outputDir,
+      test.relativePath
+    );
 
     if (test.shouldShorten) {
       // Should be shortened
@@ -212,7 +216,9 @@ try {
     passed++;
   } else {
     console.error('✗ Hash-based shortening produces duplicate paths');
-    console.error(`  Expected ${shortenedPaths.length} unique paths, got ${uniquePaths.size}`);
+    console.error(
+      `  Expected ${shortenedPaths.length} unique paths, got ${uniquePaths.size}`
+    );
     failed++;
   }
 } catch (error) {

@@ -7,14 +7,14 @@
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const { generateIndividualMarkdownFiles } = require('../lib/generator');
+const {generateIndividualMarkdownFiles} = require('../lib/generator');
 
 /**
  * Helper to create a temporary directory for testing
  */
 function createTempDir() {
   const tmpDir = path.join(os.tmpdir(), `test-whitespace-paths-${Date.now()}`);
-  fs.mkdirSync(tmpDir, { recursive: true });
+  fs.mkdirSync(tmpDir, {recursive: true});
   return tmpDir;
 }
 
@@ -23,7 +23,7 @@ function createTempDir() {
  */
 function cleanupTempDir(tmpDir) {
   if (fs.existsSync(tmpDir)) {
-    fs.rmSync(tmpDir, { recursive: true, force: true });
+    fs.rmSync(tmpDir, {recursive: true, force: true});
   }
 }
 
@@ -38,7 +38,7 @@ const testCases = [
       description: 'Test description',
       content: 'Test content',
       url: 'https://example.com/test',
-      path: '   ',  // Whitespace-only
+      path: '   ', // Whitespace-only
       frontMatter: {}
     },
     expectedFilename: 'test-document.md'
@@ -50,7 +50,7 @@ const testCases = [
       description: 'Another description',
       content: 'Another content',
       url: 'https://example.com/another',
-      path: '\t\t\t',  // Tabs-only
+      path: '\t\t\t', // Tabs-only
       frontMatter: {}
     },
     expectedFilename: 'another-document.md'
@@ -62,7 +62,7 @@ const testCases = [
       description: 'Mixed description',
       content: 'Mixed content',
       url: 'https://example.com/mixed',
-      path: ' \t \n ',  // Mixed whitespace
+      path: ' \t \n ', // Mixed whitespace
       frontMatter: {}
     },
     expectedFilename: 'mixed-whitespace-doc.md'
@@ -74,7 +74,7 @@ const testCases = [
       description: 'Extension description',
       content: 'Extension content',
       url: 'https://example.com/ext',
-      path: '  .md  ',  // Whitespace around .md
+      path: '  .md  ', // Whitespace around .md
       frontMatter: {}
     },
     expectedFilename: 'extension-test.md'
@@ -98,7 +98,7 @@ const testCases = [
       description: 'Trimmed description',
       content: 'Trimmed content',
       url: 'https://example.com/trimmed',
-      path: '  docs/valid-path.md  ',  // Should work after trim
+      path: '  docs/valid-path.md  ', // Should work after trim
       frontMatter: {}
     },
     expectedFilename: 'docs/valid-path.md'
@@ -124,10 +124,10 @@ const testCases = [
       url: 'https://example.com/null',
       path: 'docs/original.md',
       frontMatter: {
-        slug: '   '  // Whitespace-only slug - should be ignored
+        slug: '   ' // Whitespace-only slug - should be ignored
       }
     },
-    expectedFilename: 'docs/original.md'  // Should keep original path when slug is invalid
+    expectedFilename: 'docs/original.md' // Should keep original path when slug is invalid
   },
   {
     name: 'Handles null path with whitespace id',
@@ -138,10 +138,10 @@ const testCases = [
       url: 'https://example.com/nullid',
       path: 'docs/original.md',
       frontMatter: {
-        id: '\t\t'  // Whitespace-only id - should be ignored
+        id: '\t\t' // Whitespace-only id - should be ignored
       }
     },
-    expectedFilename: 'docs/original.md'  // Should keep original path when id is invalid
+    expectedFilename: 'docs/original.md' // Should keep original path when id is invalid
   }
 ];
 
@@ -199,7 +199,9 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Whitespace Path Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -208,7 +210,9 @@ async function runTests() {
 // Run the tests
 runTests()
   .then(success => {
-    console.log(success ? '🎉 All whitespace path tests passed!' : '❌ Some tests failed.');
+    console.log(
+      success ? '🎉 All whitespace path tests passed!' : '❌ Some tests failed.'
+    );
     process.exit(success ? 0 : 1);
   })
   .catch(error => {

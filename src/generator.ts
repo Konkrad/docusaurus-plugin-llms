@@ -2,9 +2,9 @@
  * LLM file generation functions for the docusaurus-plugin-llms plugin
  */
 
-import * as path from "path";
-import * as fs from "fs/promises";
-import { DocInfo, DocsSection, PluginContext, CustomLLMFile } from "./types";
+import * as path from 'path';
+import * as fs from 'fs/promises';
+import {DocInfo, DocsSection, PluginContext, CustomLLMFile} from './types';
 import {
   writeFile,
   readMarkdownFiles,
@@ -18,9 +18,9 @@ import {
   getErrorMessage,
   isNonEmptyString,
   isNonEmptyArray,
-  isDefined,
-} from "./utils";
-import { processFilesWithPatterns } from "./processor";
+  isDefined
+} from './utils';
+import {processFilesWithPatterns} from './processor';
 
 /**
  * Clean a description for use in a TOC item
@@ -28,19 +28,19 @@ import { processFilesWithPatterns } from "./processor";
  * @returns Cleaned description suitable for TOC
  */
 function cleanDescriptionForToc(description: string): string {
-  if (!isNonEmptyString(description)) return "";
+  if (!isNonEmptyString(description)) return '';
 
   // Get just the first line for TOC display
-  const lines = description.split("\n");
-  const firstLine = lines.length > 0 ? lines[0] : "";
+  const lines = description.split('\n');
+  const firstLine = lines.length > 0 ? lines[0] : '';
 
   // Remove heading markers only at the beginning of the line
   // Be careful to only remove actual heading markers (# followed by space at beginning)
   // and not hashtag symbols that are part of the content (inline hashtags)
-  const cleaned = firstLine.replace(/^(#+)\s+/g, "");
+  const cleaned = firstLine.replace(/^(#+)\s+/g, '');
 
   // Truncate if too long (150 characters max with ellipsis)
-  return cleaned.length > 150 ? cleaned.substring(0, 147) + "..." : cleaned;
+  return cleaned.length > 150 ? cleaned.substring(0, 147) + '...' : cleaned;
 }
 
 /**
@@ -62,7 +62,7 @@ export async function generateLLMFile(
   includeFullContent: boolean,
   version?: string,
   customRootContent?: string,
-  batchSize: number = 100,
+  batchSize: number = 100
 ): Promise<void> {
   // Validate path length before proceeding
   if (!validatePathLength(outputPath)) {
@@ -70,9 +70,9 @@ export async function generateLLMFile(
   }
 
   logger.verbose(
-    `Generating file: ${outputPath}, version: ${version || "undefined"}`,
+    `Generating file: ${outputPath}, version: ${version || 'undefined'}`
   );
-  const versionInfo = version ? `\n\nVersion: ${version}` : "";
+  const versionInfo = version ? `\n\nVersion: ${version}` : '';
 
   if (includeFullContent) {
     // Generate full content file with header deduplication
@@ -88,15 +88,15 @@ export async function generateLLMFile(
 
       if (totalBatches > 1) {
         logger.verbose(
-          `Processing batch ${batchNumber}/${totalBatches} (${batch.length} documents)`,
+          `Processing batch ${batchNumber}/${totalBatches} (${batch.length} documents)`
         );
       }
 
-      const batchSections = batch.map((doc) => {
+      const batchSections = batch.map(doc => {
         // Check if content already starts with the same heading to avoid duplication
         const trimmedContent = doc.content.trim();
-        const contentLines = trimmedContent.split("\n");
-        const firstLine = contentLines.length > 0 ? contentLines[0] : "";
+        const contentLines = trimmedContent.split('\n');
+        const firstLine = contentLines.length > 0 ? contentLines[0] : '';
 
         // Check if the first line is a heading that matches our title
         const headingMatch = firstLine.match(/^#+\s+(.+)$/);
@@ -109,20 +109,20 @@ export async function generateLLMFile(
           (counter, base) => {
             // Try to make it more descriptive by adding the file path info if available
             if (isNonEmptyString(doc.path) && counter === 2) {
-              const pathParts = doc.path.split("/");
+              const pathParts = doc.path.split('/');
               const folderName =
-                pathParts.length >= 2 ? pathParts[pathParts.length - 2] : "";
+                pathParts.length >= 2 ? pathParts[pathParts.length - 2] : '';
               if (isNonEmptyString(folderName)) {
                 return `(${folderName.charAt(0).toUpperCase() + folderName.slice(1)})`;
               }
             }
             return `(${counter})`;
-          },
+          }
         );
 
         if (firstHeadingText === doc.title) {
           // Content already has the same heading, replace it with our unique header
-          const restOfContent = trimmedContent.split("\n").slice(1).join("\n");
+          const restOfContent = trimmedContent.split('\n').slice(1).join('\n');
           return `## ${uniqueHeader}
 
 ${restOfContent}`;
@@ -140,36 +140,36 @@ ${doc.content}`;
     // Use custom root content or default message
     const rootContent =
       customRootContent ||
-      "This file contains all documentation content in a single document following the llmstxt.org standard.";
+      'This file contains all documentation content in a single document following the llmstxt.org standard.';
 
     const llmFileContent = createMarkdownContent(
       fileTitle,
       `${fileDescription}${versionInfo}`,
-      `${rootContent}\n\n${fullContentSections.join("\n\n---\n\n")}`,
-      true, // include metadata (description)
+      `${rootContent}\n\n${fullContentSections.join('\n\n---\n\n')}`,
+      true // include metadata (description)
     );
 
     try {
       await writeFile(outputPath, llmFileContent);
     } catch (error: unknown) {
       throw new Error(
-        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`,
+        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`
       );
     }
   } else {
     // Generate links-only file
     const rootContent =
       customRootContent ||
-      "This file contains links to documentation sections following the llmstxt.org standard.";
+      'This file contains links to documentation sections following the llmstxt.org standard.';
 
-    const docsHaveSections = docs.some((doc) => doc.section);
+    const docsHaveSections = docs.some(doc => doc.section);
     let tocBody: string;
 
     if (docsHaveSections) {
       // Group docs by section, preserving insertion order
       const sectionGroups = new Map<string, typeof docs>();
       for (const doc of docs) {
-        const key = doc.section ?? "";
+        const key = doc.section ?? '';
         if (!sectionGroups.has(key)) {
           sectionGroups.set(key, []);
         }
@@ -178,35 +178,35 @@ ${doc.content}`;
 
       const tocSections: string[] = [];
       for (const [sectionName, sectionDocs] of sectionGroups) {
-        const items = sectionDocs.map((doc) => {
+        const items = sectionDocs.map(doc => {
           const cleanedDescription = cleanDescriptionForToc(doc.description);
-          return `- [${doc.title}](${doc.url})${cleanedDescription ? `: ${cleanedDescription}` : ""}`;
+          return `- [${doc.title}](${doc.url})${cleanedDescription ? `: ${cleanedDescription}` : ''}`;
         });
-        const heading = sectionName ? `## ${sectionName}` : "## Other";
-        tocSections.push(`${heading}\n\n${items.join("\n")}`);
+        const heading = sectionName ? `## ${sectionName}` : '## Other';
+        tocSections.push(`${heading}\n\n${items.join('\n')}`);
       }
-      tocBody = tocSections.join("\n\n");
+      tocBody = tocSections.join('\n\n');
     } else {
       // Flat list with a generic heading
-      const tocItems = docs.map((doc) => {
+      const tocItems = docs.map(doc => {
         const cleanedDescription = cleanDescriptionForToc(doc.description);
-        return `- [${doc.title}](${doc.url})${cleanedDescription ? `: ${cleanedDescription}` : ""}`;
+        return `- [${doc.title}](${doc.url})${cleanedDescription ? `: ${cleanedDescription}` : ''}`;
       });
-      tocBody = `## Table of Contents\n\n${tocItems.join("\n")}`;
+      tocBody = `## Table of Contents\n\n${tocItems.join('\n')}`;
     }
 
     const llmFileContent = createMarkdownContent(
       fileTitle,
       `${fileDescription}${versionInfo}`,
       `${rootContent}\n\n${tocBody}`,
-      true, // include metadata (description)
+      true // include metadata (description)
     );
 
     try {
       await writeFile(outputPath, llmFileContent);
     } catch (error: unknown) {
       throw new Error(
-        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`,
+        `Failed to write file ${outputPath}: ${getErrorMessage(error)}`
       );
     }
   }
@@ -228,10 +228,10 @@ export async function generateIndividualMarkdownFiles(
   docs: DocInfo[],
   outputDir: string,
   siteUrl: string,
-  docsDir: string = "docs",
+  docsDir: string = 'docs',
   keepFrontMatter: string[] = [],
   preserveDirectoryStructure: boolean = true,
-  docsSections: DocsSection[] = [],
+  docsSections: DocsSection[] = []
 ): Promise<DocInfo[]> {
   const updatedDocs: DocInfo[] = [];
   const usedPaths = new Set<string>();
@@ -239,29 +239,29 @@ export async function generateIndividualMarkdownFiles(
   for (const doc of docs) {
     // Use the original path structure as default filename.
     let relativePath = doc.path
-      .replace(/^\/+/, "") // Remove leading slashes
-      .replace(/\.mdx?$/, ".md"); // Ensure .md extension
+      .replace(/^\/+/, '') // Remove leading slashes
+      .replace(/\.mdx?$/, '.md'); // Ensure .md extension
 
     if (docsSections.length > 0) {
       // Multi-section mode: remap physical directory to routeBasePath so that
       // generated files land at URLs that match the Docusaurus routes.
       // e.g. docs/index.md (routeBasePath '/') → index.md
       //      cloud/guide.md (routeBasePath 'cloud') → cloud/guide.md (unchanged)
-      const section = docsSections.find((s) => {
-        const prefix = s.path + "/";
+      const section = docsSections.find(s => {
+        const prefix = s.path + '/';
         return (
-          relativePath.startsWith(prefix) || relativePath === s.path + ".md"
+          relativePath.startsWith(prefix) || relativePath === s.path + '.md'
         );
       });
       if (section) {
-        const prefix = section.path + "/";
+        const prefix = section.path + '/';
         const pathWithinSection = relativePath.startsWith(prefix)
           ? relativePath.slice(prefix.length)
           : relativePath;
         const routeBase =
-          section.routeBasePath === "/"
-            ? ""
-            : section.routeBasePath.replace(/^\/|\/$/g, "");
+          section.routeBasePath === '/'
+            ? ''
+            : section.routeBasePath.replace(/^\/|\/$/g, '');
         relativePath = routeBase
           ? `${routeBase}/${pathWithinSection}`
           : pathWithinSection;
@@ -270,43 +270,43 @@ export async function generateIndividualMarkdownFiles(
       // Legacy single-section mode: strip docsDir prefix when preserveDirectoryStructure is false
       if (!preserveDirectoryStructure) {
         relativePath = relativePath.replace(
-          new RegExp(`^${docsDir.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/`),
-          "",
+          new RegExp(`^${docsDir.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/`),
+          ''
         ); // Remove configured docs dir prefix
       }
     }
 
     // If frontmatter has slug, use that.
     if (isNonEmptyString(doc.frontMatter?.slug)) {
-      const slug = doc.frontMatter.slug.trim().replace(/^\/+|\/+$/g, ""); // Trim whitespace and slashes
+      const slug = doc.frontMatter.slug.trim().replace(/^\/+|\/+$/g, ''); // Trim whitespace and slashes
 
       if (isNonEmptyString(slug)) {
         // Only process if slug is not empty after trimming
-        if (slug.includes("/")) {
+        if (slug.includes('/')) {
           // Nested slug: create directory structure
-          relativePath = slug + ".md";
+          relativePath = slug + '.md';
         } else {
           // Simple slug: replace just the filename
-          const pathParts = relativePath.replace(/\.md$/, "").split("/");
+          const pathParts = relativePath.replace(/\.md$/, '').split('/');
           pathParts[pathParts.length - 1] = slug;
-          relativePath = pathParts.join("/") + ".md";
+          relativePath = pathParts.join('/') + '.md';
         }
       }
     }
     // Otherwise, if frontmatter has id, use that.
     else if (isNonEmptyString(doc.frontMatter?.id)) {
-      const id = doc.frontMatter.id.trim().replace(/^\/+|\/+$/g, ""); // Trim whitespace and slashes
+      const id = doc.frontMatter.id.trim().replace(/^\/+|\/+$/g, ''); // Trim whitespace and slashes
 
       if (isNonEmptyString(id)) {
         // Only process if id is not empty after trimming
-        if (id.includes("/")) {
+        if (id.includes('/')) {
           // Nested id: create directory structure
-          relativePath = id + ".md";
+          relativePath = id + '.md';
         } else {
           // Simple id: replace just the filename
-          const pathParts = relativePath.replace(/\.md$/, "").split("/");
+          const pathParts = relativePath.replace(/\.md$/, '').split('/');
           pathParts[pathParts.length - 1] = id;
-          relativePath = pathParts.join("/") + ".md";
+          relativePath = pathParts.join('/') + '.md';
         }
       }
     }
@@ -315,8 +315,8 @@ export async function generateIndividualMarkdownFiles(
     relativePath = relativePath.trim();
 
     // If path is empty or invalid, create a fallback path
-    if (!isNonEmptyString(relativePath) || relativePath === ".md") {
-      const sanitizedTitle = sanitizeForFilename(doc.title, "untitled");
+    if (!isNonEmptyString(relativePath) || relativePath === '.md') {
+      const sanitizedTitle = sanitizeForFilename(doc.title, 'untitled');
       relativePath = `${sanitizedTitle}.md`;
     }
 
@@ -328,9 +328,9 @@ export async function generateIndividualMarkdownFiles(
 
     while (usedPaths.has(uniquePath.toLowerCase())) {
       counter++;
-      const pathParts = relativePath.split(".");
-      const extension = pathParts.pop() || "md";
-      const basePath = pathParts.join(".");
+      const pathParts = relativePath.split('.');
+      const extension = pathParts.pop() || 'md';
+      const basePath = pathParts.join('.');
       uniquePath = `${basePath}-${counter}.${extension}`;
 
       pathIterations++;
@@ -339,7 +339,7 @@ export async function generateIndividualMarkdownFiles(
         const timestamp = Date.now();
         uniquePath = `${basePath}-${timestamp}.${extension}`;
         logger.warn(
-          `Maximum iterations reached for unique path. Using timestamp: ${uniquePath}`,
+          `Maximum iterations reached for unique path. Using timestamp: ${uniquePath}`
         );
         break;
       }
@@ -359,10 +359,10 @@ export async function generateIndividualMarkdownFiles(
 
     // Create directory structure if it doesn't exist
     try {
-      await fs.mkdir(directory, { recursive: true });
+      await fs.mkdir(directory, {recursive: true});
     } catch (error: unknown) {
       throw new Error(
-        `Failed to create directory ${directory}: ${getErrorMessage(error)}`,
+        `Failed to create directory ${directory}: ${getErrorMessage(error)}`
       );
     }
 
@@ -384,7 +384,7 @@ export async function generateIndividualMarkdownFiles(
       true, // includeMetadata
       Object.keys(preservedFrontMatter).length > 0
         ? preservedFrontMatter
-        : undefined,
+        : undefined
     );
 
     // Write the markdown file
@@ -392,7 +392,7 @@ export async function generateIndividualMarkdownFiles(
       await writeFile(fullPath, markdownContent);
     } catch (error: unknown) {
       throw new Error(
-        `Failed to write file ${fullPath}: ${getErrorMessage(error)}`,
+        `Failed to write file ${fullPath}: ${getErrorMessage(error)}`
       );
     }
 
@@ -404,7 +404,7 @@ export async function generateIndividualMarkdownFiles(
     updatedDocs.push({
       ...doc,
       url: newUrl,
-      path: `/${urlPath}`, // Update path to the new markdown file
+      path: `/${urlPath}` // Update path to the new markdown file
     });
 
     logger.verbose(`Generated markdown file: ${uniquePath}`);
@@ -420,26 +420,26 @@ export async function generateIndividualMarkdownFiles(
  */
 export async function generateStandardLLMFiles(
   context: PluginContext,
-  allDocFiles: string[],
+  allDocFiles: string[]
 ): Promise<void> {
-  const { outDir, siteUrl, docTitle, docDescription, options } = context;
+  const {outDir, siteUrl, docTitle, docDescription, options} = context;
 
   const {
     generateLLMsTxt,
     generateLLMsFullTxt,
-    llmsTxtFilename = "llms.txt",
-    llmsFullTxtFilename = "llms-full.txt",
+    llmsTxtFilename = 'llms.txt',
+    llmsFullTxtFilename = 'llms-full.txt',
     includeOrder = [],
     includeUnmatchedLast = true,
     version,
     generateMarkdownFiles = false,
     rootContent,
     fullRootContent,
-    processingBatchSize = 100,
+    processingBatchSize = 100
   } = options;
 
   if (!generateLLMsTxt && !generateLLMsFullTxt) {
-    logger.warn("No standard LLM files configured for generation. Skipping.");
+    logger.warn('No standard LLM files configured for generation. Skipping.');
     return;
   }
 
@@ -450,24 +450,24 @@ export async function generateStandardLLMFiles(
     [], // No specific include patterns - include all
     [], // No additional ignore patterns beyond global ignoreFiles
     includeOrder,
-    includeUnmatchedLast,
+    includeUnmatchedLast
   );
 
   logger.verbose(
-    `Processed ${processedDocs.length} documentation files for standard LLM files`,
+    `Processed ${processedDocs.length} documentation files for standard LLM files`
   );
 
   // Check if we have documents to process
   if (!isNonEmptyArray(processedDocs)) {
     logger.warn(
-      "No documents found matching patterns for standard LLM files. Skipping.",
+      'No documents found matching patterns for standard LLM files. Skipping.'
     );
     return;
   }
 
   // Generate individual markdown files if requested
   if (generateMarkdownFiles) {
-    logger.info("Generating individual markdown files...");
+    logger.info('Generating individual markdown files...');
     processedDocs = await generateIndividualMarkdownFiles(
       processedDocs,
       outDir,
@@ -475,7 +475,7 @@ export async function generateStandardLLMFiles(
       context.docsDir,
       context.options.keepFrontMatter || [],
       context.options.preserveDirectoryStructure !== false, // Default to true
-      context.docsSections,
+      context.docsSections
     );
   }
 
@@ -490,7 +490,7 @@ export async function generateStandardLLMFiles(
       false, // links only
       version,
       rootContent,
-      processingBatchSize,
+      processingBatchSize
     );
   }
 
@@ -505,7 +505,7 @@ export async function generateStandardLLMFiles(
       true, // full content
       version,
       fullRootContent,
-      processingBatchSize,
+      processingBatchSize
     );
   }
 }
@@ -517,18 +517,18 @@ export async function generateStandardLLMFiles(
  */
 export async function generateCustomLLMFiles(
   context: PluginContext,
-  allDocFiles: string[],
+  allDocFiles: string[]
 ): Promise<void> {
-  const { outDir, siteUrl, docTitle, docDescription, options } = context;
+  const {outDir, siteUrl, docTitle, docDescription, options} = context;
   const {
     customLLMFiles = [],
     ignoreFiles = [],
     generateMarkdownFiles = false,
-    processingBatchSize = 100,
+    processingBatchSize = 100
   } = options;
 
   if (customLLMFiles.length === 0) {
-    logger.warn("No custom LLM files configured. Skipping.");
+    logger.warn('No custom LLM files configured. Skipping.');
     return;
   }
 
@@ -536,7 +536,7 @@ export async function generateCustomLLMFiles(
 
   for (const customFile of customLLMFiles) {
     logger.verbose(
-      `Processing custom file: ${customFile.filename}, version: ${customFile.version || "undefined"}`,
+      `Processing custom file: ${customFile.filename}, version: ${customFile.version || 'undefined'}`
     );
 
     // Combine global ignores with custom ignores
@@ -552,14 +552,14 @@ export async function generateCustomLLMFiles(
       customFile.includePatterns,
       combinedIgnores,
       customFile.orderPatterns || [],
-      customFile.includeUnmatchedLast ?? false,
+      customFile.includeUnmatchedLast ?? false
     );
 
     if (customDocs.length > 0) {
       // Generate individual markdown files if requested
       if (generateMarkdownFiles) {
         logger.info(
-          `Generating individual markdown files for custom file: ${customFile.filename}...`,
+          `Generating individual markdown files for custom file: ${customFile.filename}...`
         );
         customDocs = await generateIndividualMarkdownFiles(
           customDocs,
@@ -568,7 +568,7 @@ export async function generateCustomLLMFiles(
           context.docsDir,
           context.options.keepFrontMatter || [],
           context.options.preserveDirectoryStructure !== false, // Default to true
-          context.docsSections,
+          context.docsSections
         );
       }
 
@@ -586,15 +586,15 @@ export async function generateCustomLLMFiles(
         customFile.fullContent,
         customFile.version,
         customFile.rootContent,
-        processingBatchSize,
+        processingBatchSize
       );
 
       logger.info(
-        `Generated custom LLM file: ${customFile.filename} with ${customDocs.length} documents`,
+        `Generated custom LLM file: ${customFile.filename} with ${customDocs.length} documents`
       );
     } else {
       logger.warn(
-        `No matching documents found for custom LLM file: ${customFile.filename}`,
+        `No matching documents found for custom LLM file: ${customFile.filename}`
       );
     }
   }
@@ -606,13 +606,13 @@ export async function generateCustomLLMFiles(
  * @returns Array of file paths
  */
 export async function collectDocFiles(
-  context: PluginContext,
+  context: PluginContext
 ): Promise<string[]> {
-  const { siteDir, docsSections, options } = context;
+  const {siteDir, docsSections, options} = context;
   const {
     ignoreFiles = [],
     includeBlog = false,
-    warnOnIgnoredFiles = false,
+    warnOnIgnoredFiles = false
   } = options;
 
   const allDocFiles: string[] = [];
@@ -630,7 +630,7 @@ export async function collectDocFiles(
         siteDir,
         ignoreFiles,
         section.path,
-        warnOnIgnoredFiles,
+        warnOnIgnoredFiles
       );
       allDocFiles.push(...docFiles);
     } catch (err: unknown) {
@@ -640,7 +640,7 @@ export async function collectDocFiles(
 
   // Process blog if enabled
   if (includeBlog) {
-    const blogDir = path.join(siteDir, "blog");
+    const blogDir = path.join(siteDir, 'blog');
 
     try {
       await fs.access(blogDir);
@@ -650,8 +650,8 @@ export async function collectDocFiles(
         blogDir,
         siteDir,
         ignoreFiles,
-        "blog",
-        warnOnIgnoredFiles,
+        'blog',
+        warnOnIgnoredFiles
       );
       allDocFiles.push(...blogFiles);
     } catch (err: unknown) {

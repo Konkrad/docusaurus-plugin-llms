@@ -6,14 +6,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateIndividualMarkdownFiles } = require('../lib/generator');
+const {generateIndividualMarkdownFiles} = require('../lib/generator');
 
 // Helper function to clean up test directory
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, {recursive: true, force: true});
   }
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, {recursive: true});
 }
 
 // Test cases for path collision detection
@@ -57,13 +57,19 @@ const testCases = [
         url: 'https://example.com/docs/config'
       }
     ],
-    expectedPaths: ['config.md', 'config-2.md', 'config-3.md', 'config-4.md', 'config-5.md'],
+    expectedPaths: [
+      'config.md',
+      'config-2.md',
+      'config-3.md',
+      'config-4.md',
+      'config-5.md'
+    ],
     siteUrl: 'https://example.com',
     description: 'Should handle multiple collisions with counter increments'
   },
   {
     name: 'Large number of collisions (100 files)',
-    docs: Array.from({ length: 100 }, (_, i) => ({
+    docs: Array.from({length: 100}, (_, i) => ({
       title: `Doc ${i + 1}`,
       path: 'docs/same-path.md',
       content: `Content ${i + 1}`,
@@ -72,14 +78,14 @@ const testCases = [
     })),
     expectedPaths: [
       'same-path.md',
-      ...Array.from({ length: 99 }, (_, i) => `same-path-${i + 2}.md`)
+      ...Array.from({length: 99}, (_, i) => `same-path-${i + 2}.md`)
     ],
     siteUrl: 'https://example.com',
     description: 'Should handle 100 collisions without hanging'
   },
   {
     name: 'Very large number of collisions (1000 files)',
-    docs: Array.from({ length: 1000 }, (_, i) => ({
+    docs: Array.from({length: 1000}, (_, i) => ({
       title: `Doc ${i + 1}`,
       path: 'docs/collision.md',
       content: `Content ${i + 1}`,
@@ -88,7 +94,7 @@ const testCases = [
     })),
     expectedPaths: [
       'collision.md',
-      ...Array.from({ length: 999 }, (_, i) => `collision-${i + 2}.md`)
+      ...Array.from({length: 999}, (_, i) => `collision-${i + 2}.md`)
     ],
     siteUrl: 'https://example.com',
     description: 'Should handle 1000 collisions efficiently'
@@ -125,7 +131,12 @@ const testCases = [
         url: 'https://example.com/docs/api/reference'
       }
     ],
-    expectedPaths: ['api/reference.md', 'api/reference-2.md', 'guide.md', 'api/reference-3.md'],
+    expectedPaths: [
+      'api/reference.md',
+      'api/reference-2.md',
+      'guide.md',
+      'api/reference-3.md'
+    ],
     siteUrl: 'https://example.com',
     description: 'Should handle collisions in nested directories'
   }
@@ -163,7 +174,9 @@ async function runTests() {
 
       // Verify all files were created
       if (result.length !== testCase.docs.length) {
-        throw new Error(`Expected ${testCase.docs.length} files, got ${result.length}`);
+        throw new Error(
+          `Expected ${testCase.docs.length} files, got ${result.length}`
+        );
       }
 
       // Check that all expected files exist
@@ -176,7 +189,9 @@ async function runTests() {
       if (testCase.docs.length > 100) {
         const uniquePaths = new Set(generatedPaths);
         if (uniquePaths.size !== generatedPaths.length) {
-          throw new Error(`Duplicate paths found! Expected ${generatedPaths.length} unique paths, got ${uniquePaths.size}`);
+          throw new Error(
+            `Duplicate paths found! Expected ${generatedPaths.length} unique paths, got ${uniquePaths.size}`
+          );
         }
         console.log(`  ✓ All ${generatedPaths.length} files have unique paths`);
       } else {
@@ -186,7 +201,9 @@ async function runTests() {
           const actual = generatedPaths[i];
 
           if (actual !== expected) {
-            throw new Error(`Path mismatch at index ${i}: expected "${expected}", got "${actual}"`);
+            throw new Error(
+              `Path mismatch at index ${i}: expected "${expected}", got "${actual}"`
+            );
           }
         }
         console.log(`  ✓ All paths match expected values`);
@@ -203,7 +220,6 @@ async function runTests() {
 
       console.log('  ✓ PASSED\n');
       passed++;
-
     } catch (error) {
       console.log(`  ✗ FAILED: ${error.message}\n`);
       failed++;

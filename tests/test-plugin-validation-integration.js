@@ -5,157 +5,156 @@
  * and properly rejects invalid options.
  */
 
-const assert = require("assert");
-const path = require("path");
+const assert = require('assert');
+const path = require('path');
 
-console.log("Testing plugin options validation integration...\n");
+console.log('Testing plugin options validation integration...\n');
 
 // Import the actual plugin
-const docusaurusPluginLLMs = require("../lib/index.js").default;
+const docusaurusPluginLLMs = require('../lib/index.js').default;
 
 // Mock context
 const mockContext = {
-  siteDir: "/tmp/test-site",
+  siteDir: '/tmp/test-site',
   siteConfig: {
-    title: "Test Site",
-    tagline: "Test tagline",
-    url: "https://example.com",
-    baseUrl: "/",
+    title: 'Test Site',
+    tagline: 'Test tagline',
+    url: 'https://example.com',
+    baseUrl: '/'
   },
-  outDir: "/tmp/test-site/build",
+  outDir: '/tmp/test-site/build'
 };
 
 // Test cases
 const testCases = [
   {
-    name: "Valid options should initialize plugin",
+    name: 'Valid options should initialize plugin',
     options: {
       generateLLMsTxt: true,
-      docsDir: "docs",
+      docsDir: 'docs'
     },
     shouldThrow: false,
-    description: "Plugin should initialize with valid options",
+    description: 'Plugin should initialize with valid options'
   },
   {
-    name: "Valid docsDir as array of sections",
+    name: 'Valid docsDir as array of sections',
     options: {
       docsDir: [
-        { path: "docs", routeBasePath: "/", label: "General" },
-        { path: "cloud", routeBasePath: "cloud", label: "Cloud Resources" },
-      ],
+        {path: 'docs', routeBasePath: '/', label: 'General'},
+        {path: 'cloud', routeBasePath: 'cloud', label: 'Cloud Resources'}
+      ]
     },
     shouldThrow: false,
     description:
-      "Plugin should initialize when docsDir is an array of DocsSection objects",
+      'Plugin should initialize when docsDir is an array of DocsSection objects'
   },
   {
-    name: "Valid docsDir as array without label",
+    name: 'Valid docsDir as array without label',
     options: {
-      docsDir: [{ path: "docs", routeBasePath: "/" }],
+      docsDir: [{path: 'docs', routeBasePath: '/'}]
     },
     shouldThrow: false,
     description:
-      "Plugin should initialize when docsDir array sections omit the optional label",
+      'Plugin should initialize when docsDir array sections omit the optional label'
   },
   {
-    name: "Invalid includeOrder should throw",
+    name: 'Invalid includeOrder should throw',
     options: {
-      includeOrder: "not-an-array",
+      includeOrder: 'not-an-array'
     },
     shouldThrow: true,
-    expectedError: "includeOrder must be an array",
-    description: "Plugin should reject invalid includeOrder",
+    expectedError: 'includeOrder must be an array',
+    description: 'Plugin should reject invalid includeOrder'
   },
   {
-    name: "Invalid ignoreFiles should throw",
+    name: 'Invalid ignoreFiles should throw',
     options: {
-      ignoreFiles: ["valid", 123],
+      ignoreFiles: ['valid', 123]
     },
     shouldThrow: true,
-    expectedError: "ignoreFiles must contain only strings",
-    description: "Plugin should reject non-string elements in ignoreFiles",
+    expectedError: 'ignoreFiles must contain only strings',
+    description: 'Plugin should reject non-string elements in ignoreFiles'
   },
   {
-    name: "Invalid pathTransformation should throw",
+    name: 'Invalid pathTransformation should throw',
     options: {
-      pathTransformation: "not-an-object",
+      pathTransformation: 'not-an-object'
     },
     shouldThrow: true,
-    expectedError: "pathTransformation must be an object",
-    description: "Plugin should reject invalid pathTransformation",
+    expectedError: 'pathTransformation must be an object',
+    description: 'Plugin should reject invalid pathTransformation'
   },
   {
-    name: "Invalid boolean option should throw",
+    name: 'Invalid boolean option should throw',
     options: {
-      generateLLMsTxt: "true",
+      generateLLMsTxt: 'true'
     },
     shouldThrow: true,
-    expectedError: "generateLLMsTxt must be a boolean",
-    description: "Plugin should reject non-boolean for boolean options",
+    expectedError: 'generateLLMsTxt must be a boolean',
+    description: 'Plugin should reject non-boolean for boolean options'
   },
   {
-    name: "Invalid docsDir (number) should throw",
+    name: 'Invalid docsDir (number) should throw',
     options: {
-      docsDir: 123,
+      docsDir: 123
     },
     shouldThrow: true,
-    expectedError: "docsDir must be a string or an array of section objects",
+    expectedError: 'docsDir must be a string or an array of section objects',
+    description: 'Plugin should reject docsDir that is neither string nor array'
+  },
+  {
+    name: 'Invalid docsDir array element (not object) should throw',
+    options: {
+      docsDir: ['not-an-object']
+    },
+    shouldThrow: true,
+    expectedError: 'docsDir[0] must be an object',
+    description: 'Plugin should reject docsDir array with non-object elements'
+  },
+  {
+    name: 'Invalid docsDir[].path (missing) should throw',
+    options: {
+      docsDir: [{routeBasePath: '/'}]
+    },
+    shouldThrow: true,
+    expectedError: 'docsDir[0].path must be a non-empty string',
+    description: 'Plugin should reject docsDir array section missing path'
+  },
+  {
+    name: 'Invalid docsDir[].routeBasePath (not string) should throw',
+    options: {
+      docsDir: [{path: 'docs', routeBasePath: 42}]
+    },
+    shouldThrow: true,
+    expectedError: 'docsDir[0].routeBasePath must be a string',
     description:
-      "Plugin should reject docsDir that is neither string nor array",
+      'Plugin should reject docsDir array section with non-string routeBasePath'
   },
   {
-    name: "Invalid docsDir array element (not object) should throw",
-    options: {
-      docsDir: ["not-an-object"],
-    },
-    shouldThrow: true,
-    expectedError: "docsDir[0] must be an object",
-    description: "Plugin should reject docsDir array with non-object elements",
-  },
-  {
-    name: "Invalid docsDir[].path (missing) should throw",
-    options: {
-      docsDir: [{ routeBasePath: "/" }],
-    },
-    shouldThrow: true,
-    expectedError: "docsDir[0].path must be a non-empty string",
-    description: "Plugin should reject docsDir array section missing path",
-  },
-  {
-    name: "Invalid docsDir[].routeBasePath (not string) should throw",
-    options: {
-      docsDir: [{ path: "docs", routeBasePath: 42 }],
-    },
-    shouldThrow: true,
-    expectedError: "docsDir[0].routeBasePath must be a string",
-    description:
-      "Plugin should reject docsDir array section with non-string routeBasePath",
-  },
-  {
-    name: "Invalid customLLMFiles should throw",
+    name: 'Invalid customLLMFiles should throw',
     options: {
       customLLMFiles: [
         {
-          filename: "test.txt",
+          filename: 'test.txt',
           includePatterns: [],
-          fullContent: true,
-        },
-      ],
+          fullContent: true
+        }
+      ]
     },
     shouldThrow: true,
     expectedError:
-      "customLLMFiles[0].includePatterns must be a non-empty array",
-    description: "Plugin should reject empty includePatterns",
+      'customLLMFiles[0].includePatterns must be a non-empty array',
+    description: 'Plugin should reject empty includePatterns'
   },
   {
-    name: "Invalid logLevel should throw",
+    name: 'Invalid logLevel should throw',
     options: {
-      logLevel: "debug",
+      logLevel: 'debug'
     },
     shouldThrow: true,
-    expectedError: "logLevel must be one of: quiet, normal, verbose",
-    description: "Plugin should reject invalid logLevel values",
-  },
+    expectedError: 'logLevel must be one of: quiet, normal, verbose',
+    description: 'Plugin should reject invalid logLevel values'
+  }
 ];
 
 // Run tests
@@ -187,7 +186,7 @@ testCases.forEach((testCase, index) => {
     } else {
       // Test should not throw an error
       const plugin = docusaurusPluginLLMs(mockContext, testCase.options);
-      if (plugin && plugin.name === "docusaurus-plugin-llms") {
+      if (plugin && plugin.name === 'docusaurus-plugin-llms') {
         console.log(`  ${index + 1}. PASS: ${testCase.name}`);
         passedTests++;
       } else {
@@ -205,11 +204,11 @@ testCases.forEach((testCase, index) => {
   }
 });
 
-console.log("\n" + "=".repeat(50));
+console.log('\n' + '='.repeat(50));
 console.log(
-  `Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`,
+  `Test Results: ${passedTests}/${testCases.length} passed, ${failedTests} failed`
 );
-console.log("=".repeat(50));
+console.log('='.repeat(50));
 
 if (failedTests > 0) {
   process.exit(1);

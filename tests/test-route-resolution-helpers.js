@@ -7,7 +7,7 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const { processFilesWithPatterns } = require('../lib/processor');
+const {processFilesWithPatterns} = require('../lib/processor');
 
 // Test data setup
 const TEST_DIR = path.join(__dirname, 'route-helpers-test');
@@ -60,7 +60,7 @@ async function runTests() {
     {
       const routeMap = new Map([
         ['/docs/simple', '/simple'],
-        ['/docs/01-numbered', '/numbered'],
+        ['/docs/01-numbered', '/numbered']
       ]);
 
       const context = {
@@ -68,19 +68,21 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap,
+        routeMap
       };
 
       const allFiles = [
         path.join(DOCS_DIR, 'simple.md'),
-        path.join(DOCS_DIR, '01-numbered.md'),
+        path.join(DOCS_DIR, '01-numbered.md')
       ];
 
       const results = await processFilesWithPatterns(context, allFiles);
 
       // Verify that exact matches are found
       const simpleDoc = results.find(doc => doc.path === 'docs/simple.md');
-      const numberedDoc = results.find(doc => doc.path === 'docs/01-numbered.md');
+      const numberedDoc = results.find(
+        doc => doc.path === 'docs/01-numbered.md'
+      );
 
       if (simpleDoc && simpleDoc.url === 'https://example.com/simple') {
         console.log('  ✓ PASS: Exact match for simple.md');
@@ -92,7 +94,9 @@ async function runTests() {
       if (numberedDoc && numberedDoc.url === 'https://example.com/numbered') {
         console.log('  ✓ PASS: Exact match for numbered file');
       } else {
-        console.log('  ✗ FAIL: Expected 01-numbered.md to resolve to /numbered');
+        console.log(
+          '  ✗ FAIL: Expected 01-numbered.md to resolve to /numbered'
+        );
         console.log(`    Got: ${numberedDoc?.url}`);
       }
     }
@@ -101,7 +105,7 @@ async function runTests() {
     console.log('\nTest 2: Cleaned path match (numbered prefix removal)');
     {
       const routeMap = new Map([
-        ['/docs/another', '/another'],  // No numbered prefix in route
+        ['/docs/another', '/another'] // No numbered prefix in route
       ]);
 
       const context = {
@@ -109,11 +113,11 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap,
+        routeMap
       };
 
       const allFiles = [
-        path.join(DOCS_DIR, '02-another.md'),  // Has numbered prefix in filename
+        path.join(DOCS_DIR, '02-another.md') // Has numbered prefix in filename
       ];
 
       const results = await processFilesWithPatterns(context, allFiles);
@@ -131,7 +135,7 @@ async function runTests() {
     console.log('\nTest 3: Segment-wise match (nested folders)');
     {
       const routeMap = new Map([
-        ['/docs/category/nested', '/category/nested'],  // Category without number
+        ['/docs/category/nested', '/category/nested'] // Category without number
       ]);
 
       const context = {
@@ -139,11 +143,11 @@ async function runTests() {
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap,
+        routeMap
       };
 
       const allFiles = [
-        path.join(DOCS_DIR, '01-category', 'nested.md'),  // Folder has numbered prefix
+        path.join(DOCS_DIR, '01-category', 'nested.md') // Folder has numbered prefix
       ];
 
       const results = await processFilesWithPatterns(context, allFiles);
@@ -152,7 +156,9 @@ async function runTests() {
       if (doc && doc.url === 'https://example.com/category/nested') {
         console.log('  ✓ PASS: Segment-wise match removes folder prefix');
       } else {
-        console.log('  ✗ FAIL: Expected nested file to resolve to /category/nested');
+        console.log(
+          '  ✗ FAIL: Expected nested file to resolve to /category/nested'
+        );
         console.log(`    Got: ${doc?.url}`);
       }
     }
@@ -160,21 +166,17 @@ async function runTests() {
     // Test 4: Double numbered prefixes
     console.log('\nTest 4: Double numbered prefixes');
     {
-      const routeMap = new Map([
-        ['/docs/category/double', '/category/double'],
-      ]);
+      const routeMap = new Map([['/docs/category/double', '/category/double']]);
 
       const context = {
         siteDir: TEST_DIR,
         siteUrl: 'https://example.com',
         docsDir: 'docs',
         options: {},
-        routeMap,
+        routeMap
       };
 
-      const allFiles = [
-        path.join(DOCS_DIR, '01-category', '01-double.md'),
-      ];
+      const allFiles = [path.join(DOCS_DIR, '01-category', '01-double.md')];
 
       const results = await processFilesWithPatterns(context, allFiles);
       const doc = results[0];
@@ -182,7 +184,9 @@ async function runTests() {
       if (doc && doc.url === 'https://example.com/category/double') {
         console.log('  ✓ PASS: Double numbered prefixes handled correctly');
       } else {
-        console.log('  ✗ FAIL: Expected double numbered file to resolve correctly');
+        console.log(
+          '  ✗ FAIL: Expected double numbered file to resolve correctly'
+        );
         console.log(`    Got: ${doc?.url}`);
       }
     }
@@ -194,13 +198,11 @@ async function runTests() {
         siteDir: TEST_DIR,
         siteUrl: 'https://example.com',
         docsDir: 'docs',
-        options: {},
+        options: {}
         // No routeMap provided
       };
 
-      const allFiles = [
-        path.join(DOCS_DIR, 'simple.md'),
-      ];
+      const allFiles = [path.join(DOCS_DIR, 'simple.md')];
 
       const results = await processFilesWithPatterns(context, allFiles);
       const doc = results[0];
@@ -217,11 +219,11 @@ async function runTests() {
     // Test 6: Best route match with routesPaths
     console.log('\nTest 6: Best route match with routesPaths');
     {
-      const routeMap = new Map();  // Empty route map
+      const routeMap = new Map(); // Empty route map
       const routesPaths = [
         '/docs/another',
         '/docs/category/nested',
-        '/docs/simple',
+        '/docs/simple'
       ];
 
       const context = {
@@ -230,12 +232,10 @@ async function runTests() {
         docsDir: 'docs',
         options: {},
         routeMap,
-        routesPaths,
+        routesPaths
       };
 
-      const allFiles = [
-        path.join(DOCS_DIR, '02-another.md'),
-      ];
+      const allFiles = [path.join(DOCS_DIR, '02-another.md')];
 
       const results = await processFilesWithPatterns(context, allFiles);
       const doc = results[0];
@@ -250,7 +250,6 @@ async function runTests() {
     }
 
     console.log('\n✓ All route resolution helper tests completed');
-
   } catch (err) {
     console.error('Test failed with error:', err);
     process.exit(1);

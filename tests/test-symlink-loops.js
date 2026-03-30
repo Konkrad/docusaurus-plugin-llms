@@ -7,19 +7,22 @@
 const fs = require('fs/promises');
 const path = require('path');
 const os = require('os');
-const { readMarkdownFiles } = require('../lib/utils');
+const {readMarkdownFiles} = require('../lib/utils');
 
 // Helper to create a temporary test directory
 async function createTempDir() {
-  const tmpDir = path.join(os.tmpdir(), `llm-plugin-symlink-test-${Date.now()}`);
-  await fs.mkdir(tmpDir, { recursive: true });
+  const tmpDir = path.join(
+    os.tmpdir(),
+    `llm-plugin-symlink-test-${Date.now()}`
+  );
+  await fs.mkdir(tmpDir, {recursive: true});
   return tmpDir;
 }
 
 // Helper to cleanup test directory
 async function cleanupTempDir(tmpDir) {
   try {
-    await fs.rm(tmpDir, { recursive: true, force: true });
+    await fs.rm(tmpDir, {recursive: true, force: true});
   } catch (error) {
     // Ignore cleanup errors
   }
@@ -27,7 +30,7 @@ async function cleanupTempDir(tmpDir) {
 
 // Helper to create test markdown files
 async function createTestFile(filePath, content = '# Test\n\nTest content') {
-  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.mkdir(path.dirname(filePath), {recursive: true});
   await fs.writeFile(filePath, content, 'utf8');
 }
 
@@ -41,7 +44,9 @@ const testCases = [
         // Create normal directory structure
         await createTestFile(path.join(tmpDir, 'docs', 'file1.md'));
         await createTestFile(path.join(tmpDir, 'docs', 'subdir', 'file2.md'));
-        await createTestFile(path.join(tmpDir, 'docs', 'subdir', 'nested', 'file3.md'));
+        await createTestFile(
+          path.join(tmpDir, 'docs', 'subdir', 'nested', 'file3.md')
+        );
 
         const files = await readMarkdownFiles(
           path.join(tmpDir, 'docs'),
@@ -52,7 +57,7 @@ const testCases = [
         );
 
         if (files.length === 3) {
-          return { passed: true };
+          return {passed: true};
         } else {
           return {
             passed: false,
@@ -84,13 +89,13 @@ const testCases = [
         } catch (error) {
           // Symlinks might not be supported on this platform
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         // Capture console.warn output
         const originalWarn = console.warn;
         const warnings = [];
-        console.warn = (msg) => warnings.push(msg);
+        console.warn = msg => warnings.push(msg);
 
         try {
           const files = await readMarkdownFiles(
@@ -107,12 +112,13 @@ const testCases = [
           // Should find 2 unique files (file1.md and file2.md)
           // Should not enter infinite loop
           // Should have warning about symlink loop
-          const hasLoopWarning = warnings.some(w =>
-            w.includes('already visited path') || w.includes('symlink loop')
+          const hasLoopWarning = warnings.some(
+            w =>
+              w.includes('already visited path') || w.includes('symlink loop')
           );
 
           if (files.length === 2 && hasLoopWarning) {
-            return { passed: true };
+            return {passed: true};
           } else {
             return {
               passed: false,
@@ -146,7 +152,7 @@ const testCases = [
           await fs.symlink(externalDir, symlinkPath, 'dir');
         } catch (error) {
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         const files = await readMarkdownFiles(
@@ -159,7 +165,7 @@ const testCases = [
 
         // Should find both files (one direct, one through symlink)
         if (files.length === 2) {
-          return { passed: true };
+          return {passed: true};
         } else {
           return {
             passed: false,
@@ -184,16 +190,20 @@ const testCases = [
         // Create a symlink to non-existent directory
         const symlinkPath = path.join(docsDir, 'broken-link');
         try {
-          await fs.symlink(path.join(tmpDir, 'nonexistent'), symlinkPath, 'dir');
+          await fs.symlink(
+            path.join(tmpDir, 'nonexistent'),
+            symlinkPath,
+            'dir'
+          );
         } catch (error) {
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         // Capture console.warn output
         const originalWarn = console.warn;
         const warnings = [];
-        console.warn = (msg) => warnings.push(msg);
+        console.warn = msg => warnings.push(msg);
 
         try {
           const files = await readMarkdownFiles(
@@ -213,7 +223,7 @@ const testCases = [
           );
 
           if (files.length === 1 && hasBrokenLinkWarning) {
-            return { passed: true };
+            return {passed: true};
           } else {
             return {
               passed: false,
@@ -249,13 +259,13 @@ const testCases = [
           await fs.symlink(targetDir, symlink2, 'dir');
         } catch (error) {
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         // Capture console.warn output
         const originalWarn = console.warn;
         const warnings = [];
-        console.warn = (msg) => warnings.push(msg);
+        console.warn = msg => warnings.push(msg);
 
         try {
           const files = await readMarkdownFiles(
@@ -276,7 +286,7 @@ const testCases = [
           );
 
           if (files.length === 2 && hasVisitedWarning) {
-            return { passed: true };
+            return {passed: true};
           } else {
             return {
               passed: false,
@@ -309,12 +319,12 @@ const testCases = [
         const link2 = path.join(level1, 'link2');
 
         try {
-          await fs.mkdir(level1, { recursive: true });
+          await fs.mkdir(level1, {recursive: true});
           await fs.symlink(level1, link1, 'dir');
           await fs.symlink(level2, link2, 'dir');
         } catch (error) {
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         const files = await readMarkdownFiles(
@@ -327,7 +337,7 @@ const testCases = [
 
         // Should find both files through the symlink chain
         if (files.length === 2) {
-          return { passed: true };
+          return {passed: true};
         } else {
           return {
             passed: false,
@@ -361,7 +371,7 @@ const testCases = [
           await fs.symlink(shared, linkB, 'dir');
         } catch (error) {
           console.log('⚠️  SKIP: Cannot create symlinks on this platform');
-          return { passed: true, skipped: true };
+          return {passed: true, skipped: true};
         }
 
         const files = await readMarkdownFiles(
@@ -374,7 +384,7 @@ const testCases = [
 
         // Should find 3 unique files (file1.md, file2.md, shared.md once)
         if (files.length === 3) {
-          return { passed: true };
+          return {passed: true};
         } else {
           return {
             passed: false,
@@ -422,7 +432,9 @@ async function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Symlink Loop Detection Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}, Total: ${testCases.length}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Skipped: ${skipped}, Total: ${testCases.length}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;

@@ -1,18 +1,18 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { processMarkdownFile } = require('../lib/processor');
+const {processMarkdownFile} = require('../lib/processor');
 
 async function setupTestFiles() {
   const testDir = path.join(__dirname, 'test-circular-imports-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, { recursive: true });
+    await fs.rm(testDir, {recursive: true});
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, { recursive: true });
+  await fs.mkdir(testDir, {recursive: true});
 
   // Create partial A that imports partial B
   const partialAContent = `---
@@ -29,10 +29,7 @@ import PartialB from './_partial-b.mdx';
 
 More content after importing B.`;
 
-  await fs.writeFile(
-    path.join(testDir, '_partial-a.mdx'),
-    partialAContent
-  );
+  await fs.writeFile(path.join(testDir, '_partial-a.mdx'), partialAContent);
 
   // Create partial B that imports partial A (circular!)
   const partialBContent = `---
@@ -49,10 +46,7 @@ import PartialA from './_partial-a.mdx';
 
 More content after importing A.`;
 
-  await fs.writeFile(
-    path.join(testDir, '_partial-b.mdx'),
-    partialBContent
-  );
+  await fs.writeFile(path.join(testDir, '_partial-b.mdx'), partialBContent);
 
   // Create a main document that imports partial A
   const mainContent = `---
@@ -72,10 +66,7 @@ import PartialA from './_partial-a.mdx';
 
 ## End`;
 
-  await fs.writeFile(
-    path.join(testDir, 'main.md'),
-    mainContent
-  );
+  await fs.writeFile(path.join(testDir, 'main.md'), mainContent);
 
   // Create another test case with self-import
   const selfImportContent = `---
@@ -90,10 +81,7 @@ import SelfImport from './_self-import.mdx';
 
 This should not cause infinite recursion.`;
 
-  await fs.writeFile(
-    path.join(testDir, '_self-import.mdx'),
-    selfImportContent
-  );
+  await fs.writeFile(path.join(testDir, '_self-import.mdx'), selfImportContent);
 
   const mainSelfContent = `---
 title: Main with Self Import
@@ -105,10 +93,7 @@ import SelfImport from './_self-import.mdx';
 
 <SelfImport />`;
 
-  await fs.writeFile(
-    path.join(testDir, 'main-self.md'),
-    mainSelfContent
-  );
+  await fs.writeFile(path.join(testDir, 'main-self.md'), mainSelfContent);
 
   return testDir;
 }
@@ -147,7 +132,9 @@ async function runTests() {
     }
 
     // Should contain content from Partial A
-    const hasPartialAContent = mainDoc.content.includes('Content from Partial A');
+    const hasPartialAContent = mainDoc.content.includes(
+      'Content from Partial A'
+    );
     if (hasPartialAContent) {
       console.log('  ✅ PASS: Partial A content was included');
     } else {
@@ -156,7 +143,9 @@ async function runTests() {
     }
 
     // Should contain content from Partial B
-    const hasPartialBContent = mainDoc.content.includes('Content from Partial B');
+    const hasPartialBContent = mainDoc.content.includes(
+      'Content from Partial B'
+    );
     if (hasPartialBContent) {
       console.log('  ✅ PASS: Partial B content was included');
     } else {
@@ -168,7 +157,9 @@ async function runTests() {
     // We shouldn't see duplicate "Content from Partial A"
     const partialAMatches = mainDoc.content.match(/Content from Partial A/g);
     if (partialAMatches && partialAMatches.length === 1) {
-      console.log('  ✅ PASS: Circular import was prevented (no duplicate content)');
+      console.log(
+        '  ✅ PASS: Circular import was prevented (no duplicate content)'
+      );
     } else if (partialAMatches && partialAMatches.length > 1) {
       console.log('  ❌ FAIL: Circular import caused duplicate content');
       allTestsPassed = false;
@@ -190,7 +181,9 @@ async function runTests() {
 
     // The document should still be processed (not crash)
     if (selfDoc && selfDoc.content) {
-      console.log('  ✅ PASS: Document with self-import processed without crashing');
+      console.log(
+        '  ✅ PASS: Document with self-import processed without crashing'
+      );
     } else {
       console.log('  ❌ FAIL: Document with self-import processing failed');
       allTestsPassed = false;
@@ -199,7 +192,9 @@ async function runTests() {
     // Should contain the self-importing partial content once
     const selfImportMatches = selfDoc.content.match(/Self Importing Partial/g);
     if (selfImportMatches && selfImportMatches.length === 1) {
-      console.log('  ✅ PASS: Self-import was prevented (content appears once)');
+      console.log(
+        '  ✅ PASS: Self-import was prevented (content appears once)'
+      );
     } else if (selfImportMatches && selfImportMatches.length > 1) {
       console.log('  ❌ FAIL: Self-import caused duplicate content');
       allTestsPassed = false;
@@ -209,14 +204,13 @@ async function runTests() {
     }
 
     console.log('');
-
   } catch (error) {
     console.error('Test error:', error);
     allTestsPassed = false;
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, { recursive: true });
+      await fs.rm(testDir, {recursive: true});
     } catch (err) {
       // Ignore cleanup errors
     }

@@ -1,21 +1,21 @@
 /**
  * Unit tests for description extraction and cleaning functionality
- * 
+ *
  * Run with: node tests/test-description-extraction.js
  */
 
 const fs = require('fs').promises;
 const path = require('path');
 const matter = require('gray-matter');
-const { cleanMarkdownContent } = require('../lib/utils');
+const {cleanMarkdownContent} = require('../lib/utils');
 
 // Simplified version of the processor's description extraction logic for testing
 function extractAndCleanDescription(content) {
-  const { data, content: markdownContent } = matter(content);
-  
+  const {data, content: markdownContent} = matter(content);
+
   // Get description from frontmatter or first paragraph
   let description = '';
-  
+
   // First priority: Use frontmatter description if available
   if (data.description) {
     description = data.description;
@@ -30,7 +30,7 @@ function extractAndCleanDescription(content) {
         break;
       }
     }
-    
+
     // Third priority: If still no description, use the first heading's content
     if (!description) {
       const firstHeadingMatch = markdownContent.match(/^#\s+(.*?)$/m);
@@ -39,7 +39,7 @@ function extractAndCleanDescription(content) {
       }
     }
   }
-  
+
   // Only remove heading markers at the beginning of descriptions or lines
   // This preserves # characters that are part of the content
   if (description) {
@@ -47,18 +47,18 @@ function extractAndCleanDescription(content) {
     // Fix: Only remove # symbols at the beginning of lines or description
     // that are followed by a space (actual heading markers)
     description = description.replace(/^(#+)\s+/gm, '');
-    
+
     // Special handling for description frontmatter with heading markers
     if (data.description && data.description.startsWith('#')) {
       // If the description in frontmatter starts with a heading marker,
       // we should preserve it in the extracted description
       description = description.replace(/^#+\s+/, '');
     }
-    
+
     // Preserve inline hashtags (not heading markers)
     // We don't want to treat hashtags in the middle of content as headings
   }
-  
+
   return description;
 }
 
@@ -66,16 +66,16 @@ function extractAndCleanDescription(content) {
 function validateDescription(description) {
   // Check for heading markers at the beginning of lines (which would be headings)
   const hasHeadingMarkers = description.match(/^#+\s+/m) !== null;
-  
+
   // Check for inline hashtags that are not heading markers
   const hasInlineHashtags = description.includes('#') && !hasHeadingMarkers;
-  
+
   // Check for potential HTML tags
   const hasPotentialHtml = /<[^>]+>/g.test(description);
-  
+
   // Check if description is too long (arbitrary limit for testing)
   const isTooLong = description.length > 500;
-  
+
   return {
     isValid: !hasHeadingMarkers && !hasPotentialHtml && !isTooLong,
     issues: {
@@ -90,15 +90,15 @@ function validateDescription(description) {
 // Simulating the generator's description cleaning for TOC items
 function cleanDescriptionForToc(description) {
   if (!description) return '';
-  
+
   // Get just the first line for TOC display
   const firstLine = description.split('\n')[0];
-  
+
   // Remove heading markers only at the beginning of the line
   // Be careful to only remove actual heading markers (# followed by space at beginning)
   // and not hashtag symbols that are part of the content (inline hashtags)
   const cleaned = firstLine.replace(/^(#+)\s+/g, '');
-  
+
   // Truncate if too long
   return cleaned.length > 150 ? cleaned.substring(0, 147) + '...' : cleaned;
 }
@@ -129,8 +129,10 @@ title: Test Page
 This is the first paragraph that should become the description.
 
 This is other content.`,
-    expectedDescription: 'This is the first paragraph that should become the description.',
-    expectedToc: 'This is the first paragraph that should become the description.'
+    expectedDescription:
+      'This is the first paragraph that should become the description.',
+    expectedToc:
+      'This is the first paragraph that should become the description.'
   },
   {
     name: 'Description with inline hashtag symbol',
@@ -174,7 +176,8 @@ description: |
 
 Content here.`,
     // There's an extra newline at the end in the current implementation
-    expectedDescription: 'First line of description\nSecond line that should be included\nThird line with some # characters that should be preserved\n',
+    expectedDescription:
+      'First line of description\nSecond line that should be included\nThird line with some # characters that should be preserved\n',
     expectedToc: 'First line of description'
   },
   {
@@ -199,7 +202,8 @@ description: This has <strong>HTML</strong> that should be flagged
 # Test Header
 
 Content here.`,
-    expectedDescription: 'This has <strong>HTML</strong> that should be flagged',
+    expectedDescription:
+      'This has <strong>HTML</strong> that should be flagged',
     expectedToc: 'This has <strong>HTML</strong> that should be flagged'
   },
   {
@@ -213,16 +217,28 @@ description: ${new Array(20).fill('This is a very long description that should b
 
 Content here.`,
     // Adjust the length to match the actual implementation - note the exact string generation
-    expectedDescription: new Array(20).fill('This is a very long description that should be truncated for TOC items. ').join('').substring(0, 1439),
+    expectedDescription: new Array(20)
+      .fill(
+        'This is a very long description that should be truncated for TOC items. '
+      )
+      .join('')
+      .substring(0, 1439),
     // Actually tested the output length - it's 150 characters including the ellipsis
-    expectedToc: (new Array(5).fill('This is a very long description that should be truncated for TOC items. ').join('').substring(0, 147) + '...').substring(0, 150)
+    expectedToc: (
+      new Array(5)
+        .fill(
+          'This is a very long description that should be truncated for TOC items. '
+        )
+        .join('')
+        .substring(0, 147) + '...'
+    ).substring(0, 150)
   }
 ];
 
 // Run tests
 function runTests() {
   console.log('Running description extraction and cleaning tests...\n');
-  
+
   let passCount = 0;
   let foundIssues = {
     headingMarkers: false,
@@ -232,22 +248,28 @@ function runTests() {
     extractionMismatch: false,
     tocMismatch: false
   };
-  
+
   testCases.forEach((test, index) => {
     console.log(`Test ${index + 1}: ${test.name}`);
-    
+
     // Extract description
     const description = extractAndCleanDescription(test.input);
-    console.log(`  Extracted description: "${description.length > 50 ? description.substring(0, 47) + '...' : description}"`);
-    console.log(`  Expected description: "${test.expectedDescription.length > 50 ? test.expectedDescription.substring(0, 47) + '...' : test.expectedDescription}"`);
-    
+    console.log(
+      `  Extracted description: "${description.length > 50 ? description.substring(0, 47) + '...' : description}"`
+    );
+    console.log(
+      `  Expected description: "${test.expectedDescription.length > 50 ? test.expectedDescription.substring(0, 47) + '...' : test.expectedDescription}"`
+    );
+
     // For cases with hashtags, log more detailed information
     if (description.includes('#') || test.expectedDescription.includes('#')) {
       console.log('  DEBUGGING HASHTAGS:');
       console.log(`    - Actual: "${JSON.stringify(description)}"`);
-      console.log(`    - Expected: "${JSON.stringify(test.expectedDescription)}"`);
+      console.log(
+        `    - Expected: "${JSON.stringify(test.expectedDescription)}"`
+      );
     }
-    
+
     // Validate description
     const validation = validateDescription(description);
     if (!validation.isValid) {
@@ -269,24 +291,30 @@ function runTests() {
         foundIssues.tooLong = true;
       }
     }
-    
+
     // Test TOC cleaning
     const tocDescription = cleanDescriptionForToc(description);
-    console.log(`  TOC description: "${tocDescription.length > 50 ? tocDescription.substring(0, 47) + '...' : tocDescription}"`);
-    console.log(`  Expected TOC: "${test.expectedToc.length > 50 ? test.expectedToc.substring(0, 47) + '...' : test.expectedToc}"`);
-    
+    console.log(
+      `  TOC description: "${tocDescription.length > 50 ? tocDescription.substring(0, 47) + '...' : tocDescription}"`
+    );
+    console.log(
+      `  Expected TOC: "${test.expectedToc.length > 50 ? test.expectedToc.substring(0, 47) + '...' : test.expectedToc}"`
+    );
+
     // For the very long description test, show the truncation behavior
     if (test.name.includes('Very long description')) {
       console.log('  DEBUGGING TRUNCATION:');
       console.log(`    - Actual length: ${tocDescription.length}`);
       console.log(`    - Expected length: ${test.expectedToc.length}`);
-      console.log(`    - Truncated at: ${tocDescription.endsWith('...') ? 'Yes' : 'No'}`);
+      console.log(
+        `    - Truncated at: ${tocDescription.endsWith('...') ? 'Yes' : 'No'}`
+      );
     }
-    
+
     // Check if the test passes
     const descriptionMatches = description === test.expectedDescription;
     const tocMatches = tocDescription === test.expectedToc;
-    
+
     if (descriptionMatches && tocMatches) {
       console.log('  ✅ PASS');
       passCount++;
@@ -294,30 +322,40 @@ function runTests() {
       console.log('  ❌ FAIL');
       if (!descriptionMatches) {
         console.log('    - Description does not match expected');
-        console.log(`    - Actual: ${description.substring(0, 30)}... (${description.length} chars)`);
-        console.log(`    - Expected: ${test.expectedDescription.substring(0, 30)}... (${test.expectedDescription.length} chars)`);
+        console.log(
+          `    - Actual: ${description.substring(0, 30)}... (${description.length} chars)`
+        );
+        console.log(
+          `    - Expected: ${test.expectedDescription.substring(0, 30)}... (${test.expectedDescription.length} chars)`
+        );
         foundIssues.extractionMismatch = true;
       }
       if (!tocMatches) {
         console.log('    - TOC description does not match expected');
-        console.log(`    - Actual: ${tocDescription.substring(0, 30)}... (${tocDescription.length} chars)`);
-        console.log(`    - Expected: ${test.expectedToc.substring(0, 30)}... (${test.expectedToc.length} chars)`);
+        console.log(
+          `    - Actual: ${tocDescription.substring(0, 30)}... (${tocDescription.length} chars)`
+        );
+        console.log(
+          `    - Expected: ${test.expectedToc.substring(0, 30)}... (${test.expectedToc.length} chars)`
+        );
         foundIssues.tocMismatch = true;
       }
     }
-    
+
     console.log('');
   });
-  
+
   console.log(`Results: ${passCount} of ${testCases.length} tests passed.`);
-  
+
   // Print overall recommendations based on actual issues found
   console.log('\nRecommendations based on test results:');
   if (foundIssues.headingMarkers) {
     console.log('- Ensure proper heading marker removal from descriptions');
   }
   if (foundIssues.inlineHashtags) {
-    console.log('- Ensure hashtag symbols that are part of content are preserved');
+    console.log(
+      '- Ensure hashtag symbols that are part of content are preserved'
+    );
   }
   if (foundIssues.potentialHtml) {
     console.log('- Consider HTML sanitization for descriptions');
@@ -326,7 +364,9 @@ function runTests() {
     console.log('- Implement appropriate truncation for long descriptions');
   }
   if (foundIssues.extractionMismatch) {
-    console.log('- Fix description extraction logic to match expected behavior');
+    console.log(
+      '- Fix description extraction logic to match expected behavior'
+    );
   }
   if (foundIssues.tocMismatch) {
     console.log('- Fix TOC description cleaning to match expected behavior');
@@ -339,7 +379,7 @@ function runTests() {
 // XML Preservation Tests
 function runXmlPreservationTests() {
   console.log('\n=== XML Preservation Tests ===\n');
-  
+
   const xmlTests = [
     {
       name: 'Preserve XML plist tags',
@@ -349,18 +389,19 @@ function runXmlPreservationTests() {
     },
     {
       name: 'Remove HTML but keep XML',
-      input: 'Text with <strong>bold</strong>\n```xml\n<plist><dict></dict></plist>\n```',
+      input:
+        'Text with <strong>bold</strong>\n```xml\n<plist><dict></dict></plist>\n```',
       shouldHave: ['<plist>', '<dict>'],
       shouldNotHave: ['<strong>']
     }
   ];
-  
+
   let xmlPassCount = 0;
   xmlTests.forEach((test, i) => {
     const cleaned = cleanMarkdownContent(test.input);
     const hasAll = test.shouldHave.every(tag => cleaned.includes(tag));
     const hasNone = test.shouldNotHave.every(tag => !cleaned.includes(tag));
-    
+
     if (hasAll && hasNone) {
       console.log(`✅ XML Test ${i + 1}: ${test.name}`);
       xmlPassCount++;
@@ -368,9 +409,9 @@ function runXmlPreservationTests() {
       console.log(`❌ XML Test ${i + 1}: ${test.name}`);
     }
   });
-  
+
   console.log(`\nXML Tests: ${xmlPassCount}/${xmlTests.length} passed\n`);
 }
 
 runTests();
-runXmlPreservationTests(); 
+runXmlPreservationTests();

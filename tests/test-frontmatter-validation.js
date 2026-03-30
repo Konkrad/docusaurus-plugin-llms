@@ -7,15 +7,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateIndividualMarkdownFiles } = require('../lib/generator');
+const {generateIndividualMarkdownFiles} = require('../lib/generator');
 
 // Helper function to clean up test directory
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, {recursive: true, force: true});
   }
   // Recreate empty directory for next test
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, {recursive: true});
 }
 
 /**
@@ -33,7 +33,7 @@ const testCases = [
         description: 'Test with numeric slug',
         url: 'https://example.com/test',
         frontMatter: {
-          slug: 12345  // Number instead of string
+          slug: 12345 // Number instead of string
         }
       }
     ],
@@ -51,7 +51,7 @@ const testCases = [
         description: 'Test with boolean slug',
         url: 'https://example.com/boolean',
         frontMatter: {
-          slug: true  // Boolean instead of string
+          slug: true // Boolean instead of string
         }
       }
     ],
@@ -68,7 +68,7 @@ const testCases = [
         description: 'Test with object slug',
         url: 'https://example.com/object',
         frontMatter: {
-          slug: { nested: 'value' }  // Object instead of string
+          slug: {nested: 'value'} // Object instead of string
         }
       }
     ],
@@ -85,7 +85,7 @@ const testCases = [
         description: 'Test with array slug',
         url: 'https://example.com/array',
         frontMatter: {
-          slug: ['path', 'segments']  // Array instead of string
+          slug: ['path', 'segments'] // Array instead of string
         }
       }
     ],
@@ -102,7 +102,7 @@ const testCases = [
         description: 'Test with null slug',
         url: 'https://example.com/null',
         frontMatter: {
-          slug: null  // Null value
+          slug: null // Null value
         }
       }
     ],
@@ -119,7 +119,7 @@ const testCases = [
         description: 'Test with numeric id',
         url: 'https://example.com/numeric',
         frontMatter: {
-          id: 99999  // Number instead of string
+          id: 99999 // Number instead of string
         }
       }
     ],
@@ -136,7 +136,7 @@ const testCases = [
         description: 'Test with boolean id',
         url: 'https://example.com/bool',
         frontMatter: {
-          id: false  // Boolean instead of string
+          id: false // Boolean instead of string
         }
       }
     ],
@@ -153,7 +153,7 @@ const testCases = [
         description: 'Test with object id',
         url: 'https://example.com/obj',
         frontMatter: {
-          id: { key: 'value' }  // Object instead of string
+          id: {key: 'value'} // Object instead of string
         }
       }
     ],
@@ -170,7 +170,7 @@ const testCases = [
         description: 'Test with array id',
         url: 'https://example.com/arr',
         frontMatter: {
-          id: ['id', 'parts']  // Array instead of string
+          id: ['id', 'parts'] // Array instead of string
         }
       }
     ],
@@ -205,8 +205,8 @@ const testCases = [
         description: 'Test mixed validation',
         url: 'https://example.com/mixed',
         frontMatter: {
-          slug: 456,  // Invalid - should be ignored
-          id: 'valid-id'  // Valid - should be used
+          slug: 456, // Invalid - should be ignored
+          id: 'valid-id' // Valid - should be used
         }
       }
     ],
@@ -224,8 +224,8 @@ const testCases = [
         description: 'Test mixed validation (reverse)',
         url: 'https://example.com/mixed2',
         frontMatter: {
-          slug: 'valid-slug',  // Valid - should be used
-          id: false  // Invalid - should be ignored (slug takes precedence anyway)
+          slug: 'valid-slug', // Valid - should be used
+          id: false // Invalid - should be ignored (slug takes precedence anyway)
         }
       }
     ],
@@ -261,7 +261,7 @@ const testCases = [
         description: 'Test empty string slug',
         url: 'https://example.com/empty',
         frontMatter: {
-          slug: ''  // Empty string - is a string, but should fall back to path
+          slug: '' // Empty string - is a string, but should fall back to path
         }
       }
     ],
@@ -278,7 +278,7 @@ const testCases = [
         description: 'Test whitespace slug',
         url: 'https://example.com/whitespace',
         frontMatter: {
-          slug: '   '  // Whitespace only - is a string, but should fall back
+          slug: '   ' // Whitespace only - is a string, but should fall back
         }
       }
     ],
@@ -291,11 +291,12 @@ const testCases = [
       {
         title: 'Empty Title',
         path: 'docs/empty-title.md',
-        content: '# First Heading\n\nTest content with empty title in frontmatter',
+        content:
+          '# First Heading\n\nTest content with empty title in frontmatter',
         description: 'Test empty title',
         url: 'https://example.com/empty-title',
         frontMatter: {
-          title: ''  // Empty string - should use first heading
+          title: '' // Empty string - should use first heading
         }
       }
     ],
@@ -312,7 +313,7 @@ const testCases = [
         description: 'Test whitespace title',
         url: 'https://example.com/whitespace-title',
         frontMatter: {
-          title: '  \t  '  // Whitespace only - should use first heading
+          title: '  \t  ' // Whitespace only - should use first heading
         }
       }
     ],
@@ -325,11 +326,12 @@ const testCases = [
       {
         title: 'Empty Description',
         path: 'docs/empty-description.md',
-        content: 'Test content with empty description.\n\nThis is the first paragraph.',
-        description: '',  // Empty description in frontmatter
+        content:
+          'Test content with empty description.\n\nThis is the first paragraph.',
+        description: '', // Empty description in frontmatter
         url: 'https://example.com/empty-description',
         frontMatter: {
-          description: ''  // Empty string - should use first paragraph
+          description: '' // Empty string - should use first paragraph
         }
       }
     ],
@@ -343,10 +345,10 @@ const testCases = [
         title: 'Whitespace Description',
         path: 'docs/whitespace-description.md',
         content: 'First paragraph content.\n\nSecond paragraph.',
-        description: '',  // Will be empty after trim
+        description: '', // Will be empty after trim
         url: 'https://example.com/whitespace-description',
         frontMatter: {
-          description: '   \n\t   '  // Whitespace only - should use first paragraph
+          description: '   \n\t   ' // Whitespace only - should use first paragraph
         }
       }
     ],
@@ -363,7 +365,7 @@ const testCases = [
         description: 'Test empty id',
         url: 'https://example.com/empty-id',
         frontMatter: {
-          id: ''  // Empty string - should fall back to path
+          id: '' // Empty string - should fall back to path
         }
       }
     ],
@@ -380,7 +382,7 @@ const testCases = [
         description: 'Test whitespace id',
         url: 'https://example.com/whitespace-id',
         frontMatter: {
-          id: '\t  \n  '  // Whitespace only - should fall back
+          id: '\t  \n  ' // Whitespace only - should fall back
         }
       }
     ],
@@ -417,11 +419,11 @@ const testCases = [
         description: 'Test nested paths',
         url: 'https://example.com/nested',
         frontMatter: {
-          slug: { path: 'invalid' }  // Object instead of string
+          slug: {path: 'invalid'} // Object instead of string
         }
       }
     ],
-    expectedPaths: ['guides/nested/deep.md'],  // preserveDirectoryStructure=false strips only 'docs'
+    expectedPaths: ['guides/nested/deep.md'], // preserveDirectoryStructure=false strips only 'docs'
     siteUrl: 'https://example.com'
   }
 ];
@@ -437,9 +439,9 @@ async function runFrontmatterValidationTests() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true });
+    fs.rmSync(testDir, {recursive: true});
   }
-  fs.mkdirSync(testDir, { recursive: true });
+  fs.mkdirSync(testDir, {recursive: true});
 
   try {
     for (const testCase of testCases) {
@@ -464,8 +466,13 @@ async function runFrontmatterValidationTests() {
           const fullPath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(fullPath)) {
-            console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
-            console.log(`   Available files:`, fs.readdirSync(testDir, { recursive: true }));
+            console.log(
+              `❌ FAIL - Expected file at path "${expectedPath}" not found`
+            );
+            console.log(
+              `   Available files:`,
+              fs.readdirSync(testDir, {recursive: true})
+            );
             pathsCorrect = false;
             break;
           }
@@ -479,7 +486,9 @@ async function runFrontmatterValidationTests() {
 
         // Check that the result array has the correct length
         if (result.length !== testCase.expectedPaths.length) {
-          console.log(`❌ FAIL - Expected ${testCase.expectedPaths.length} results, got ${result.length}`);
+          console.log(
+            `❌ FAIL - Expected ${testCase.expectedPaths.length} results, got ${result.length}`
+          );
           failed++;
           await cleanupTestDirectory(testDir);
           continue;
@@ -492,7 +501,9 @@ async function runFrontmatterValidationTests() {
           const expectedPath = testCase.expectedPaths[i];
           const expectedUrl = `${testCase.siteUrl}/${expectedPath}`;
           if (doc.url !== expectedUrl) {
-            console.log(`❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`);
+            console.log(
+              `❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`
+            );
             urlsCorrect = false;
             break;
           }
@@ -509,7 +520,6 @@ async function runFrontmatterValidationTests() {
 
         // Clean up for next test
         await cleanupTestDirectory(testDir);
-
       } catch (error) {
         console.log(`❌ ERROR: ${error.message}`);
         console.log(error.stack);
@@ -520,7 +530,7 @@ async function runFrontmatterValidationTests() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
   }
 
@@ -536,15 +546,17 @@ async function runFrontmatterValidationTests() {
 }
 
 // Run tests
-runFrontmatterValidationTests().then(success => {
-  if (success) {
-    console.log('🎉 All frontMatter validation tests passed!');
-    process.exit(0);
-  } else {
-    console.log('❌ Some frontMatter validation tests failed.');
+runFrontmatterValidationTests()
+  .then(success => {
+    if (success) {
+      console.log('🎉 All frontMatter validation tests passed!');
+      process.exit(0);
+    } else {
+      console.log('❌ Some frontMatter validation tests failed.');
+      process.exit(1);
+    }
+  })
+  .catch(error => {
+    console.error('Test runner error:', error);
     process.exit(1);
-  }
-}).catch(error => {
-  console.error('Test runner error:', error);
-  process.exit(1);
-});
+  });

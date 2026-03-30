@@ -2,7 +2,7 @@
  * Type definitions for the docusaurus-plugin-llms plugin
  */
 
-import type { LoadContext, RouteConfig } from "@docusaurus/types";
+import type {LoadContext, RouteConfig} from '@docusaurus/types';
 
 /**
  * Represents a single documentation section with its physical path and URL route base
@@ -168,7 +168,7 @@ export interface PluginOptions {
   processingBatchSize?: number;
 
   /** Logging level for plugin output (default: 'normal'). Options: 'quiet', 'normal', 'verbose' */
-  logLevel?: "quiet" | "normal" | "verbose";
+  logLevel?: 'quiet' | 'normal' | 'verbose';
 
   /** Whether to warn about files that are ignored (no extension or unsupported extension) (default: false) */
   warnOnIgnoredFiles?: boolean;

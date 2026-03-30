@@ -1,18 +1,18 @@
 const fs = require('fs').promises;
 const path = require('path');
-const { processMarkdownFile } = require('../lib/processor');
+const {processMarkdownFile} = require('../lib/processor');
 
 async function setupTestFiles() {
   const testDir = path.join(__dirname, 'test-missing-partials-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, { recursive: true });
+    await fs.rm(testDir, {recursive: true});
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, { recursive: true });
+  await fs.mkdir(testDir, {recursive: true});
 
   // Create a main document that imports a missing partial
   const mainContent = `---
@@ -36,10 +36,7 @@ Before you begin, review the configuration:
 
 After configuring your client, you can make requests...`;
 
-  await fs.writeFile(
-    path.join(testDir, 'api-guide.md'),
-    mainContent
-  );
+  await fs.writeFile(path.join(testDir, 'api-guide.md'), mainContent);
 
   // Create a document with named import for missing partial
   const namedImportContent = `---
@@ -83,10 +80,7 @@ import SecondPartial from './_second.mdx';
 
 All done.`;
 
-  await fs.writeFile(
-    path.join(testDir, 'config-guide.md'),
-    multipleContent
-  );
+  await fs.writeFile(path.join(testDir, 'config-guide.md'), multipleContent);
 
   return testDir;
 }
@@ -128,8 +122,9 @@ async function runTests() {
     }
 
     // Check that surrounding content is still intact
-    const hasMainContent = apiDoc.content.includes('Getting Started') &&
-                           apiDoc.content.includes('Making Requests');
+    const hasMainContent =
+      apiDoc.content.includes('Getting Started') &&
+      apiDoc.content.includes('Making Requests');
     if (hasMainContent) {
       console.log('  ✅ PASS: Surrounding content is intact');
     } else {
@@ -148,7 +143,9 @@ async function runTests() {
       'docs'
     );
 
-    const hasNamedImport = installDoc.content.includes('import { InstallSteps }');
+    const hasNamedImport = installDoc.content.includes(
+      'import { InstallSteps }'
+    );
     const hasNamedJSX = installDoc.content.includes('<InstallSteps');
 
     if (!hasNamedImport && !hasNamedJSX) {
@@ -181,8 +178,10 @@ async function runTests() {
       console.log('  ✅ PASS: All imports and JSX removed');
     } else {
       console.log('  ❌ FAIL: Some imports or JSX still present');
-      if (hasFirstImport) console.log('    - FirstPartial import still present');
-      if (hasSecondImport) console.log('    - SecondPartial import still present');
+      if (hasFirstImport)
+        console.log('    - FirstPartial import still present');
+      if (hasSecondImport)
+        console.log('    - SecondPartial import still present');
       if (hasFirstJSX) console.log('    - FirstPartial JSX still present');
       if (hasSecondJSX) console.log('    - SecondPartial JSX still present');
       console.log('  Content:', configDoc.content);
@@ -190,9 +189,10 @@ async function runTests() {
     }
 
     // Check section headers are still present
-    const hasSections = configDoc.content.includes('Section 1') &&
-                        configDoc.content.includes('Section 2') &&
-                        configDoc.content.includes('Summary');
+    const hasSections =
+      configDoc.content.includes('Section 1') &&
+      configDoc.content.includes('Section 2') &&
+      configDoc.content.includes('Summary');
     if (hasSections) {
       console.log('  ✅ PASS: Section structure is intact');
     } else {
@@ -201,14 +201,13 @@ async function runTests() {
     }
 
     console.log('');
-
   } catch (error) {
     console.error('Test error:', error);
     allTestsPassed = false;
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, { recursive: true });
+      await fs.rm(testDir, {recursive: true});
     } catch (err) {
       // Ignore cleanup errors
     }

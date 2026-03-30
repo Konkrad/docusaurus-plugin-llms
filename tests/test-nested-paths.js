@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateIndividualMarkdownFiles } = require('../lib/generator');
+const {generateIndividualMarkdownFiles} = require('../lib/generator');
 
 // Helper to create a test document
 function createTestDoc(filename, frontMatter = {}) {
@@ -28,9 +28,9 @@ function createTestDoc(filename, frontMatter = {}) {
 // Helper to clean up test directory
 function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, {recursive: true, force: true});
   }
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, {recursive: true});
 }
 
 // Helper to check if expected file exists
@@ -60,91 +60,98 @@ function validateFileDoesNotExist(testDir, filePath) {
 const testCases = [
   {
     name: 'Nested slug with single level creates directory',
-    doc: createTestDoc('guides/config.md', { slug: 'api/config' }),
+    doc: createTestDoc('guides/config.md', {slug: 'api/config'}),
     expectedPath: 'api/config.md',
     shouldNotExist: ['guides/config.md', 'guides/api/config.md']
   },
   {
     name: 'Nested slug with multiple levels creates deep directory structure',
-    doc: createTestDoc('old/location.md', { slug: 'api/core/auth' }),
+    doc: createTestDoc('old/location.md', {slug: 'api/core/auth'}),
     expectedPath: 'api/core/auth.md',
     shouldNotExist: ['old/location.md', 'old/api/core/auth.md']
   },
   {
     name: 'Nested slug with leading slash is trimmed',
-    doc: createTestDoc('guides/config.md', { slug: '/api/config' }),
+    doc: createTestDoc('guides/config.md', {slug: '/api/config'}),
     expectedPath: 'api/config.md',
     shouldNotExist: ['guides/config.md']
   },
   {
     name: 'Nested slug with trailing slash is trimmed',
-    doc: createTestDoc('guides/config.md', { slug: 'api/config/' }),
+    doc: createTestDoc('guides/config.md', {slug: 'api/config/'}),
     expectedPath: 'api/config.md',
     shouldNotExist: ['guides/config.md']
   },
   {
     name: 'Nested slug with both leading and trailing slashes is trimmed',
-    doc: createTestDoc('guides/config.md', { slug: '/api/config/' }),
+    doc: createTestDoc('guides/config.md', {slug: '/api/config/'}),
     expectedPath: 'api/config.md',
     shouldNotExist: ['guides/config.md']
   },
   {
     name: 'Simple slug (no slash) only changes filename, keeps parent dirs',
-    doc: createTestDoc('guides/getting-started/intro.md', { slug: 'simple-intro' }),
+    doc: createTestDoc('guides/getting-started/intro.md', {
+      slug: 'simple-intro'
+    }),
     expectedPath: 'guides/getting-started/simple-intro.md',
     shouldNotExist: ['guides/getting-started/intro.md', 'simple-intro.md']
   },
   {
     name: 'Nested ID with single level creates directory',
-    doc: createTestDoc('guides/config.md', { id: 'api/config' }),
+    doc: createTestDoc('guides/config.md', {id: 'api/config'}),
     expectedPath: 'api/config.md',
     shouldNotExist: ['guides/config.md']
   },
   {
     name: 'Nested ID with multiple levels creates deep directory structure',
-    doc: createTestDoc('old/location.md', { id: 'api/v2/endpoints' }),
+    doc: createTestDoc('old/location.md', {id: 'api/v2/endpoints'}),
     expectedPath: 'api/v2/endpoints.md',
     shouldNotExist: ['old/location.md']
   },
   {
     name: 'Simple ID (no slash) only changes filename, keeps parent dirs',
-    doc: createTestDoc('tutorials/advanced/oauth.md', { id: 'simple-oauth' }),
+    doc: createTestDoc('tutorials/advanced/oauth.md', {id: 'simple-oauth'}),
     expectedPath: 'tutorials/advanced/simple-oauth.md',
     shouldNotExist: ['tutorials/advanced/oauth.md', 'simple-oauth.md']
   },
   {
     name: 'Slug takes precedence over ID when both are nested',
-    doc: createTestDoc('old/file.md', { slug: 'api/slug-path', id: 'api/id-path' }),
+    doc: createTestDoc('old/file.md', {
+      slug: 'api/slug-path',
+      id: 'api/id-path'
+    }),
     expectedPath: 'api/slug-path.md',
     shouldNotExist: ['api/id-path.md', 'old/file.md']
   },
   {
     name: 'Slug takes precedence over ID when slug is nested and ID is simple',
-    doc: createTestDoc('guides/file.md', { slug: 'api/nested', id: 'simple' }),
+    doc: createTestDoc('guides/file.md', {slug: 'api/nested', id: 'simple'}),
     expectedPath: 'api/nested.md',
     shouldNotExist: ['guides/simple.md', 'guides/file.md']
   },
   {
     name: 'Original path is used when no slug or ID present',
-    doc: createTestDoc('guides/installation.md', { sidebar_position: 1 }),
+    doc: createTestDoc('guides/installation.md', {sidebar_position: 1}),
     expectedPath: 'guides/installation.md',
     shouldNotExist: []
   },
   {
     name: 'Handles deeply nested slug with many levels',
-    doc: createTestDoc('intro.md', { slug: 'v2/api/resources/users/permissions' }),
+    doc: createTestDoc('intro.md', {
+      slug: 'v2/api/resources/users/permissions'
+    }),
     expectedPath: 'v2/api/resources/users/permissions.md',
     shouldNotExist: ['intro.md']
   },
   {
     name: 'Nested slug with spaces in path segments',
-    doc: createTestDoc('guide.md', { slug: 'api/user management/settings' }),
+    doc: createTestDoc('guide.md', {slug: 'api/user management/settings'}),
     expectedPath: 'api/user management/settings.md',
     shouldNotExist: ['guide.md']
   },
   {
     name: 'Empty slug after trimming slashes uses original path',
-    doc: createTestDoc('guides/intro.md', { slug: '///' }),
+    doc: createTestDoc('guides/intro.md', {slug: '///'}),
     expectedPath: 'guides/intro.md', // Should fallback since slug becomes empty after trimming
     shouldNotExist: []
   }
@@ -185,12 +192,13 @@ async function runNestedPathTests() {
         // Validate URL
         const expectedUrl = `${siteUrl}/${testCase.expectedPath}`;
         if (result[0].url !== expectedUrl) {
-          throw new Error(`Expected URL "${expectedUrl}", got "${result[0].url}"`);
+          throw new Error(
+            `Expected URL "${expectedUrl}", got "${result[0].url}"`
+          );
         }
 
         console.log(`✅ PASS`);
         passed++;
-
       } catch (error) {
         console.log(`❌ FAIL: ${error.message}`);
         failed++;
@@ -200,23 +208,31 @@ async function runNestedPathTests() {
     }
   } finally {
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
   }
 
   console.log(`========================================`);
   console.log(`Nested Path Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;
 }
 
 // Run the tests
-runNestedPathTests().then(success => {
-  console.log(success ? '🎉 All nested path tests passed!' : '❌ Some nested path tests failed.');
-  if (!success) process.exit(1);
-}).catch(error => {
-  console.error('Test runner error:', error);
-  process.exit(1);
-});
+runNestedPathTests()
+  .then(success => {
+    console.log(
+      success
+        ? '🎉 All nested path tests passed!'
+        : '❌ Some nested path tests failed.'
+    );
+    if (!success) process.exit(1);
+  })
+  .catch(error => {
+    console.error('Test runner error:', error);
+    process.exit(1);
+  });

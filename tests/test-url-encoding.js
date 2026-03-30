@@ -6,13 +6,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const { processMarkdownFile } = require('../lib/processor');
+const {processMarkdownFile} = require('../lib/processor');
 
 // Helper to create a test markdown file with content
 async function createTestFile(filePath, content, frontMatter = {}) {
   const dir = path.dirname(filePath);
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+    fs.mkdirSync(dir, {recursive: true});
   }
 
   let fileContent = '';
@@ -34,7 +34,7 @@ async function createTestFile(filePath, content, frontMatter = {}) {
 // Helper to clean up test directory
 function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, {recursive: true, force: true});
   }
 }
 
@@ -44,7 +44,8 @@ const testCases = [
     name: 'Encodes spaces in filename',
     filename: 'hello world.md',
     expectedUrlPath: '/docs/hello%20world',
-    content: '# Hello World\n\nThis is a test document with spaces in the filename.'
+    content:
+      '# Hello World\n\nThis is a test document with spaces in the filename.'
   },
   {
     name: 'Encodes unicode characters',
@@ -74,7 +75,8 @@ const testCases = [
     name: 'Encodes spaces in nested path',
     filename: 'my folder/my file.md',
     expectedUrlPath: '/docs/my%20folder/my%20file',
-    content: '# Nested File\n\nThis is a nested file with spaces in both directory and filename.'
+    content:
+      '# Nested File\n\nThis is a nested file with spaces in both directory and filename.'
   },
   {
     name: 'Encodes multiple special characters',
@@ -122,7 +124,8 @@ const testCases = [
     name: 'Prevents double-encoding of already encoded special chars',
     filename: 'rock%26roll.md',
     expectedUrlPath: '/docs/rock%26roll',
-    content: '# Pre-encoded Ampersand\n\nThis filename has already encoded ampersand.'
+    content:
+      '# Pre-encoded Ampersand\n\nThis filename has already encoded ampersand.'
   },
   {
     name: 'Handles mixed encoded and unencoded segments',
@@ -134,7 +137,8 @@ const testCases = [
     name: 'Handles unreserved characters without encoding',
     filename: 'test-file_name.md',
     expectedUrlPath: '/docs/test-file_name',
-    content: '# Unreserved Characters\n\nDashes and underscores should not be encoded.'
+    content:
+      '# Unreserved Characters\n\nDashes and underscores should not be encoded.'
   },
   {
     name: 'Handles tilde character (unreserved)',
@@ -146,7 +150,8 @@ const testCases = [
     name: 'Preserves valid partial encoding',
     filename: 'bad%2encoding.md',
     expectedUrlPath: '/docs/bad%2encoding',
-    content: '# Partial Encoding\n\nThis has valid percent encoding (%2e) and is preserved.'
+    content:
+      '# Partial Encoding\n\nThis has valid percent encoding (%2e) and is preserved.'
   },
   {
     name: 'Encodes brackets',
@@ -182,7 +187,8 @@ const testCases = [
     name: 'Handles truly malformed encoding',
     filename: 'bad%ZZencoding.md',
     expectedUrlPath: '/docs/bad%25ZZencoding',
-    content: '# Truly Malformed\n\nThis has truly malformed percent encoding that will throw an error.'
+    content:
+      '# Truly Malformed\n\nThis has truly malformed percent encoding that will throw an error.'
   }
 ];
 
@@ -198,7 +204,7 @@ async function runUrlEncodingTests() {
   try {
     // Create test directory
     cleanupTestDirectory(testDir);
-    fs.mkdirSync(baseDir, { recursive: true });
+    fs.mkdirSync(baseDir, {recursive: true});
 
     for (const testCase of testCases) {
       console.log(`Test: ${testCase.name}`);
@@ -236,7 +242,6 @@ async function runUrlEncodingTests() {
 
         console.log(`✅ PASS - Generated URL: ${docInfo.url}`);
         passed++;
-
       } catch (error) {
         console.log(`❌ FAIL: ${error.message}`);
         failed++;
@@ -248,17 +253,25 @@ async function runUrlEncodingTests() {
 
   console.log(`\n========================================`);
   console.log(`URL Encoding Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;
 }
 
 // Run the tests
-runUrlEncodingTests().then(success => {
-  console.log(success ? '🎉 All URL encoding tests passed!' : '❌ Some URL encoding tests failed.');
-  if (!success) process.exit(1);
-}).catch(error => {
-  console.error('Test runner error:', error);
-  process.exit(1);
-});
+runUrlEncodingTests()
+  .then(success => {
+    console.log(
+      success
+        ? '🎉 All URL encoding tests passed!'
+        : '❌ Some URL encoding tests failed.'
+    );
+    if (!success) process.exit(1);
+  })
+  .catch(error => {
+    console.error('Test runner error:', error);
+    process.exit(1);
+  });

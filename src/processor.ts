@@ -2,10 +2,10 @@
  * Document processing functions for the docusaurus-plugin-llms plugin
  */
 
-import * as path from "path";
-import matter from "gray-matter";
-import { minimatch } from "minimatch";
-import { DocInfo, PluginContext } from "./types";
+import * as path from 'path';
+import matter from 'gray-matter';
+import {minimatch} from 'minimatch';
+import {DocInfo, PluginContext} from './types';
 import {
   readFile,
   extractTitle,
@@ -15,8 +15,8 @@ import {
   normalizePath,
   logger,
   getErrorMessage,
-  isNonEmptyString,
-} from "./utils";
+  isNonEmptyString
+} from './utils';
 
 /**
  * Process a markdown file and extract its metadata and content
@@ -31,17 +31,17 @@ export async function processMarkdownFile(
   filePath: string,
   baseDir: string,
   siteUrl: string,
-  pathPrefix: string = "docs",
+  pathPrefix: string = 'docs',
   pathTransformation?: {
     ignorePaths?: string[];
     addPaths?: string[];
   },
   excludeImports: boolean = false,
   removeDuplicateHeadings: boolean = false,
-  resolvedUrl?: string,
+  resolvedUrl?: string
 ): Promise<DocInfo | null> {
   const content = await readFile(filePath);
-  const { data, content: markdownContent } = matter(content);
+  const {data, content: markdownContent} = matter(content);
 
   // Skip draft files
   if (data.draft === true) {
@@ -70,7 +70,7 @@ export async function processMarkdownFile(
   // Resolve partial imports before processing
   const resolvedContent = await resolvePartialImports(
     markdownContent,
-    filePath,
+    filePath
   );
 
   const relativePath = path.relative(baseDir, filePath);
@@ -85,11 +85,11 @@ export async function processMarkdownFile(
       fullUrl = new URL(resolvedUrl, siteUrl).toString();
     } catch (error: unknown) {
       logger.warn(
-        `Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`,
+        `Invalid URL construction: ${resolvedUrl} with base ${siteUrl}. Using fallback.`
       );
       // Fallback to string concatenation with proper path joining
-      const baseUrl = siteUrl.endsWith("/") ? siteUrl.slice(0, -1) : siteUrl;
-      const urlPath = resolvedUrl.startsWith("/")
+      const baseUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
+      const urlPath = resolvedUrl.startsWith('/')
         ? resolvedUrl
         : `/${resolvedUrl}`;
       fullUrl = baseUrl + urlPath;
@@ -97,11 +97,11 @@ export async function processMarkdownFile(
   } else {
     // Fallback to the old path construction method
     // Convert .md extension to appropriate path
-    const linkPathBase = normalizedPath.replace(/\.mdx?$/, "");
+    const linkPathBase = normalizedPath.replace(/\.mdx?$/, '');
 
     // Handle index files specially
-    let linkPath = linkPathBase.endsWith("index")
-      ? linkPathBase.replace(/\/index$/, "")
+    let linkPath = linkPathBase.endsWith('index')
+      ? linkPathBase.replace(/\/index$/, '')
       : linkPathBase;
 
     // linkPath might include the pathPrefix (e.g., "docs/api/core")
@@ -109,26 +109,26 @@ export async function processMarkdownFile(
     if (pathPrefix && linkPath.startsWith(`${pathPrefix}/`)) {
       linkPath = linkPath.substring(`${pathPrefix}/`.length);
     } else if (pathPrefix && linkPath === pathPrefix) {
-      linkPath = "";
+      linkPath = '';
     }
 
     // Apply path transformations to the clean link path (without pathPrefix)
     const transformedLinkPath = applyPathTransformations(
       linkPath,
-      pathTransformation,
+      pathTransformation
     );
 
     // Also apply path transformations to the pathPrefix if it's not empty
     // This allows removing 'docs' from the path when specified in ignorePaths
     let transformedPathPrefix = pathPrefix;
     if (pathPrefix && pathTransformation?.ignorePaths?.includes(pathPrefix)) {
-      transformedPathPrefix = "";
+      transformedPathPrefix = '';
     }
 
     // Ensure path segments are URL-safe with sophisticated encoding detection
     const encodedLinkPath = transformedLinkPath
-      .split("/")
-      .map((segment) => {
+      .split('/')
+      .map(segment => {
         // Check if segment contains characters that need encoding
         // Unreserved characters (per RFC 3986): A-Z a-z 0-9 - . _ ~
         if (!/[^A-Za-z0-9\-._~]/.test(segment)) {
@@ -150,7 +150,7 @@ export async function processMarkdownFile(
           return encodeURIComponent(segment);
         }
       })
-      .join("/");
+      .join('/');
 
     // Construct URL by encoding path components, then combine with site URL
     // We don't use URL constructor for the full path because it decodes some characters
@@ -163,7 +163,7 @@ export async function processMarkdownFile(
     } catch (error: unknown) {
       logger.warn(`Invalid siteUrl: ${siteUrl}. Using fallback.`);
       // Fallback to string concatenation with proper path joining
-      const baseUrl = siteUrl.endsWith("/") ? siteUrl.slice(0, -1) : siteUrl;
+      const baseUrl = siteUrl.endsWith('/') ? siteUrl.slice(0, -1) : siteUrl;
       fullUrl = `${baseUrl}/${pathPart}`;
     }
   }
@@ -172,18 +172,18 @@ export async function processMarkdownFile(
   const title = extractTitle(data, resolvedContent, filePath);
 
   // Get description from frontmatter or first paragraph
-  let description = "";
+  let description = '';
 
   // First priority: Use frontmatter description if available
   if (isNonEmptyString(data.description)) {
     description = data.description;
   } else {
     // Second priority: Find the first non-heading paragraph
-    const paragraphs = resolvedContent.split("\n\n");
+    const paragraphs = resolvedContent.split('\n\n');
     for (const para of paragraphs) {
       const trimmedPara = para.trim();
       // Skip empty paragraphs and headings
-      if (trimmedPara && !trimmedPara.startsWith("#")) {
+      if (trimmedPara && !trimmedPara.startsWith('#')) {
         description = trimmedPara;
         break;
       }
@@ -204,16 +204,16 @@ export async function processMarkdownFile(
     // Original approach had issues with hashtags inside content
     // Fix: Only remove # symbols at the beginning of lines or description
     // that are followed by a space (actual heading markers)
-    description = description.replace(/^(#+)\s+/gm, "");
+    description = description.replace(/^(#+)\s+/gm, '');
 
     // Special handling for description frontmatter with heading markers
     if (
       isNonEmptyString(data.description) &&
-      data.description.startsWith("#")
+      data.description.startsWith('#')
     ) {
       // If the description in frontmatter starts with a heading marker,
       // we should preserve it in the extracted description
-      description = description.replace(/^#+\s+/, "");
+      description = description.replace(/^#+\s+/, '');
     }
 
     // Preserve inline hashtags (not heading markers)
@@ -222,7 +222,7 @@ export async function processMarkdownFile(
     // Validate that the description doesn't contain markdown headings
     if (description.match(/^#+\s+/m)) {
       logger.warn(
-        `Warning: Description for "${title}" may still contain heading markers`,
+        `Warning: Description for "${title}" may still contain heading markers`
       );
     }
 
@@ -234,7 +234,7 @@ export async function processMarkdownFile(
     // Warn if the description is very long
     if (description.length > 500) {
       logger.warn(
-        `Warning: Description for "${title}" is very long (${description.length} characters)`,
+        `Warning: Description for "${title}" is very long (${description.length} characters)`
       );
     }
   }
@@ -243,7 +243,7 @@ export async function processMarkdownFile(
   const cleanedContent = cleanMarkdownContent(
     resolvedContent,
     excludeImports,
-    removeDuplicateHeadings,
+    removeDuplicateHeadings
   );
 
   return {
@@ -251,8 +251,8 @@ export async function processMarkdownFile(
     path: normalizedPath,
     url: fullUrl,
     content: cleanedContent,
-    description: description || "",
-    frontMatter: data,
+    description: description || '',
+    frontMatter: data
   };
 }
 
@@ -261,12 +261,12 @@ export async function processMarkdownFile(
  */
 function removeNumberedPrefixes(path: string): string {
   return path
-    .split("/")
-    .map((segment) => {
+    .split('/')
+    .map(segment => {
       // Remove numbered prefixes like "01-", "1-", "001-" from each segment
-      return segment.replace(/^\d+-/, "");
+      return segment.replace(/^\d+-/, '');
     })
-    .join("/");
+    .join('/');
 }
 
 /**
@@ -274,11 +274,11 @@ function removeNumberedPrefixes(path: string): string {
  */
 function findRouteInMap(
   routeMap: Map<string, string>,
-  possiblePaths: string[],
+  possiblePaths: string[]
 ): string | undefined {
   for (const possiblePath of possiblePaths) {
     const route =
-      routeMap.get(possiblePath) || routeMap.get(possiblePath + "/");
+      routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
     if (route) {
       return route;
     }
@@ -292,7 +292,7 @@ function findRouteInMap(
 function tryExactRouteMatch(
   routeMap: Map<string, string>,
   relativePath: string,
-  pathPrefix: string,
+  pathPrefix: string
 ): string | undefined {
   const possiblePaths = [`/${pathPrefix}/${relativePath}`, `/${relativePath}`];
   return findRouteInMap(routeMap, possiblePaths);
@@ -304,7 +304,7 @@ function tryExactRouteMatch(
 function tryNumberedPrefixResolution(
   routeMap: Map<string, string>,
   relativePath: string,
-  pathPrefix: string,
+  pathPrefix: string
 ): string | undefined {
   const cleanPath = removeNumberedPrefixes(relativePath);
 
@@ -316,12 +316,12 @@ function tryNumberedPrefixResolution(
   }
 
   // Try nested folder structures with numbered prefixes at different levels
-  const segments = relativePath.split("/");
+  const segments = relativePath.split('/');
   if (segments.length > 1) {
     for (let i = 0; i < segments.length; i++) {
       const modifiedSegments = [...segments];
-      modifiedSegments[i] = modifiedSegments[i].replace(/^\d+-/, "");
-      const modifiedPath = modifiedSegments.join("/");
+      modifiedSegments[i] = modifiedSegments[i].replace(/^\d+-/, '');
+      const modifiedPath = modifiedSegments.join('/');
       const pathsToTry = [`/${pathPrefix}/${modifiedPath}`, `/${modifiedPath}`];
 
       const match = findRouteInMap(routeMap, pathsToTry);
@@ -340,12 +340,12 @@ function tryNumberedPrefixResolution(
 function tryRoutesPathsMatch(
   routesPaths: string[],
   relativePath: string,
-  pathPrefix: string,
+  pathPrefix: string
 ): string | undefined {
   const cleanPath = removeNumberedPrefixes(relativePath);
   const normalizedCleanPath = cleanPath.toLowerCase();
 
-  return routesPaths.find((routePath) => {
+  return routesPaths.find(routePath => {
     const normalizedRoute = routePath.toLowerCase();
     return (
       normalizedRoute.endsWith(`/${normalizedCleanPath}`) ||
@@ -367,7 +367,7 @@ function resolveDocumentUrl(
   filePath: string,
   baseDir: string,
   pathPrefix: string,
-  context: PluginContext,
+  context: PluginContext
 ): string | undefined {
   // Early return if no route map available
   if (!context.routeMap) {
@@ -376,14 +376,14 @@ function resolveDocumentUrl(
 
   // Convert file path to a potential route path
   const relativePath = normalizePath(path.relative(baseDir, filePath))
-    .replace(/\.mdx?$/, "")
-    .replace(/\/index$/, "");
+    .replace(/\.mdx?$/, '')
+    .replace(/\/index$/, '');
 
   // Try exact match first (respects Docusaurus's resolved routes)
   const exactMatch = tryExactRouteMatch(
     context.routeMap,
     relativePath,
-    pathPrefix,
+    pathPrefix
   );
   if (exactMatch) {
     return exactMatch;
@@ -393,7 +393,7 @@ function resolveDocumentUrl(
   const prefixMatch = tryNumberedPrefixResolution(
     context.routeMap,
     relativePath,
-    pathPrefix,
+    pathPrefix
   );
   if (prefixMatch) {
     return prefixMatch;
@@ -425,9 +425,9 @@ function matchesPattern(
   file: string,
   pattern: string,
   siteDir: string,
-  docsDir: string,
+  docsDir: string
 ): boolean {
-  const minimatchOptions = { matchBase: true };
+  const minimatchOptions = {matchBase: true};
 
   // Get site-relative path (e.g., "docs/quickstart/file.md")
   const siteRelativePath = normalizePath(path.relative(siteDir, file));
@@ -462,26 +462,26 @@ export async function processFilesWithPatterns(
   includePatterns: string[] = [],
   ignorePatterns: string[] = [],
   orderPatterns: string[] = [],
-  includeUnmatched: boolean = false,
+  includeUnmatched: boolean = false
 ): Promise<DocInfo[]> {
-  const { siteDir, siteUrl, docsDir } = context;
+  const {siteDir, siteUrl, docsDir} = context;
 
   // Filter files based on include patterns
   let filteredFiles = allFiles;
 
   if (includePatterns.length > 0) {
-    filteredFiles = allFiles.filter((file) => {
-      return includePatterns.some((pattern) =>
-        matchesPattern(file, pattern, siteDir, docsDir),
+    filteredFiles = allFiles.filter(file => {
+      return includePatterns.some(pattern =>
+        matchesPattern(file, pattern, siteDir, docsDir)
       );
     });
   }
 
   // Apply ignore patterns
   if (ignorePatterns.length > 0) {
-    filteredFiles = filteredFiles.filter((file) => {
-      return !ignorePatterns.some((pattern) =>
-        matchesPattern(file, pattern, siteDir, docsDir),
+    filteredFiles = filteredFiles.filter(file => {
+      return !ignorePatterns.some(pattern =>
+        matchesPattern(file, pattern, siteDir, docsDir)
       );
     });
   }
@@ -494,7 +494,7 @@ export async function processFilesWithPatterns(
 
     // Process files according to orderPatterns
     for (const pattern of orderPatterns) {
-      const matchingFiles = filteredFiles.filter((file) => {
+      const matchingFiles = filteredFiles.filter(file => {
         return (
           matchesPattern(file, pattern, siteDir, docsDir) &&
           !matchedFiles.has(file)
@@ -510,7 +510,7 @@ export async function processFilesWithPatterns(
     // Add remaining files if includeUnmatched is true
     if (includeUnmatched) {
       const remainingFiles = filteredFiles.filter(
-        (file) => !matchedFiles.has(file),
+        file => !matchedFiles.has(file)
       );
       filesToProcess.push(...remainingFiles);
     }
@@ -520,27 +520,27 @@ export async function processFilesWithPatterns(
 
   // Process files in parallel using Promise.allSettled
   const results = await Promise.allSettled(
-    filesToProcess.map(async (filePath) => {
+    filesToProcess.map(async filePath => {
       try {
         // Determine if this is a blog or docs file
-        const blogDir = path.join(siteDir, "blog");
+        const blogDir = path.join(siteDir, 'blog');
         const isBlogFile =
           filePath.startsWith(blogDir + path.sep) ||
-          filePath.startsWith(blogDir + "/");
+          filePath.startsWith(blogDir + '/');
         // Use siteDir as baseDir to preserve full directory structure (docs/path/file.md instead of just path/file.md)
         const baseDir = siteDir;
 
         let pathPrefix: string;
         if (isBlogFile) {
-          pathPrefix = "blog";
+          pathPrefix = 'blog';
         } else if (context.docsSections && context.docsSections.length > 0) {
           // Find which section this file belongs to and use its physical path as prefix.
           // The physical path is the correct prefix for stripping in URL fallback construction.
-          const section = context.docsSections.find((s) => {
+          const section = context.docsSections.find(s => {
             const sectionDir = path.join(siteDir, s.path);
             return (
               filePath.startsWith(sectionDir + path.sep) ||
-              filePath.startsWith(sectionDir + "/")
+              filePath.startsWith(sectionDir + '/')
             );
           });
           pathPrefix = section ? section.path : docsDir;
@@ -553,18 +553,18 @@ export async function processFilesWithPatterns(
           filePath,
           baseDir,
           pathPrefix,
-          context,
+          context
         );
 
         // Log when we successfully resolve a URL using Docusaurus routes
         if (resolvedUrl && context.routeMap) {
           const relativePath = normalizePath(path.relative(baseDir, filePath))
-            .replace(/\.mdx?$/, "")
-            .replace(/\/index$/, "");
+            .replace(/\.mdx?$/, '')
+            .replace(/\/index$/, '');
           const expectedFallback = `/${pathPrefix}/${relativePath}`;
           if (resolvedUrl !== expectedFallback) {
             logger.verbose(
-              `Resolved URL for ${path.basename(filePath)}: ${resolvedUrl} (was: ${expectedFallback})`,
+              `Resolved URL for ${path.basename(filePath)}: ${resolvedUrl} (was: ${expectedFallback})`
             );
           }
         }
@@ -577,18 +577,18 @@ export async function processFilesWithPatterns(
           context.options.pathTransformation,
           context.options.excludeImports || false,
           context.options.removeDuplicateHeadings || false,
-          resolvedUrl,
+          resolvedUrl
         );
         if (
           docInfo !== null &&
           !isBlogFile &&
           context.docsSections?.length > 0
         ) {
-          const matchedSection = context.docsSections.find((s) => {
+          const matchedSection = context.docsSections.find(s => {
             const sectionDir = path.join(siteDir, s.path);
             return (
               filePath.startsWith(sectionDir + path.sep) ||
-              filePath.startsWith(sectionDir + "/")
+              filePath.startsWith(sectionDir + '/')
             );
           });
           if (matchedSection) {
@@ -600,16 +600,16 @@ export async function processFilesWithPatterns(
         logger.warn(`Error processing ${filePath}: ${getErrorMessage(err)}`);
         return null;
       }
-    }),
+    })
   );
 
   // Filter successful results and non-null DocInfo objects
   const processedDocs = results
     .filter(
       (r): r is PromiseFulfilledResult<DocInfo | null> =>
-        r.status === "fulfilled" && r.value !== null,
+        r.status === 'fulfilled' && r.value !== null
     )
-    .map((r) => r.value as DocInfo);
+    .map(r => r.value as DocInfo);
 
   return processedDocs;
 }

@@ -6,15 +6,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const { generateIndividualMarkdownFiles } = require('../lib/generator');
+const {generateIndividualMarkdownFiles} = require('../lib/generator');
 
 // Helper function to clean up test directory with nested structure
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, {recursive: true, force: true});
   }
   // Recreate empty directory for next test
-  fs.mkdirSync(dir, { recursive: true });
+  fs.mkdirSync(dir, {recursive: true});
 }
 
 // Test cases for preserveDirectoryStructure option
@@ -260,9 +260,9 @@ async function runPreserveDirectoryStructureTests() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true });
+    fs.rmSync(testDir, {recursive: true});
   }
-  fs.mkdirSync(testDir, { recursive: true });
+  fs.mkdirSync(testDir, {recursive: true});
 
   try {
     for (const testCase of testCases) {
@@ -287,7 +287,9 @@ async function runPreserveDirectoryStructureTests() {
           const fullPath = path.join(testDir, expectedPath);
 
           if (!fs.existsSync(fullPath)) {
-            console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
+            console.log(
+              `❌ FAIL - Expected file at path "${expectedPath}" not found`
+            );
             console.log(`   Full path checked: ${fullPath}`);
             pathsCorrect = false;
             break;
@@ -307,7 +309,9 @@ async function runPreserveDirectoryStructureTests() {
           const doc = result[i];
           const expectedUrl = testCase.expectedUrls[i];
           if (doc.url !== expectedUrl) {
-            console.log(`❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`);
+            console.log(
+              `❌ FAIL - Expected URL "${expectedUrl}", got "${doc.url}"`
+            );
             urlsCorrect = false;
             break;
           }
@@ -325,7 +329,9 @@ async function runPreserveDirectoryStructureTests() {
           const doc = result[i];
           const expectedPath = `/${testCase.expectedPaths[i]}`;
           if (doc.path !== expectedPath) {
-            console.log(`❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`);
+            console.log(
+              `❌ FAIL - Expected doc path "${expectedPath}", got "${doc.path}"`
+            );
             docPathsCorrect = false;
             break;
           }
@@ -348,13 +354,20 @@ async function runPreserveDirectoryStructureTests() {
 
           // Check that file contains expected elements
           if (!fileContent.includes(`# ${originalDoc.title}`)) {
-            console.log(`❌ FAIL - File content missing title: "${originalDoc.title}"`);
+            console.log(
+              `❌ FAIL - File content missing title: "${originalDoc.title}"`
+            );
             contentsCorrect = false;
             break;
           }
 
-          if (originalDoc.description && !fileContent.includes(`> ${originalDoc.description}`)) {
-            console.log(`❌ FAIL - File content missing description: "${originalDoc.description}"`);
+          if (
+            originalDoc.description &&
+            !fileContent.includes(`> ${originalDoc.description}`)
+          ) {
+            console.log(
+              `❌ FAIL - File content missing description: "${originalDoc.description}"`
+            );
             contentsCorrect = false;
             break;
           }
@@ -375,7 +388,6 @@ async function runPreserveDirectoryStructureTests() {
 
         // Clean up for next test
         await cleanupTestDirectory(testDir);
-
       } catch (error) {
         console.log(`❌ ERROR: ${error.message}`);
         console.error(error.stack);
@@ -386,7 +398,7 @@ async function runPreserveDirectoryStructureTests() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
   }
 
@@ -409,9 +421,9 @@ async function testDefaultBehavior() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true });
+    fs.rmSync(testDir, {recursive: true});
   }
-  fs.mkdirSync(testDir, { recursive: true });
+  fs.mkdirSync(testDir, {recursive: true});
 
   try {
     console.log('Test: Default parameter should preserve directory structure');
@@ -442,17 +454,17 @@ async function testDefaultBehavior() {
 
     if (fs.existsSync(fullPath)) {
       console.log(`✅ PASS - Default behavior preserves directory structure`);
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
       return true;
     } else {
       console.log(`❌ FAIL - Expected file at "${expectedPath}" not found`);
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
       return false;
     }
   } catch (error) {
     console.log(`❌ ERROR: ${error.message}`);
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
     return false;
   }

@@ -27,7 +27,7 @@ function testExactMatchWithNumberedPrefix() {
   // Mock route map that contains the exact path with numbered prefix
   const mockRouteMap = new Map([
     ['/docs/01-intro', '/docs/introduction'],
-    ['/docs/guide/01-start', '/docs/guide/getting-started'],
+    ['/docs/guide/01-start', '/docs/guide/getting-started']
   ]);
 
   // Simulate the logic from processor.ts (lines 289-354)
@@ -35,7 +35,7 @@ function testExactMatchWithNumberedPrefix() {
     // Try exact match first (without manual prefix removal)
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -45,15 +45,21 @@ function testExactMatchWithNumberedPrefix() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -67,17 +73,25 @@ function testExactMatchWithNumberedPrefix() {
   const expected1 = '/docs/introduction';
 
   if (resolvedUrl1 === expected1) {
-    console.log('  ✅ PASS: Correctly resolved "docs/01-intro" to "/docs/introduction"');
+    console.log(
+      '  ✅ PASS: Correctly resolved "docs/01-intro" to "/docs/introduction"'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected1}", got "${resolvedUrl1}"`);
   }
 
   // Test case 1b: Nested file "guide/01-start.md"
-  const resolvedUrl2 = resolveRoute('docs/guide/01-start', 'docs', mockRouteMap);
+  const resolvedUrl2 = resolveRoute(
+    'docs/guide/01-start',
+    'docs',
+    mockRouteMap
+  );
   const expected2 = '/docs/guide/getting-started';
 
   if (resolvedUrl2 === expected2) {
-    console.log('  ✅ PASS: Correctly resolved "docs/guide/01-start" to "/docs/guide/getting-started"');
+    console.log(
+      '  ✅ PASS: Correctly resolved "docs/guide/01-start" to "/docs/guide/getting-started"'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected2}", got "${resolvedUrl2}"`);
   }
@@ -92,7 +106,7 @@ function testFallbackToPrefixRemoval() {
   // Mock route map that contains only the cleaned paths (no numbered prefixes)
   const mockRouteMap = new Map([
     ['/docs/intro', '/docs/introduction'],
-    ['/docs/guide/start', '/docs/guide/getting-started'],
+    ['/docs/guide/start', '/docs/guide/getting-started']
   ]);
 
   // Simulate the logic from processor.ts
@@ -100,7 +114,7 @@ function testFallbackToPrefixRemoval() {
     // Try exact match first
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -110,15 +124,21 @@ function testFallbackToPrefixRemoval() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -132,17 +152,25 @@ function testFallbackToPrefixRemoval() {
   const expected1 = '/docs/introduction';
 
   if (resolvedUrl1 === expected1) {
-    console.log('  ✅ PASS: Correctly fell back to prefix removal for "docs/01-intro"');
+    console.log(
+      '  ✅ PASS: Correctly fell back to prefix removal for "docs/01-intro"'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected1}", got "${resolvedUrl1}"`);
   }
 
   // Test case 2b: Nested file "guide/01-start.md" falls back to cleaning
-  const resolvedUrl2 = resolveRoute('docs/guide/01-start', 'docs', mockRouteMap);
+  const resolvedUrl2 = resolveRoute(
+    'docs/guide/01-start',
+    'docs',
+    mockRouteMap
+  );
   const expected2 = '/docs/guide/getting-started';
 
   if (resolvedUrl2 === expected2) {
-    console.log('  ✅ PASS: Correctly fell back to prefix removal for "docs/guide/01-start"');
+    console.log(
+      '  ✅ PASS: Correctly fell back to prefix removal for "docs/guide/01-start"'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected2}", got "${resolvedUrl2}"`);
   }
@@ -157,8 +185,8 @@ function testExactMatchPrecedence() {
   // Mock route map that has BOTH the exact path and cleaned path
   // This simulates a scenario where Docusaurus has resolved the route differently
   const mockRouteMap = new Map([
-    ['/docs/01-intro', '/docs/numbered-intro'],  // Exact match
-    ['/docs/intro', '/docs/clean-intro'],         // Cleaned match
+    ['/docs/01-intro', '/docs/numbered-intro'], // Exact match
+    ['/docs/intro', '/docs/clean-intro'] // Cleaned match
   ]);
 
   // Simulate the logic from processor.ts
@@ -166,7 +194,7 @@ function testExactMatchPrecedence() {
     // Try exact match first
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -176,15 +204,21 @@ function testExactMatchPrecedence() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -195,10 +229,12 @@ function testExactMatchPrecedence() {
 
   // Test case 3: File "01-intro.md" should use exact match, not cleaned
   const resolvedUrl = resolveRoute('docs/01-intro', 'docs', mockRouteMap);
-  const expected = '/docs/numbered-intro';  // Should use exact match, not cleaned
+  const expected = '/docs/numbered-intro'; // Should use exact match, not cleaned
 
   if (resolvedUrl === expected) {
-    console.log(`  ✅ PASS: Correctly prioritized exact match "${expected}" over cleaned path`);
+    console.log(
+      `  ✅ PASS: Correctly prioritized exact match "${expected}" over cleaned path`
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected}", got "${resolvedUrl}"`);
     console.log('  This indicates exact match is not being tried first!');
@@ -213,8 +249,11 @@ function testComplexNestedNumberedFolders() {
 
   // Mock route map with multiple levels of numbered prefixes
   const mockRouteMap = new Map([
-    ['/docs/01-guide/02-tutorials/03-advanced', '/docs/guide/tutorials/advanced'],
-    ['/docs/01-guide/02-tutorials', '/docs/guide/tutorials'],
+    [
+      '/docs/01-guide/02-tutorials/03-advanced',
+      '/docs/guide/tutorials/advanced'
+    ],
+    ['/docs/01-guide/02-tutorials', '/docs/guide/tutorials']
   ]);
 
   // Simulate the logic from processor.ts
@@ -222,7 +261,7 @@ function testComplexNestedNumberedFolders() {
     // Try exact match first
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -232,15 +271,21 @@ function testComplexNestedNumberedFolders() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -250,21 +295,33 @@ function testComplexNestedNumberedFolders() {
   }
 
   // Test case 4a: Three levels of numbered prefixes
-  const resolvedUrl1 = resolveRoute('docs/01-guide/02-tutorials/03-advanced', 'docs', mockRouteMap);
+  const resolvedUrl1 = resolveRoute(
+    'docs/01-guide/02-tutorials/03-advanced',
+    'docs',
+    mockRouteMap
+  );
   const expected1 = '/docs/guide/tutorials/advanced';
 
   if (resolvedUrl1 === expected1) {
-    console.log('  ✅ PASS: Correctly resolved three-level nested numbered folders');
+    console.log(
+      '  ✅ PASS: Correctly resolved three-level nested numbered folders'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected1}", got "${resolvedUrl1}"`);
   }
 
   // Test case 4b: Two levels of numbered prefixes
-  const resolvedUrl2 = resolveRoute('docs/01-guide/02-tutorials', 'docs', mockRouteMap);
+  const resolvedUrl2 = resolveRoute(
+    'docs/01-guide/02-tutorials',
+    'docs',
+    mockRouteMap
+  );
   const expected2 = '/docs/guide/tutorials';
 
   if (resolvedUrl2 === expected2) {
-    console.log('  ✅ PASS: Correctly resolved two-level nested numbered folders');
+    console.log(
+      '  ✅ PASS: Correctly resolved two-level nested numbered folders'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected2}", got "${resolvedUrl2}"`);
   }
@@ -279,7 +336,7 @@ function testMixedNumberedSegments() {
   // Mock route map with mixed patterns
   const mockRouteMap = new Map([
     ['/docs/api/01-getting-started', '/docs/api/intro'],
-    ['/docs/01-guide/reference', '/docs/guide/ref'],
+    ['/docs/01-guide/reference', '/docs/guide/ref']
   ]);
 
   // Simulate the logic from processor.ts
@@ -287,7 +344,7 @@ function testMixedNumberedSegments() {
     // Try exact match first
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -297,15 +354,21 @@ function testMixedNumberedSegments() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -315,21 +378,33 @@ function testMixedNumberedSegments() {
   }
 
   // Test case 5a: Non-numbered folder with numbered file
-  const resolvedUrl1 = resolveRoute('docs/api/01-getting-started', 'docs', mockRouteMap);
+  const resolvedUrl1 = resolveRoute(
+    'docs/api/01-getting-started',
+    'docs',
+    mockRouteMap
+  );
   const expected1 = '/docs/api/intro';
 
   if (resolvedUrl1 === expected1) {
-    console.log('  ✅ PASS: Correctly resolved non-numbered folder with numbered file');
+    console.log(
+      '  ✅ PASS: Correctly resolved non-numbered folder with numbered file'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected1}", got "${resolvedUrl1}"`);
   }
 
   // Test case 5b: Numbered folder with non-numbered file
-  const resolvedUrl2 = resolveRoute('docs/01-guide/reference', 'docs', mockRouteMap);
+  const resolvedUrl2 = resolveRoute(
+    'docs/01-guide/reference',
+    'docs',
+    mockRouteMap
+  );
   const expected2 = '/docs/guide/ref';
 
   if (resolvedUrl2 === expected2) {
-    console.log('  ✅ PASS: Correctly resolved numbered folder with non-numbered file');
+    console.log(
+      '  ✅ PASS: Correctly resolved numbered folder with non-numbered file'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected2}", got "${resolvedUrl2}"`);
   }
@@ -344,7 +419,7 @@ function testTrailingSlashHandling() {
   // Mock route map with trailing slashes
   const mockRouteMap = new Map([
     ['/docs/01-intro/', '/docs/introduction/'],
-    ['/docs/guide/', '/docs/guide-home/'],
+    ['/docs/guide/', '/docs/guide-home/']
   ]);
 
   // Simulate the logic from processor.ts
@@ -352,7 +427,7 @@ function testTrailingSlashHandling() {
     // Try exact match first
     const possiblePaths = [
       `/${pathPrefix}/${relativePath}`,
-      `/${relativePath}`,
+      `/${relativePath}`
     ];
 
     for (const possiblePath of possiblePaths) {
@@ -362,15 +437,21 @@ function testTrailingSlashHandling() {
     }
 
     // ONLY if exact match fails, try numbered prefix removal as fallback
-    const removeNumberedPrefixes = (path) => {
-      return path.split('/').map(segment => {
-        return segment.replace(/^\d+-/, '');
-      }).join('/');
+    const removeNumberedPrefixes = path => {
+      return path
+        .split('/')
+        .map(segment => {
+          return segment.replace(/^\d+-/, '');
+        })
+        .join('/');
     };
 
     const cleanPath = removeNumberedPrefixes(relativePath);
 
-    for (const possiblePath of [`/${pathPrefix}/${cleanPath}`, `/${cleanPath}`]) {
+    for (const possiblePath of [
+      `/${pathPrefix}/${cleanPath}`,
+      `/${cleanPath}`
+    ]) {
       if (routeMap.has(possiblePath) || routeMap.has(possiblePath + '/')) {
         return routeMap.get(possiblePath) || routeMap.get(possiblePath + '/');
       }
@@ -394,7 +475,9 @@ function testTrailingSlashHandling() {
   const expected2 = '/docs/guide-home/';
 
   if (resolvedUrl2 === expected2) {
-    console.log('  ✅ PASS: Correctly handled trailing slash for non-numbered path');
+    console.log(
+      '  ✅ PASS: Correctly handled trailing slash for non-numbered path'
+    );
   } else {
     console.log(`  ❌ FAIL: Expected "${expected2}", got "${resolvedUrl2}"`);
   }

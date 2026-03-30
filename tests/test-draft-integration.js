@@ -4,8 +4,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { collectDocFiles, generateLLMFile } = require('../lib/generator');
-const { processFilesWithPatterns } = require('../lib/processor');
+const {collectDocFiles, generateLLMFile} = require('../lib/generator');
+const {processFilesWithPatterns} = require('../lib/processor');
 
 async function runDraftIntegrationTest() {
   console.log('Running draft filtering integration test...\n');
@@ -14,10 +14,10 @@ async function runDraftIntegrationTest() {
   const testDir = path.join(__dirname, 'test-draft-integration');
   const docsDir = path.join(testDir, 'docs');
   const buildDir = path.join(testDir, 'build');
-  
+
   // Clean up and create directories
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true });
+    fs.rmSync(testDir, {recursive: true});
   }
   fs.mkdirSync(testDir);
   fs.mkdirSync(docsDir);
@@ -112,12 +112,12 @@ This page is still being written and should not be published.`
       [], // orderPatterns
       true // includeUnmatched
     );
-    
+
     console.log(`Processed ${processedDocs.length} non-draft files`);
 
     // Generate LLM files
     const outputDir = path.join(buildDir, 'llms');
-    fs.mkdirSync(outputDir, { recursive: true });
+    fs.mkdirSync(outputDir, {recursive: true});
 
     // Generate links-only file
     console.log('\nGenerating llms.txt (links only)...');
@@ -143,20 +143,26 @@ This page is still being written and should not be published.`
 
     // Read and verify the generated files
     console.log('\nVerifying generated files...');
-    
+
     const llmsTxt = fs.readFileSync(path.join(outputDir, 'llms.txt'), 'utf-8');
-    const llmsFullTxt = fs.readFileSync(path.join(outputDir, 'llms-full.txt'), 'utf-8');
-    
+    const llmsFullTxt = fs.readFileSync(
+      path.join(outputDir, 'llms-full.txt'),
+      'utf-8'
+    );
+
     // Debug: Show what's in the files
     console.log('\nContent of llms.txt:');
     console.log(llmsTxt.substring(0, 500) + '...');
     console.log('\nTotal processed files:', processedDocs.length);
-    console.log('Files:', processedDocs.map(f => f.title));
+    console.log(
+      'Files:',
+      processedDocs.map(f => f.title)
+    );
 
     // Check that draft pages are not included
     const draftTitles = ['New Feature (Draft)', 'Work in Progress'];
     const publishedTitles = ['Introduction', 'User Guide', 'API Reference'];
-    
+
     let passed = 0;
     let failed = 0;
 
@@ -177,7 +183,9 @@ This page is still being written and should not be published.`
         console.log(`✅ Published page "${publishedTitle}" is in llms.txt`);
         passed++;
       } else {
-        console.log(`❌ Published page "${publishedTitle}" missing from llms.txt`);
+        console.log(
+          `❌ Published page "${publishedTitle}" missing from llms.txt`
+        );
         failed++;
       }
     }
@@ -213,16 +221,15 @@ This page is still being written and should not be published.`
 
     // Clean up
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
 
     return failed === 0;
-
   } catch (error) {
     console.error('Integration test error:', error);
     // Clean up on error
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
     return false;
   }

@@ -4,7 +4,7 @@
  * Run with: node test-filename-sanitization.js
  */
 
-const { sanitizeForFilename } = require('../lib/utils');
+const {sanitizeForFilename} = require('../lib/utils');
 
 const testCases = [
   // ASCII-only mode (preserveUnicode: false)
@@ -12,19 +12,19 @@ const testCases = [
     name: 'Converts to lowercase and removes unicode (ASCII mode)',
     input: 'Café Guide',
     expected: 'caf-guide',
-    options: { preserveUnicode: false }
+    options: {preserveUnicode: false}
   },
   {
     name: 'Removes unicode characters in ASCII mode',
     input: 'Introdução à Programação',
     expected: 'introdu-o-programa-o',
-    options: { preserveUnicode: false }
+    options: {preserveUnicode: false}
   },
   {
     name: 'Removes emoji and unicode (ASCII mode)',
     input: 'Hello 世界 Guide',
     expected: 'hello-guide',
-    options: { preserveUnicode: false }
+    options: {preserveUnicode: false}
   },
 
   // Special characters handling (Unicode mode is default)
@@ -163,31 +163,31 @@ const testCases = [
     name: 'Preserves unicode characters with preserveUnicode',
     input: 'Café Guide',
     expected: 'café-guide',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves unicode accents',
     input: 'Introdução à Programação',
     expected: 'introdução-à-programação',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves Chinese characters',
     input: 'Hello 世界 Guide',
     expected: 'hello-世界-guide',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves emoji with unicode',
     input: 'Guide 🚀 Rocket',
     expected: 'guide-🚀-rocket',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Removes only unsafe characters with unicode',
     input: 'Café/Guide\\Test:Name*File',
     expected: 'café-guide-test-name-file',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
 
   // Case preservation tests
@@ -195,13 +195,13 @@ const testCases = [
     name: 'Preserves case when requested',
     input: 'MixedCaseTitle',
     expected: 'MixedCaseTitle',
-    options: { preserveCase: true }
+    options: {preserveCase: true}
   },
   {
     name: 'Preserves case with unicode',
     input: 'Café Guide',
     expected: 'Café-Guide',
-    options: { preserveUnicode: true, preserveCase: true }
+    options: {preserveUnicode: true, preserveCase: true}
   },
 
   // Valid special character tests
@@ -209,31 +209,31 @@ const testCases = [
     name: 'Preserves underscores with unicode',
     input: 'file_name_test',
     expected: 'file_name_test',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves hyphens',
     input: 'my-test-file',
     expected: 'my-test-file',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves dots in middle of name',
     input: 'version.3.2.1',
     expected: 'version.3.2.1',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Removes leading dots with unicode',
     input: '...hidden-file',
     expected: 'hidden-file',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Preserves alphanumeric and valid chars',
     input: 'test_123-guide.v2',
     expected: 'test_123-guide.v2',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
 
   // Complex real-world cases with unicode
@@ -241,13 +241,13 @@ const testCases = [
     name: 'Technical doc with unicode and symbols',
     input: 'Configuração: Sistema & Instalação',
     expected: 'configuração-sistema-&-instalação',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   },
   {
     name: 'Mixed unicode and ASCII with unsafe chars',
     input: 'Guide: Hello/世界\\Test',
     expected: 'guide-hello-世界-test',
-    options: { preserveUnicode: true }
+    options: {preserveUnicode: true}
   }
 ];
 
@@ -284,7 +284,9 @@ function runTests() {
 
   console.log(`\n========================================`);
   console.log(`Filename Sanitization Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;
@@ -292,5 +294,9 @@ function runTests() {
 
 // Run the tests
 const success = runTests();
-console.log(success ? '🎉 All filename sanitization tests passed!' : '❌ Some tests failed.');
+console.log(
+  success
+    ? '🎉 All filename sanitization tests passed!'
+    : '❌ Some tests failed.'
+);
 process.exit(success ? 0 : 1);

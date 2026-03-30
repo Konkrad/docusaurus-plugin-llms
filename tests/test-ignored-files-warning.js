@@ -6,14 +6,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const { readMarkdownFiles } = require('../lib/utils');
+const {readMarkdownFiles} = require('../lib/utils');
 
 // Mock console.warn to capture warnings
 let warnings = [];
 const originalWarn = console.warn;
 
 function mockWarn() {
-  console.warn = (message) => {
+  console.warn = message => {
     warnings.push(message);
   };
 }
@@ -30,16 +30,25 @@ function clearWarnings() {
 function setupTestDirectory(testDir) {
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, { recursive: true, force: true });
+    fs.rmSync(testDir, {recursive: true, force: true});
   }
-  fs.mkdirSync(testDir, { recursive: true });
+  fs.mkdirSync(testDir, {recursive: true});
 
   // Create valid markdown files
-  fs.writeFileSync(path.join(testDir, 'valid.md'), '# Valid Markdown\nContent here.');
-  fs.writeFileSync(path.join(testDir, 'valid.mdx'), '# Valid MDX\nContent here.');
+  fs.writeFileSync(
+    path.join(testDir, 'valid.md'),
+    '# Valid Markdown\nContent here.'
+  );
+  fs.writeFileSync(
+    path.join(testDir, 'valid.mdx'),
+    '# Valid MDX\nContent here.'
+  );
 
   // Create file without extension
-  fs.writeFileSync(path.join(testDir, 'README'), '# README file without extension');
+  fs.writeFileSync(
+    path.join(testDir, 'README'),
+    '# README file without extension'
+  );
 
   // Create files with unsupported extensions
   fs.writeFileSync(path.join(testDir, 'data.json'), '{"key": "value"}');
@@ -49,9 +58,12 @@ function setupTestDirectory(testDir) {
 
   // Create subdirectory with more files
   const subDir = path.join(testDir, 'subdir');
-  fs.mkdirSync(subDir, { recursive: true });
+  fs.mkdirSync(subDir, {recursive: true});
   fs.writeFileSync(path.join(subDir, 'nested.md'), '# Nested Markdown');
-  fs.writeFileSync(path.join(subDir, 'LICENSE'), 'License text without extension');
+  fs.writeFileSync(
+    path.join(subDir, 'LICENSE'),
+    'License text without extension'
+  );
   fs.writeFileSync(path.join(subDir, 'config.yaml'), 'key: value');
 }
 
@@ -61,7 +73,7 @@ const testCases = [
     name: 'No warnings when warnOnIgnoredFiles is false',
     warnOnIgnoredFiles: false,
     expectedWarningCount: 0,
-    expectedFiles: 3, // valid.md, valid.mdx, subdir/nested.md
+    expectedFiles: 3 // valid.md, valid.mdx, subdir/nested.md
   },
   {
     name: 'Warnings for files without extension when enabled',
@@ -75,9 +87,9 @@ const testCases = [
       /Ignoring file with unsupported extension.*script\.js/,
       /Ignoring file with unsupported extension.*style\.css/,
       /Ignoring file with unsupported extension.*document\.txt/,
-      /Ignoring file with unsupported extension.*config\.yaml/,
-    ],
-  },
+      /Ignoring file with unsupported extension.*config\.yaml/
+    ]
+  }
 ];
 
 async function runTests() {
@@ -156,13 +168,15 @@ async function runTests() {
   } finally {
     // Clean up
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, { recursive: true });
+      fs.rmSync(testDir, {recursive: true});
     }
   }
 
   console.log(`\n========================================`);
   console.log(`Ignored Files Warning Tests Summary:`);
-  console.log(`Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`);
+  console.log(
+    `Passed: ${passed}, Failed: ${failed}, Total: ${passed + failed}`
+  );
   console.log(`========================================\n`);
 
   return failed === 0;

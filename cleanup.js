@@ -36,21 +36,21 @@ function removeDir(dirPath) {
 // Main cleanup function
 function cleanup() {
   const libDir = path.join(__dirname, 'lib');
-  
+
   if (!fs.existsSync(libDir)) {
     console.warn('⚠️ lib directory not found, nothing to clean up.');
     return;
   }
-  
+
   console.log('Cleaning up lib directory before publishing...');
-  
+
   // Process each item to remove
   toRemove.forEach(item => {
     const itemPath = path.join(libDir, item);
-    
+
     if (fs.existsSync(itemPath)) {
       const stats = fs.statSync(itemPath);
-      
+
       if (stats.isDirectory()) {
         removeDir(itemPath);
       } else {
@@ -59,9 +59,9 @@ function cleanup() {
       }
     }
   });
-  
+
   console.log('✓ Cleanup complete!');
 }
 
 // Run the cleanup
-cleanup(); 
+cleanup();
