@@ -14,7 +14,7 @@ function normalizePath(filePath) {
 
 // Import the processor module to access exported functions
 // Note: The helper functions are internal, so we test through the public API
-const {processFilesWithPatterns} = require('../lib/processor');
+const { processFilesWithPatterns } = require('../lib/processor');
 
 // Mock context factory
 function createMockContext(options = {}) {
@@ -97,7 +97,7 @@ async function runTests() {
       ['/other-path', '/other-resolved']
     ]);
 
-    const context = createMockContext({routeMap});
+    const context = createMockContext({ routeMap });
 
     // Test with docs prefix
     const hasDocsPrefix = routeMap.has('/docs/exact-match');
@@ -120,7 +120,7 @@ async function runTests() {
       ['/docs/category/file', '/resolved-file']
     ]);
 
-    const context = createMockContext({routeMap});
+    const context = createMockContext({ routeMap });
 
     // Test basic prefix removal
     const hasBasic = routeMap.has('/docs/intro');
@@ -199,12 +199,12 @@ async function runTests() {
   {
     // Empty route map
     const emptyMap = new Map();
-    const context1 = createMockContext({routeMap: emptyMap});
+    const context1 = createMockContext({ routeMap: emptyMap });
     assert(context1.routeMap.size === 0, 'Empty route map', 'Should handle empty map');
 
     // Multiple numbered segments
     const routeMap2 = new Map([['/docs/section/item', '/resolved']]);
-    const context2 = createMockContext({routeMap: routeMap2});
+    const context2 = createMockContext({ routeMap: routeMap2 });
     assert(context2.routeMap.size === 1, 'Multiple numbered segments', 'Should handle multiple segments');
 
     // Trailing slash variations

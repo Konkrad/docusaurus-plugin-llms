@@ -1,18 +1,18 @@
 const fs = require('fs').promises;
 const path = require('path');
-const {generateLLMFile} = require('../lib/generator');
+const { generateLLMFile } = require('../lib/generator');
 
 async function setupTestDir() {
   const testDir = path.join(__dirname, 'test-root-content-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, {recursive: true});
+    await fs.rm(testDir, { recursive: true });
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, {recursive: true});
+  await fs.mkdir(testDir, { recursive: true });
 
   return testDir;
 }
@@ -203,7 +203,7 @@ All content below is organized by topic.`;
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, {recursive: true});
+      await fs.rm(testDir, { recursive: true });
     } catch (err) {
       // Ignore cleanup errors
     }

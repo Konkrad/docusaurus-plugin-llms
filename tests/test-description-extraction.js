@@ -7,11 +7,11 @@
 const fs = require('fs').promises;
 const path = require('path');
 const matter = require('gray-matter');
-const {cleanMarkdownContent} = require('../lib/utils');
+const { cleanMarkdownContent } = require('../lib/utils');
 
 // Simplified version of the processor's description extraction logic for testing
 function extractAndCleanDescription(content) {
-  const {data, content: markdownContent} = matter(content);
+  const { data, content: markdownContent } = matter(content);
 
   // Get description from frontmatter or first paragraph
   let description = '';

@@ -4,7 +4,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {processMarkdownFile, processFilesWithPatterns} = require('../lib/processor');
+const { processMarkdownFile, processFilesWithPatterns } = require('../lib/processor');
 
 // Mock implementations
 const mockReadFile = content => Promise.resolve(content);
@@ -85,7 +85,7 @@ async function runDraftFilteringTests() {
 
   // Clean up and create test directories
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
   fs.mkdirSync(testDir);
   fs.mkdirSync(docsDir);
@@ -226,7 +226,7 @@ This is another published article.`
 
   // Clean up
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
 
   // Summary

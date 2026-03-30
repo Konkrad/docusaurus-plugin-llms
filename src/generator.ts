@@ -4,7 +4,7 @@
 
 import * as path from 'path';
 import * as fs from 'fs/promises';
-import {DocInfo, DocsSection, PluginContext, CustomLLMFile} from './types';
+import { DocInfo, DocsSection, PluginContext, CustomLLMFile } from './types';
 import {
   writeFile,
   readMarkdownFiles,
@@ -20,7 +20,7 @@ import {
   isNonEmptyArray,
   isDefined
 } from './utils';
-import {processFilesWithPatterns} from './processor';
+import { processFilesWithPatterns } from './processor';
 
 /**
  * Clean a description for use in a TOC item
@@ -331,7 +331,7 @@ export async function generateIndividualMarkdownFiles(
 
     // Create directory structure if it doesn't exist
     try {
-      await fs.mkdir(directory, {recursive: true});
+      await fs.mkdir(directory, { recursive: true });
     } catch (error: unknown) {
       throw new Error(`Failed to create directory ${directory}: ${getErrorMessage(error)}`);
     }
@@ -385,7 +385,7 @@ export async function generateIndividualMarkdownFiles(
  * @param allDocFiles - Array of all document files
  */
 export async function generateStandardLLMFiles(context: PluginContext, allDocFiles: string[]): Promise<void> {
-  const {outDir, siteUrl, docTitle, docDescription, options} = context;
+  const { outDir, siteUrl, docTitle, docDescription, options } = context;
 
   const {
     generateLLMsTxt,
@@ -475,8 +475,8 @@ export async function generateStandardLLMFiles(context: PluginContext, allDocFil
  * @param allDocFiles - Array of all document files
  */
 export async function generateCustomLLMFiles(context: PluginContext, allDocFiles: string[]): Promise<void> {
-  const {outDir, siteUrl, docTitle, docDescription, options} = context;
-  const {customLLMFiles = [], ignoreFiles = [], generateMarkdownFiles = false, processingBatchSize = 100} = options;
+  const { outDir, siteUrl, docTitle, docDescription, options } = context;
+  const { customLLMFiles = [], ignoreFiles = [], generateMarkdownFiles = false, processingBatchSize = 100 } = options;
 
   if (customLLMFiles.length === 0) {
     logger.warn('No custom LLM files configured. Skipping.');
@@ -549,8 +549,8 @@ export async function generateCustomLLMFiles(context: PluginContext, allDocFiles
  * @returns Array of file paths
  */
 export async function collectDocFiles(context: PluginContext): Promise<string[]> {
-  const {siteDir, docsSections, options} = context;
-  const {ignoreFiles = [], includeBlog = false, warnOnIgnoredFiles = false} = options;
+  const { siteDir, docsSections, options } = context;
+  const { ignoreFiles = [], includeBlog = false, warnOnIgnoredFiles = false } = options;
 
   const allDocFiles: string[] = [];
 

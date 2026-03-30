@@ -40,8 +40,8 @@ const testCases = [
     name: 'Valid docsDir as array of sections',
     options: {
       docsDir: [
-        {path: 'docs', routeBasePath: '/', label: 'General'},
-        {path: 'cloud', routeBasePath: 'cloud', label: 'Cloud Resources'}
+        { path: 'docs', routeBasePath: '/', label: 'General' },
+        { path: 'cloud', routeBasePath: 'cloud', label: 'Cloud Resources' }
       ]
     },
     shouldThrow: false,
@@ -50,7 +50,7 @@ const testCases = [
   {
     name: 'Valid docsDir as array without label',
     options: {
-      docsDir: [{path: 'docs', routeBasePath: '/'}]
+      docsDir: [{ path: 'docs', routeBasePath: '/' }]
     },
     shouldThrow: false,
     description: 'Plugin should initialize when docsDir array sections omit the optional label'
@@ -112,7 +112,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].path (missing) should throw',
     options: {
-      docsDir: [{routeBasePath: '/'}]
+      docsDir: [{ routeBasePath: '/' }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].path must be a non-empty string',
@@ -121,7 +121,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].routeBasePath (not string) should throw',
     options: {
-      docsDir: [{path: 'docs', routeBasePath: 42}]
+      docsDir: [{ path: 'docs', routeBasePath: 42 }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].routeBasePath must be a string',

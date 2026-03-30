@@ -4,8 +4,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const {collectDocFiles, generateLLMFile} = require('../lib/generator');
-const {processFilesWithPatterns} = require('../lib/processor');
+const { collectDocFiles, generateLLMFile } = require('../lib/generator');
+const { processFilesWithPatterns } = require('../lib/processor');
 
 async function runDraftIntegrationTest() {
   console.log('Running draft filtering integration test...\n');
@@ -17,7 +17,7 @@ async function runDraftIntegrationTest() {
 
   // Clean up and create directories
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
   fs.mkdirSync(testDir);
   fs.mkdirSync(docsDir);
@@ -117,7 +117,7 @@ This page is still being written and should not be published.`
 
     // Generate LLM files
     const outputDir = path.join(buildDir, 'llms');
-    fs.mkdirSync(outputDir, {recursive: true});
+    fs.mkdirSync(outputDir, { recursive: true });
 
     // Generate links-only file
     console.log('\nGenerating llms.txt (links only)...');
@@ -216,7 +216,7 @@ This page is still being written and should not be published.`
 
     // Clean up
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
 
     return failed === 0;
@@ -224,7 +224,7 @@ This page is still being written and should not be published.`
     console.error('Integration test error:', error);
     // Clean up on error
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
     return false;
   }

@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {readMarkdownFiles} = require('../lib/utils');
+const { readMarkdownFiles } = require('../lib/utils');
 
 // Mock console.warn to capture warnings
 let warnings = [];
@@ -30,9 +30,9 @@ function clearWarnings() {
 function setupTestDirectory(testDir) {
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true, force: true});
+    fs.rmSync(testDir, { recursive: true, force: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   // Create valid markdown files
   fs.writeFileSync(path.join(testDir, 'valid.md'), '# Valid Markdown\nContent here.');
@@ -49,7 +49,7 @@ function setupTestDirectory(testDir) {
 
   // Create subdirectory with more files
   const subDir = path.join(testDir, 'subdir');
-  fs.mkdirSync(subDir, {recursive: true});
+  fs.mkdirSync(subDir, { recursive: true });
   fs.writeFileSync(path.join(subDir, 'nested.md'), '# Nested Markdown');
   fs.writeFileSync(path.join(subDir, 'LICENSE'), 'License text without extension');
   fs.writeFileSync(path.join(subDir, 'config.yaml'), 'key: value');
@@ -152,7 +152,7 @@ async function runTests() {
   } finally {
     // Clean up
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 

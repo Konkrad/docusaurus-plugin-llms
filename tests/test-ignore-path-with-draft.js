@@ -6,8 +6,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const {processMarkdownFile, processFilesWithPatterns} = require('../lib/processor');
-const {readMarkdownFiles} = require('../lib/utils');
+const { processMarkdownFile, processFilesWithPatterns } = require('../lib/processor');
+const { readMarkdownFiles } = require('../lib/utils');
 
 // Create test directory structure
 const TEST_DIR = path.join(__dirname, '..', 'test-ignore-docs');
@@ -18,12 +18,12 @@ async function setupTestDocs() {
 
   // Create directories
   if (fs.existsSync(TEST_DIR)) {
-    fs.rmSync(TEST_DIR, {recursive: true});
+    fs.rmSync(TEST_DIR, { recursive: true });
   }
 
-  fs.mkdirSync(TEST_DIR, {recursive: true});
-  fs.mkdirSync(path.join(TEST_DIR, 'docs'), {recursive: true});
-  fs.mkdirSync(path.join(TEST_DIR, 'docs', 'tutorials'), {recursive: true});
+  fs.mkdirSync(TEST_DIR, { recursive: true });
+  fs.mkdirSync(path.join(TEST_DIR, 'docs'), { recursive: true });
+  fs.mkdirSync(path.join(TEST_DIR, 'docs', 'tutorials'), { recursive: true });
 
   // Create test markdown files
   fs.writeFileSync(
@@ -221,7 +221,7 @@ async function main() {
 
     // Clean up
     if (fs.existsSync(TEST_DIR)) {
-      fs.rmSync(TEST_DIR, {recursive: true});
+      fs.rmSync(TEST_DIR, { recursive: true });
     }
 
     const allPassed = test1Success && test2Success && test3Success;

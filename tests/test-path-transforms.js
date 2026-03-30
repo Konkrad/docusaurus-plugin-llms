@@ -55,37 +55,37 @@ const testCases = [
   {
     name: 'Ignore "docs" at beginning',
     input: 'docs/api/method',
-    config: {ignorePaths: ['docs']},
+    config: { ignorePaths: ['docs'] },
     expected: 'api/method'
   },
   {
     name: 'Ignore "api" in middle',
     input: 'docs/api/method',
-    config: {ignorePaths: ['api']},
+    config: { ignorePaths: ['api'] },
     expected: 'docs/method'
   },
   {
     name: 'Ignore multiple paths',
     input: 'docs/api/method',
-    config: {ignorePaths: ['docs', 'api']},
+    config: { ignorePaths: ['docs', 'api'] },
     expected: 'method'
   },
   {
     name: 'Add path',
     input: 'api/method',
-    config: {addPaths: ['reference']},
+    config: { addPaths: ['reference'] },
     expected: 'reference/api/method'
   },
   {
     name: 'Add path when already exists',
     input: 'reference/api/method',
-    config: {addPaths: ['reference']},
+    config: { addPaths: ['reference'] },
     expected: 'reference/api/method'
   },
   {
     name: 'Multiple add paths',
     input: 'method',
-    config: {addPaths: ['reference', 'api']},
+    config: { addPaths: ['reference', 'api'] },
     expected: 'reference/api/method'
   },
   {
@@ -100,20 +100,20 @@ const testCases = [
   {
     name: 'Handle index files correctly',
     input: 'docs/index',
-    config: {ignorePaths: ['docs']},
+    config: { ignorePaths: ['docs'] },
     expected: 'index'
   },
   {
     name: 'Handle empty result from ignoring',
     input: 'docs',
-    config: {ignorePaths: ['docs']},
+    config: { ignorePaths: ['docs'] },
     expected: ''
   },
   {
     name: 'Path prefix handling',
     pathPrefix: 'docs',
     input: 'api/method',
-    config: {ignorePaths: ['docs']},
+    config: { ignorePaths: ['docs'] },
     // Should remove 'docs' from the final URL
     expected: 'api/method'
   }
@@ -694,7 +694,7 @@ function runDescriptionTests() {
   // Create a temporary directory for test files
   const testDir = path.join(__dirname, 'tmp-test');
   if (!fs.existsSync(testDir)) {
-    fs.mkdirSync(testDir, {recursive: true});
+    fs.mkdirSync(testDir, { recursive: true });
   }
 
   // Create a mock file to process

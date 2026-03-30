@@ -7,15 +7,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper function to clean up test directory
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
   // Recreate empty directory for next test
-  fs.mkdirSync(dir, {recursive: true});
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 /**
@@ -68,7 +68,7 @@ const testCases = [
         description: 'Test with object slug',
         url: 'https://example.com/object',
         frontMatter: {
-          slug: {nested: 'value'} // Object instead of string
+          slug: { nested: 'value' } // Object instead of string
         }
       }
     ],
@@ -153,7 +153,7 @@ const testCases = [
         description: 'Test with object id',
         url: 'https://example.com/obj',
         frontMatter: {
-          id: {key: 'value'} // Object instead of string
+          id: { key: 'value' } // Object instead of string
         }
       }
     ],
@@ -417,7 +417,7 @@ const testCases = [
         description: 'Test nested paths',
         url: 'https://example.com/nested',
         frontMatter: {
-          slug: {path: 'invalid'} // Object instead of string
+          slug: { path: 'invalid' } // Object instead of string
         }
       }
     ],
@@ -437,9 +437,9 @@ async function runFrontmatterValidationTests() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   try {
     for (const testCase of testCases) {
@@ -465,7 +465,7 @@ async function runFrontmatterValidationTests() {
 
           if (!fs.existsSync(fullPath)) {
             console.log(`❌ FAIL - Expected file at path "${expectedPath}" not found`);
-            console.log(`   Available files:`, fs.readdirSync(testDir, {recursive: true}));
+            console.log(`   Available files:`, fs.readdirSync(testDir, { recursive: true }));
             pathsCorrect = false;
             break;
           }
@@ -519,7 +519,7 @@ async function runFrontmatterValidationTests() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 

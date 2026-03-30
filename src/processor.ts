@@ -4,8 +4,8 @@
 
 import * as path from 'path';
 import matter from 'gray-matter';
-import {minimatch} from 'minimatch';
-import {DocInfo, PluginContext} from './types';
+import { minimatch } from 'minimatch';
+import { DocInfo, PluginContext } from './types';
 import {
   readFile,
   extractTitle,
@@ -41,7 +41,7 @@ export async function processMarkdownFile(
   resolvedUrl?: string
 ): Promise<DocInfo | null> {
   const content = await readFile(filePath);
-  const {data, content: markdownContent} = matter(content);
+  const { data, content: markdownContent } = matter(content);
 
   // Skip draft files
   if (data.draft === true) {
@@ -381,7 +381,7 @@ function resolveDocumentUrl(
  * Tries matching against multiple path variants for better usability
  */
 function matchesPattern(file: string, pattern: string, siteDir: string, docsDir: string): boolean {
-  const minimatchOptions = {matchBase: true};
+  const minimatchOptions = { matchBase: true };
 
   // Get site-relative path (e.g., "docs/quickstart/file.md")
   const siteRelativePath = normalizePath(path.relative(siteDir, file));
@@ -415,7 +415,7 @@ export async function processFilesWithPatterns(
   orderPatterns: string[] = [],
   includeUnmatched: boolean = false
 ): Promise<DocInfo[]> {
-  const {siteDir, siteUrl, docsDir} = context;
+  const { siteDir, siteUrl, docsDir } = context;
 
   // Filter files based on include patterns
   let filteredFiles = allFiles;

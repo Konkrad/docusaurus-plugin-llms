@@ -5,10 +5,10 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import * as crypto from 'crypto';
-import {minimatch} from 'minimatch';
+import { minimatch } from 'minimatch';
 import matter from 'gray-matter';
 import * as YAML from 'yaml';
-import {PluginOptions} from './types';
+import { PluginOptions } from './types';
 
 /**
  * Null/Undefined Handling Guidelines:
@@ -118,7 +118,7 @@ export function validateRequired<T>(value: T | null | undefined, paramName: stri
 export function validateString(
   value: unknown,
   paramName: string,
-  options: {minLength?: number; maxLength?: number; pattern?: RegExp} = {}
+  options: { minLength?: number; maxLength?: number; pattern?: RegExp } = {}
 ): string {
   if (typeof value !== 'string') {
     throw new ValidationError(`Parameter '${paramName}' must be a string, got ${typeof value}`);
@@ -311,7 +311,7 @@ export function shouldIgnoreFile(
     return false;
   }
 
-  const minimatchOptions = {matchBase: true};
+  const minimatchOptions = { matchBase: true };
 
   // Get site-relative path (e.g., "docs/quickstart/file.md")
   const siteRelativePath = normalizePath(path.relative(baseDir, filePath));
@@ -375,7 +375,7 @@ export async function readMarkdownFiles(
   visitedPaths.add(realPath);
 
   const files: string[] = [];
-  const entries = await fs.readdir(dir, {withFileTypes: true});
+  const entries = await fs.readdir(dir, { withFileTypes: true });
 
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
@@ -539,7 +539,7 @@ export async function resolvePartialImports(
 
       // Read the partial file
       let partialContent = await readFile(partialPath);
-      const {content: partialMarkdown} = matter(partialContent);
+      const { content: partialMarkdown } = matter(partialContent);
 
       // Recursively resolve imports in the partial with the updated chain
       const resolvedPartial = await resolvePartialImports(partialMarkdown, partialPath, newChain);
@@ -752,11 +752,11 @@ export function sanitizeForFilename(
 ): string {
   // Validate input parameters
   validateString(input, 'input');
-  validateString(fallback, 'fallback', {minLength: 1});
+  validateString(fallback, 'fallback', { minLength: 1 });
 
   if (!isNonEmptyString(input)) return fallback;
 
-  const {preserveUnicode = true, preserveCase = false} = options;
+  const { preserveUnicode = true, preserveCase = false } = options;
 
   let sanitized = preserveCase ? input : input.toLowerCase();
 
@@ -793,7 +793,7 @@ export function ensureUniqueIdentifier(
   suffix: (counter: number, base: string) => string = counter => `(${counter})`
 ): string {
   // Validate input parameters
-  validateString(baseIdentifier, 'baseIdentifier', {minLength: 1});
+  validateString(baseIdentifier, 'baseIdentifier', { minLength: 1 });
   validateRequired(usedIdentifiers, 'usedIdentifiers');
 
   if (!(usedIdentifiers instanceof Set)) {

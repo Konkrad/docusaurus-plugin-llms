@@ -33,7 +33,7 @@ const OUTPUT_DIR = path.join(__dirname, '..', 'test-output');
 
 function ensureOutputDir() {
   if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, {recursive: true});
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 }
 
@@ -56,7 +56,7 @@ function readOutput(filename) {
 
 function runChecks(checks) {
   let allPassed = true;
-  for (const {desc, ok} of checks) {
+  for (const { desc, ok } of checks) {
     if (!ok) {
       console.log(`  ❌ FAIL – ${desc}`);
       allPassed = false;
@@ -86,8 +86,8 @@ async function runTests() {
   try {
     await plugin(createMockContext(), {
       docsDir: [
-        {path: 'docs', routeBasePath: 'docs', label: 'Documentation'},
-        {path: 'api', routeBasePath: 'api', label: 'API Reference'}
+        { path: 'docs', routeBasePath: 'docs', label: 'Documentation' },
+        { path: 'api', routeBasePath: 'api', label: 'API Reference' }
       ],
       llmsTxtFilename: 'llms-multi-labelled.txt',
       llmsFullTxtFilename: 'llms-full-multi-labelled.txt'
@@ -152,8 +152,8 @@ async function runTests() {
   try {
     await plugin(createMockContext(), {
       docsDir: [
-        {path: 'docs', routeBasePath: 'docs'},
-        {path: 'api', routeBasePath: 'api'}
+        { path: 'docs', routeBasePath: 'docs' },
+        { path: 'api', routeBasePath: 'api' }
       ],
       llmsTxtFilename: 'llms-multi-nolabel.txt',
       llmsFullTxtFilename: 'llms-full-multi-nolabel.txt'
@@ -308,7 +308,7 @@ async function runTests() {
   console.log('\nTest 6: Single-element DocsSection array scans only that directory');
   try {
     await plugin(createMockContext(), {
-      docsDir: [{path: 'api', routeBasePath: 'api', label: 'API Reference'}],
+      docsDir: [{ path: 'api', routeBasePath: 'api', label: 'API Reference' }],
       llmsTxtFilename: 'llms-single-array.txt',
       llmsFullTxtFilename: 'llms-full-single-array.txt'
     }).postBuild();

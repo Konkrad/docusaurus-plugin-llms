@@ -6,15 +6,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper function to clean up test directory with nested structure
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
   // Recreate empty directory for next test
-  fs.mkdirSync(dir, {recursive: true});
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 // Test cases for preserveDirectoryStructure option
@@ -252,9 +252,9 @@ async function runPreserveDirectoryStructureTests() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   try {
     for (const testCase of testCases) {
@@ -377,7 +377,7 @@ async function runPreserveDirectoryStructureTests() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 
@@ -400,9 +400,9 @@ async function testDefaultBehavior() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   try {
     console.log('Test: Default parameter should preserve directory structure');
@@ -433,17 +433,17 @@ async function testDefaultBehavior() {
 
     if (fs.existsSync(fullPath)) {
       console.log(`✅ PASS - Default behavior preserves directory structure`);
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
       return true;
     } else {
       console.log(`❌ FAIL - Expected file at "${expectedPath}" not found`);
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
       return false;
     }
   } catch (error) {
     console.log(`❌ ERROR: ${error.message}`);
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
     return false;
   }

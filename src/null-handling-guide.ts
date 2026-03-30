@@ -46,7 +46,7 @@ function checkIfDefined_BAD(value: string | undefined | null): void {
  * Use optional chaining when accessing properties on values that might be
  * null or undefined. This avoids TypeError exceptions.
  */
-function safePropertyAccess_GOOD(obj: {prop?: string} | undefined): void {
+function safePropertyAccess_GOOD(obj: { prop?: string } | undefined): void {
   const value = obj?.prop;
   if (value !== undefined && value !== null) {
     console.log(value);
@@ -56,7 +56,7 @@ function safePropertyAccess_GOOD(obj: {prop?: string} | undefined): void {
 /**
  * AVOID: Manual null checks before property access (verbose)
  */
-function safePropertyAccess_BAD(obj: {prop?: string} | undefined): void {
+function safePropertyAccess_BAD(obj: { prop?: string } | undefined): void {
   if (obj && obj.prop) {
     // Verbose and misses the case where prop is explicitly false/0
     console.log(obj.prop);

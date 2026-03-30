@@ -14,19 +14,19 @@
 
 const fs = require('fs').promises;
 const path = require('path');
-const {resolvePartialImports} = require('../lib/utils');
+const { resolvePartialImports } = require('../lib/utils');
 
 async function setupTestFiles() {
   const testDir = path.join(__dirname, 'test-component-escaping-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, {recursive: true});
+    await fs.rm(testDir, { recursive: true });
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, {recursive: true});
+  await fs.mkdir(testDir, { recursive: true });
 
   return testDir;
 }
@@ -230,7 +230,7 @@ async function runTests() {
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, {recursive: true});
+      await fs.rm(testDir, { recursive: true });
     } catch (err) {
       // Ignore cleanup errors
     }

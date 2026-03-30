@@ -7,19 +7,19 @@
 const fs = require('fs/promises');
 const path = require('path');
 const os = require('os');
-const {generateLLMFile, generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateLLMFile, generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper to create a temporary test directory
 async function createTempDir() {
   const tmpDir = path.join(os.tmpdir(), `llm-plugin-test-${Date.now()}`);
-  await fs.mkdir(tmpDir, {recursive: true});
+  await fs.mkdir(tmpDir, { recursive: true });
   return tmpDir;
 }
 
 // Helper to cleanup test directory
 async function cleanupTempDir(tmpDir) {
   try {
-    await fs.rm(tmpDir, {recursive: true, force: true});
+    await fs.rm(tmpDir, { recursive: true, force: true });
   } catch (error) {
     // Ignore cleanup errors
   }
@@ -55,12 +55,12 @@ const testCases = [
       try {
         // Create a read-only directory
         const readOnlyDir = path.join(tmpDir, 'readonly');
-        await fs.mkdir(readOnlyDir, {recursive: true});
+        await fs.mkdir(readOnlyDir, { recursive: true });
         const canMakeReadOnly = await makeReadOnly(readOnlyDir);
 
         if (!canMakeReadOnly) {
           console.log('⚠️  SKIP: Cannot test permission errors on this platform');
-          return {passed: true, skipped: true};
+          return { passed: true, skipped: true };
         }
 
         const docs = [
@@ -92,7 +92,7 @@ const testCases = [
           await restoreWritePermissions(readOnlyDir);
 
           if (hasDescriptiveError) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -112,12 +112,12 @@ const testCases = [
 
       try {
         const readOnlyDir = path.join(tmpDir, 'readonly');
-        await fs.mkdir(readOnlyDir, {recursive: true});
+        await fs.mkdir(readOnlyDir, { recursive: true });
         const canMakeReadOnly = await makeReadOnly(readOnlyDir);
 
         if (!canMakeReadOnly) {
           console.log('⚠️  SKIP: Cannot test permission errors on this platform');
-          return {passed: true, skipped: true};
+          return { passed: true, skipped: true };
         }
 
         const docs = [
@@ -153,7 +153,7 @@ const testCases = [
           await restoreWritePermissions(readOnlyDir);
 
           if (hasDescriptiveError) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -173,12 +173,12 @@ const testCases = [
 
       try {
         const readOnlyParent = path.join(tmpDir, 'readonly-parent');
-        await fs.mkdir(readOnlyParent, {recursive: true});
+        await fs.mkdir(readOnlyParent, { recursive: true });
         const canMakeReadOnly = await makeReadOnly(readOnlyParent);
 
         if (!canMakeReadOnly) {
           console.log('⚠️  SKIP: Cannot test permission errors on this platform');
-          return {passed: true, skipped: true};
+          return { passed: true, skipped: true };
         }
 
         const docs = [
@@ -207,7 +207,7 @@ const testCases = [
           await restoreWritePermissions(readOnlyParent);
 
           if (hasDescriptiveError) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -227,7 +227,7 @@ const testCases = [
 
       try {
         const outputDir = path.join(tmpDir, 'output');
-        await fs.mkdir(outputDir, {recursive: true});
+        await fs.mkdir(outputDir, { recursive: true });
 
         // Create a read-only file with the same name as what we're trying to write
         const testFilePath = path.join(outputDir, 'test.md');
@@ -236,7 +236,7 @@ const testCases = [
 
         if (!canMakeReadOnly) {
           console.log('⚠️  SKIP: Cannot test permission errors on this platform');
-          return {passed: true, skipped: true};
+          return { passed: true, skipped: true };
         }
 
         const docs = [
@@ -265,7 +265,7 @@ const testCases = [
           await restoreWritePermissions(testFilePath);
 
           if (hasDescriptiveError) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -285,12 +285,12 @@ const testCases = [
 
       try {
         const readOnlyDir = path.join(tmpDir, 'readonly');
-        await fs.mkdir(readOnlyDir, {recursive: true});
+        await fs.mkdir(readOnlyDir, { recursive: true });
         const canMakeReadOnly = await makeReadOnly(readOnlyDir);
 
         if (!canMakeReadOnly) {
           console.log('⚠️  SKIP: Cannot test permission errors on this platform');
-          return {passed: true, skipped: true};
+          return { passed: true, skipped: true };
         }
 
         const docs = [
@@ -308,7 +308,7 @@ const testCases = [
         try {
           await generateLLMFile(docs, outputPath, 'Title', 'Desc', false);
           await restoreWritePermissions(readOnlyDir);
-          return {passed: false, error: 'Expected error but none was thrown'};
+          return { passed: false, error: 'Expected error but none was thrown' };
         } catch (error) {
           await restoreWritePermissions(readOnlyDir);
 
@@ -317,7 +317,7 @@ const testCases = [
             error.message.includes(outputPath) || error.message.includes(path.dirname(outputPath));
 
           if (containsFullPath) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -337,7 +337,7 @@ const testCases = [
 
       try {
         const outputDir = path.join(tmpDir, 'output');
-        await fs.mkdir(outputDir, {recursive: true});
+        await fs.mkdir(outputDir, { recursive: true });
 
         const docs = [
           {
@@ -365,7 +365,7 @@ const testCases = [
             const hasExpectedContent = content.includes('Success Title');
 
             if (hasExpectedContent) {
-              return {passed: true};
+              return { passed: true };
             } else {
               return {
                 passed: false,
@@ -373,10 +373,10 @@ const testCases = [
               };
             }
           } else {
-            return {passed: false, error: 'File was not created'};
+            return { passed: false, error: 'File was not created' };
           }
         } catch (error) {
-          return {passed: false, error: `Unexpected error: ${error.message}`};
+          return { passed: false, error: `Unexpected error: ${error.message}` };
         }
       } finally {
         await cleanupTempDir(tmpDir);
@@ -413,7 +413,7 @@ const testCases = [
             .catch(() => false);
 
           if (fileExists && result.length === 1) {
-            return {passed: true};
+            return { passed: true };
           } else {
             return {
               passed: false,
@@ -421,7 +421,7 @@ const testCases = [
             };
           }
         } catch (error) {
-          return {passed: false, error: `Unexpected error: ${error.message}`};
+          return { passed: false, error: `Unexpected error: ${error.message}` };
         }
       } finally {
         await cleanupTempDir(tmpDir);

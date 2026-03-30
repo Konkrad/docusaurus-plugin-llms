@@ -9,10 +9,10 @@
  */
 
 import * as path from 'path';
-import type {LoadContext, Plugin, Props, RouteConfig} from '@docusaurus/types';
-import {PluginOptions, PluginContext, CustomLLMFile, DocsSection} from './types';
-import {collectDocFiles, generateStandardLLMFiles, generateCustomLLMFiles} from './generator';
-import {setLogLevel, LogLevel, logger, getErrorMessage, isDefined, isNonEmptyString, isNonEmptyArray} from './utils';
+import type { LoadContext, Plugin, Props, RouteConfig } from '@docusaurus/types';
+import { PluginOptions, PluginContext, CustomLLMFile, DocsSection } from './types';
+import { collectDocFiles, generateStandardLLMFiles, generateCustomLLMFiles } from './generator';
+import { setLogLevel, LogLevel, logger, getErrorMessage, isDefined, isNonEmptyString, isNonEmptyArray } from './utils';
 
 /**
  * Validates plugin options to ensure they conform to expected types and constraints
@@ -69,7 +69,7 @@ function validatePluginOptions(options: PluginOptions): void {
       throw new Error('pathTransformation must be an object');
     }
 
-    const {ignorePaths, addPaths} = options.pathTransformation;
+    const { ignorePaths, addPaths } = options.pathTransformation;
 
     if (ignorePaths !== undefined) {
       if (!Array.isArray(ignorePaths)) {
@@ -255,7 +255,7 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
   };
   setLogLevel(logLevelMap[logLevel] || LogLevel.NORMAL);
 
-  const {siteDir, siteConfig, outDir} = context;
+  const { siteDir, siteConfig, outDir } = context;
 
   // Normalize baseUrl: remove trailing slash unless it's root '/'
   let normalizedBaseUrl = siteConfig.baseUrl || '/';
@@ -320,7 +320,7 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
     /**
      * Generates LLM-friendly documentation files after the build is complete
      */
-    async postBuild(props?: Props & {content: unknown}): Promise<void> {
+    async postBuild(props?: Props & { content: unknown }): Promise<void> {
       logger.info('Generating LLM-friendly documentation...');
 
       try {
@@ -382,4 +382,4 @@ export default function docusaurusPluginLLMs(context: LoadContext, options: Plug
   };
 }
 
-export type {PluginOptions};
+export type { PluginOptions };

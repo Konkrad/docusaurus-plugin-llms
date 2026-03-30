@@ -3,7 +3,7 @@
  * Tests the fix for Issue #6: Infinite Loop Risk in Unique Identifier Generation
  */
 
-const {ensureUniqueIdentifier} = require('../lib/utils');
+const { ensureUniqueIdentifier } = require('../lib/utils');
 
 function runTests() {
   console.log('Testing ensureUniqueIdentifier iteration limit...\n');

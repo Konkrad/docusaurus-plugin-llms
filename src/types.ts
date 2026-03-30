@@ -2,7 +2,7 @@
  * Type definitions for the docusaurus-plugin-llms plugin
  */
 
-import type {LoadContext, RouteConfig} from '@docusaurus/types';
+import type { LoadContext, RouteConfig } from '@docusaurus/types';
 
 /**
  * Represents a single documentation section with its physical path and URL route base

@@ -19,19 +19,19 @@ async function setupTestDocs() {
 
   // Create directories
   if (!fs.existsSync(TEST_DIR)) {
-    fs.mkdirSync(TEST_DIR, {recursive: true});
+    fs.mkdirSync(TEST_DIR, { recursive: true });
   }
 
   if (!fs.existsSync(path.join(TEST_DIR, 'docs'))) {
-    fs.mkdirSync(path.join(TEST_DIR, 'docs'), {recursive: true});
+    fs.mkdirSync(path.join(TEST_DIR, 'docs'), { recursive: true });
   }
 
   if (!fs.existsSync(path.join(TEST_DIR, 'docs', 'api'))) {
-    fs.mkdirSync(path.join(TEST_DIR, 'docs', 'api'), {recursive: true});
+    fs.mkdirSync(path.join(TEST_DIR, 'docs', 'api'), { recursive: true });
   }
 
   if (!fs.existsSync(OUTPUT_DIR)) {
-    fs.mkdirSync(OUTPUT_DIR, {recursive: true});
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
   // Create test markdown files

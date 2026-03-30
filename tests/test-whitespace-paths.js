@@ -7,14 +7,14 @@
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 /**
  * Helper to create a temporary directory for testing
  */
 function createTempDir() {
   const tmpDir = path.join(os.tmpdir(), `test-whitespace-paths-${Date.now()}`);
-  fs.mkdirSync(tmpDir, {recursive: true});
+  fs.mkdirSync(tmpDir, { recursive: true });
   return tmpDir;
 }
 
@@ -23,7 +23,7 @@ function createTempDir() {
  */
 function cleanupTempDir(tmpDir) {
   if (fs.existsSync(tmpDir)) {
-    fs.rmSync(tmpDir, {recursive: true, force: true});
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   }
 }
 

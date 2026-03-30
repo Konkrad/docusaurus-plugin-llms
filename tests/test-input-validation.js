@@ -157,7 +157,7 @@ function testValidateString() {
 
   // Test minLength validation
   try {
-    validateString('ab', 'testParam', {minLength: 3});
+    validateString('ab', 'testParam', { minLength: 3 });
     console.log('❌ FAIL: validateString should throw for string too short');
     failed++;
   } catch (error) {
@@ -172,7 +172,7 @@ function testValidateString() {
 
   // Test maxLength validation
   try {
-    validateString('abcdef', 'testParam', {maxLength: 3});
+    validateString('abcdef', 'testParam', { maxLength: 3 });
     console.log('❌ FAIL: validateString should throw for string too long');
     failed++;
   } catch (error) {
@@ -187,7 +187,7 @@ function testValidateString() {
 
   // Test pattern validation
   try {
-    validateString('abc123', 'testParam', {pattern: /^[a-z]+$/});
+    validateString('abc123', 'testParam', { pattern: /^[a-z]+$/ });
     console.log('❌ FAIL: validateString should throw for pattern mismatch');
     failed++;
   } catch (error) {
@@ -202,7 +202,7 @@ function testValidateString() {
 
   // Test pattern matching success
   try {
-    const result = validateString('abc', 'testParam', {pattern: /^[a-z]+$/});
+    const result = validateString('abc', 'testParam', { pattern: /^[a-z]+$/ });
     if (result === 'abc') {
       console.log('✅ PASS: validateString accepts matching pattern');
       passed++;

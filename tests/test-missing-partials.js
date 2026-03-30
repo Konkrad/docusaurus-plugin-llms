@@ -1,18 +1,18 @@
 const fs = require('fs').promises;
 const path = require('path');
-const {processMarkdownFile} = require('../lib/processor');
+const { processMarkdownFile } = require('../lib/processor');
 
 async function setupTestFiles() {
   const testDir = path.join(__dirname, 'test-missing-partials-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, {recursive: true});
+    await fs.rm(testDir, { recursive: true });
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, {recursive: true});
+  await fs.mkdir(testDir, { recursive: true });
 
   // Create a main document that imports a missing partial
   const mainContent = `---
@@ -198,7 +198,7 @@ async function runTests() {
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, {recursive: true});
+      await fs.rm(testDir, { recursive: true });
     } catch (err) {
       // Ignore cleanup errors
     }

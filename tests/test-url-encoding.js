@@ -6,13 +6,13 @@
 
 const fs = require('fs');
 const path = require('path');
-const {processMarkdownFile} = require('../lib/processor');
+const { processMarkdownFile } = require('../lib/processor');
 
 // Helper to create a test markdown file with content
 async function createTestFile(filePath, content, frontMatter = {}) {
   const dir = path.dirname(filePath);
   if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, {recursive: true});
+    fs.mkdirSync(dir, { recursive: true });
   }
 
   let fileContent = '';
@@ -34,7 +34,7 @@ async function createTestFile(filePath, content, frontMatter = {}) {
 // Helper to clean up test directory
 function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
 }
 
@@ -198,7 +198,7 @@ async function runUrlEncodingTests() {
   try {
     // Create test directory
     cleanupTestDirectory(testDir);
-    fs.mkdirSync(baseDir, {recursive: true});
+    fs.mkdirSync(baseDir, { recursive: true });
 
     for (const testCase of testCases) {
       console.log(`Test: ${testCase.name}`);

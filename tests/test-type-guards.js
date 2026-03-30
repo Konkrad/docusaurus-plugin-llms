@@ -2,7 +2,7 @@
  * Tests for type guard utilities
  */
 
-const {isDefined, isNonEmptyString, isNonEmptyArray} = require('../lib/utils');
+const { isDefined, isNonEmptyString, isNonEmptyArray } = require('../lib/utils');
 
 console.log('Running type guard tests...\n');
 

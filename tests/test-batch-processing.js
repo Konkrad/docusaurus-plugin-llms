@@ -5,7 +5,7 @@
 
 const fs = require('fs/promises');
 const path = require('path');
-const {generateLLMFile} = require('../lib/generator');
+const { generateLLMFile } = require('../lib/generator');
 
 // Test directory setup
 const TEST_DIR = path.join(__dirname, 'output-batch-test');
@@ -13,18 +13,18 @@ const TEST_DIR = path.join(__dirname, 'output-batch-test');
 async function setup() {
   // Clean up any existing test directory
   try {
-    await fs.rm(TEST_DIR, {recursive: true, force: true});
+    await fs.rm(TEST_DIR, { recursive: true, force: true });
   } catch (err) {
     // Directory doesn't exist, that's fine
   }
 
   // Create test directory
-  await fs.mkdir(TEST_DIR, {recursive: true});
+  await fs.mkdir(TEST_DIR, { recursive: true });
 }
 
 async function cleanup() {
   try {
-    await fs.rm(TEST_DIR, {recursive: true, force: true});
+    await fs.rm(TEST_DIR, { recursive: true, force: true });
   } catch (err) {
     console.error('Cleanup failed:', err);
   }

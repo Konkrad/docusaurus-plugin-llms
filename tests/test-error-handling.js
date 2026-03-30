@@ -4,7 +4,7 @@
  * Run with: node test-error-handling.js
  */
 
-const {getErrorMessage, getErrorStack} = require('../lib/utils');
+const { getErrorMessage, getErrorStack } = require('../lib/utils');
 
 const testCases = [
   {
@@ -14,7 +14,7 @@ const testCases = [
       const result = getErrorMessage(error);
 
       if (result === 'Test error message') {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -30,7 +30,7 @@ const testCases = [
       const result = getErrorMessage(error);
 
       if (result === 'String error message') {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -42,13 +42,13 @@ const testCases = [
   {
     name: 'getErrorMessage handles object errors',
     test() {
-      const error = {code: 'ERR_TEST', message: 'Object error'};
+      const error = { code: 'ERR_TEST', message: 'Object error' };
       const result = getErrorMessage(error);
 
       // Should JSON.stringify the object
       const expected = JSON.stringify(error);
       if (result === expected) {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -66,7 +66,7 @@ const testCases = [
       // Should return 'Unknown error' when JSON.stringify returns 'null'
       // or the stringified value
       if (result === 'null' || result === 'Unknown error') {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -84,7 +84,7 @@ const testCases = [
       // Should return 'Unknown error' when JSON.stringify returns undefined
       // or handle it gracefully
       if (typeof result === 'string' && result.length > 0) {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -96,14 +96,14 @@ const testCases = [
   {
     name: 'getErrorMessage handles circular references',
     test() {
-      const error = {code: 'ERR_CIRCULAR'};
+      const error = { code: 'ERR_CIRCULAR' };
       error.self = error; // Create circular reference
 
       const result = getErrorMessage(error);
 
       // Should return 'Unknown error' when JSON.stringify fails
       if (result === 'Unknown error') {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -120,9 +120,9 @@ const testCases = [
 
       // Should JSON.stringify the number
       if (result === '42') {
-        return {passed: true};
+        return { passed: true };
       } else {
-        return {passed: false, error: `Expected "42", got "${result}"`};
+        return { passed: false, error: `Expected "42", got "${result}"` };
       }
     }
   },
@@ -135,7 +135,7 @@ const testCases = [
       // Should JSON.stringify the array
       const expected = JSON.stringify(error);
       if (result === expected) {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -151,7 +151,7 @@ const testCases = [
       const result = getErrorStack(error);
 
       if (typeof result === 'string' && result.includes('Error: Test error')) {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,
@@ -163,7 +163,7 @@ const testCases = [
   {
     name: 'getErrorStack returns undefined for non-Error types',
     test() {
-      const testValues = ['string error', 42, {message: 'object'}, null, undefined, ['array']];
+      const testValues = ['string error', 42, { message: 'object' }, null, undefined, ['array']];
 
       for (const error of testValues) {
         const result = getErrorStack(error);
@@ -175,7 +175,7 @@ const testCases = [
         }
       }
 
-      return {passed: true};
+      return { passed: true };
     }
   },
   {
@@ -190,7 +190,7 @@ const testCases = [
         const stack = getErrorStack(err);
 
         if (message === 'Test error' && typeof stack === 'string') {
-          return {passed: true};
+          return { passed: true };
         } else {
           return {
             passed: false,
@@ -199,7 +199,7 @@ const testCases = [
         }
       }
 
-      return {passed: false, error: 'Did not catch expected error'};
+      return { passed: false, error: 'Did not catch expected error' };
     }
   },
   {
@@ -212,7 +212,7 @@ const testCases = [
         const stack = getErrorStack(err);
 
         if (message === 'String error' && stack === undefined) {
-          return {passed: true};
+          return { passed: true };
         } else {
           return {
             passed: false,
@@ -221,7 +221,7 @@ const testCases = [
         }
       }
 
-      return {passed: false, error: 'Did not catch expected error'};
+      return { passed: false, error: 'Did not catch expected error' };
     }
   },
   {
@@ -231,7 +231,7 @@ const testCases = [
       const result = getErrorMessage(error);
 
       if (result === 'Detailed error: File not found at /path/to/file.txt') {
-        return {passed: true};
+        return { passed: true };
       } else {
         return {
           passed: false,

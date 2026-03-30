@@ -5,7 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {normalizePath} = require('../lib/utils');
+const { normalizePath } = require('../lib/utils');
 
 console.log('Running Windows path normalization tests...\n');
 console.log('='.repeat(80));

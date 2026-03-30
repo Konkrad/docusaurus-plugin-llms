@@ -6,15 +6,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper function to clean up test directory with nested structure
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
   // Recreate empty directory for next test
-  fs.mkdirSync(dir, {recursive: true});
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 // Test cases for individual markdown file generation
@@ -137,9 +137,9 @@ async function runIndividualMarkdownGenerationTests() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   try {
     for (const testCase of testCases) {
@@ -269,7 +269,7 @@ async function runIndividualMarkdownGenerationTests() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 
@@ -295,9 +295,9 @@ async function testEdgeCases() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   const edgeCases = [
     {
@@ -376,7 +376,7 @@ async function testEdgeCases() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 
@@ -395,9 +395,9 @@ async function testKeepFrontMatter() {
 
   // Clean up and create test directory
   if (fs.existsSync(testDir)) {
-    fs.rmSync(testDir, {recursive: true});
+    fs.rmSync(testDir, { recursive: true });
   }
-  fs.mkdirSync(testDir, {recursive: true});
+  fs.mkdirSync(testDir, { recursive: true });
 
   const frontmatterTestCases = [
     {
@@ -645,7 +645,7 @@ async function testKeepFrontMatter() {
   } finally {
     // Clean up test directory
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 

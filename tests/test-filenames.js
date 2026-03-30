@@ -6,7 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper to create a test document
 function createTestDoc(filename, frontMatter = {}) {
@@ -26,9 +26,9 @@ function createTestDoc(filename, frontMatter = {}) {
 // Helper to clean up test directory
 function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
-  fs.mkdirSync(dir, {recursive: true});
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 // Helper to check if expected file exists and fallback doesn't
@@ -49,19 +49,19 @@ function validateFilePaths(testDir, expectedPath, fallbackPath) {
 const testCases = [
   {
     name: 'Uses slug for filename when slug present',
-    doc: createTestDoc('guides/config.md', {slug: 'custom-config-slug'}),
+    doc: createTestDoc('guides/config.md', { slug: 'custom-config-slug' }),
     expectedPath: 'guides/custom-config-slug.md',
     fallbackPath: 'guides/config.md'
   },
   {
     name: 'Prioritizes slug over id when both present',
-    doc: createTestDoc('api/reference.md', {slug: 'api-slug', id: 'api-id'}),
+    doc: createTestDoc('api/reference.md', { slug: 'api-slug', id: 'api-id' }),
     expectedPath: 'api/api-slug.md',
     fallbackPath: 'api/reference.md'
   },
   {
     name: 'Uses id for filename when only id present',
-    doc: createTestDoc('tutorials/basic.md', {id: 'tutorial-basic-id'}),
+    doc: createTestDoc('tutorials/basic.md', { id: 'tutorial-basic-id' }),
     expectedPath: 'tutorials/tutorial-basic-id.md',
     fallbackPath: 'tutorials/basic.md'
   },
@@ -118,7 +118,7 @@ async function runFilenameTests() {
     }
   } finally {
     if (fs.existsSync(testDir)) {
-      fs.rmSync(testDir, {recursive: true});
+      fs.rmSync(testDir, { recursive: true });
     }
   }
 

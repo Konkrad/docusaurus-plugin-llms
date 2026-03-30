@@ -42,7 +42,7 @@ function validatePluginOptions(options) {
       throw new Error('pathTransformation must be an object');
     }
 
-    const {ignorePaths, addPaths} = options.pathTransformation;
+    const { ignorePaths, addPaths } = options.pathTransformation;
 
     if (ignorePaths !== undefined) {
       if (!Array.isArray(ignorePaths)) {
@@ -292,7 +292,7 @@ const testCases = [
   {
     name: 'Invalid ignoreFiles (non-string elements)',
     options: {
-      ignoreFiles: ['valid.md', {file: 'invalid'}]
+      ignoreFiles: ['valid.md', { file: 'invalid' }]
     },
     shouldThrow: true,
     expectedError: 'ignoreFiles must contain only strings',
@@ -405,8 +405,8 @@ const testCases = [
     name: 'Valid docsDir as array of sections',
     options: {
       docsDir: [
-        {path: 'docs', routeBasePath: '/', label: 'General'},
-        {path: 'cloud', routeBasePath: 'cloud', label: 'Cloud'}
+        { path: 'docs', routeBasePath: '/', label: 'General' },
+        { path: 'cloud', routeBasePath: 'cloud', label: 'Cloud' }
       ]
     },
     shouldThrow: false,
@@ -415,7 +415,7 @@ const testCases = [
   {
     name: 'Valid docsDir as array without optional label',
     options: {
-      docsDir: [{path: 'docs', routeBasePath: '/'}]
+      docsDir: [{ path: 'docs', routeBasePath: '/' }]
     },
     shouldThrow: false,
     description: 'docsDir array sections do not require a label'
@@ -459,7 +459,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].path (missing)',
     options: {
-      docsDir: [{routeBasePath: '/'}]
+      docsDir: [{ routeBasePath: '/' }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].path must be a non-empty string',
@@ -468,7 +468,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].path (empty string)',
     options: {
-      docsDir: [{path: '   ', routeBasePath: '/'}]
+      docsDir: [{ path: '   ', routeBasePath: '/' }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].path must be a non-empty string',
@@ -477,7 +477,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].routeBasePath (not string)',
     options: {
-      docsDir: [{path: 'docs', routeBasePath: 42}]
+      docsDir: [{ path: 'docs', routeBasePath: 42 }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].routeBasePath must be a string',
@@ -486,7 +486,7 @@ const testCases = [
   {
     name: 'Invalid docsDir[].label (empty string)',
     options: {
-      docsDir: [{path: 'docs', routeBasePath: '/', label: '   '}]
+      docsDir: [{ path: 'docs', routeBasePath: '/', label: '   ' }]
     },
     shouldThrow: true,
     expectedError: 'docsDir[0].label must be a non-empty string',

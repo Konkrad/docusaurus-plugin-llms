@@ -4,7 +4,7 @@
  * Run with: node test-path-length-validation.js
  */
 
-const {validatePathLength, shortenPathIfNeeded} = require('../lib/utils');
+const { validatePathLength, shortenPathIfNeeded } = require('../lib/utils');
 const path = require('path');
 const os = require('os');
 

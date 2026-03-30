@@ -6,8 +6,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const {processMarkdownFile} = require('../lib/processor');
-const {applyPathTransformations} = require('../lib/utils');
+const { processMarkdownFile } = require('../lib/processor');
+const { applyPathTransformations } = require('../lib/utils');
 
 // Test the applyPathTransformations function directly
 async function testPathTransformations() {
@@ -17,31 +17,31 @@ async function testPathTransformations() {
     {
       name: 'Ignore "docs" from path',
       input: 'docs/tutorials/getting-started',
-      config: {ignorePaths: ['docs']},
+      config: { ignorePaths: ['docs'] },
       expected: 'tutorials/getting-started'
     },
     {
       name: 'Ignore "tutorials" from path',
       input: 'docs/tutorials/getting-started',
-      config: {ignorePaths: ['tutorials']},
+      config: { ignorePaths: ['tutorials'] },
       expected: 'docs/getting-started'
     },
     {
       name: 'Ignore multiple segments',
       input: 'docs/tutorials/advanced/concepts',
-      config: {ignorePaths: ['docs', 'tutorials']},
+      config: { ignorePaths: ['docs', 'tutorials'] },
       expected: 'advanced/concepts'
     },
     {
       name: 'Ignore non-existent segment',
       input: 'docs/tutorials/getting-started',
-      config: {ignorePaths: ['blog']},
+      config: { ignorePaths: ['blog'] },
       expected: 'docs/tutorials/getting-started'
     },
     {
       name: 'Add path prefix',
       input: 'tutorials/getting-started',
-      config: {addPaths: ['reference']},
+      config: { addPaths: ['reference'] },
       expected: 'reference/tutorials/getting-started'
     },
     {
@@ -85,11 +85,11 @@ async function testProcessMarkdownFileWithTransformations() {
 
   // Setup
   if (fs.existsSync(TEST_DIR)) {
-    fs.rmSync(TEST_DIR, {recursive: true});
+    fs.rmSync(TEST_DIR, { recursive: true });
   }
-  fs.mkdirSync(TEST_DIR, {recursive: true});
-  fs.mkdirSync(path.join(TEST_DIR, 'docs'), {recursive: true});
-  fs.mkdirSync(path.join(TEST_DIR, 'docs', 'tutorials'), {recursive: true});
+  fs.mkdirSync(TEST_DIR, { recursive: true });
+  fs.mkdirSync(path.join(TEST_DIR, 'docs'), { recursive: true });
+  fs.mkdirSync(path.join(TEST_DIR, 'docs', 'tutorials'), { recursive: true });
 
   // Create test file
   const testFile = path.join(TEST_DIR, 'docs', 'tutorials', 'draft.md');
@@ -151,7 +151,7 @@ This is a test tutorial.`
 
   // Cleanup
   if (fs.existsSync(TEST_DIR)) {
-    fs.rmSync(TEST_DIR, {recursive: true});
+    fs.rmSync(TEST_DIR, { recursive: true });
   }
 
   return true;

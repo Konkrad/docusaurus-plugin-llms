@@ -1,18 +1,18 @@
 const fs = require('fs').promises;
 const path = require('path');
-const {processMarkdownFile} = require('../lib/processor');
+const { processMarkdownFile } = require('../lib/processor');
 
 async function setupTestFiles() {
   const testDir = path.join(__dirname, 'test-partials-temp');
 
   // Clean up if exists
   try {
-    await fs.rm(testDir, {recursive: true});
+    await fs.rm(testDir, { recursive: true });
   } catch (err) {
     // Ignore if doesn't exist
   }
 
-  await fs.mkdir(testDir, {recursive: true});
+  await fs.mkdir(testDir, { recursive: true });
 
   // Create a partial file
   const partialContent = `---
@@ -81,7 +81,7 @@ async function runTests() {
   try {
     // Test 1: Partial file should be excluded from file listing
     console.log('Test 1: Partial files are excluded from processing');
-    const {readMarkdownFiles} = require('../lib/utils');
+    const { readMarkdownFiles } = require('../lib/utils');
     const files = await readMarkdownFiles(testDir, testDir, []);
     const hasPartial = files.some(f => f.includes('_shared-config'));
 
@@ -152,7 +152,7 @@ async function runTests() {
   } finally {
     // Clean up test directory
     try {
-      await fs.rm(testDir, {recursive: true});
+      await fs.rm(testDir, { recursive: true });
     } catch (err) {
       // Ignore cleanup errors
     }

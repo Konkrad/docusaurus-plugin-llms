@@ -6,14 +6,14 @@
 
 const fs = require('fs');
 const path = require('path');
-const {generateIndividualMarkdownFiles} = require('../lib/generator');
+const { generateIndividualMarkdownFiles } = require('../lib/generator');
 
 // Helper function to clean up test directory
 async function cleanupTestDirectory(dir) {
   if (fs.existsSync(dir)) {
-    fs.rmSync(dir, {recursive: true, force: true});
+    fs.rmSync(dir, { recursive: true, force: true });
   }
-  fs.mkdirSync(dir, {recursive: true});
+  fs.mkdirSync(dir, { recursive: true });
 }
 
 // Test cases for path collision detection
@@ -63,27 +63,27 @@ const testCases = [
   },
   {
     name: 'Large number of collisions (100 files)',
-    docs: Array.from({length: 100}, (_, i) => ({
+    docs: Array.from({ length: 100 }, (_, i) => ({
       title: `Doc ${i + 1}`,
       path: 'docs/same-path.md',
       content: `Content ${i + 1}`,
       description: `Description ${i + 1}`,
       url: 'https://example.com/docs/same-path'
     })),
-    expectedPaths: ['same-path.md', ...Array.from({length: 99}, (_, i) => `same-path-${i + 2}.md`)],
+    expectedPaths: ['same-path.md', ...Array.from({ length: 99 }, (_, i) => `same-path-${i + 2}.md`)],
     siteUrl: 'https://example.com',
     description: 'Should handle 100 collisions without hanging'
   },
   {
     name: 'Very large number of collisions (1000 files)',
-    docs: Array.from({length: 1000}, (_, i) => ({
+    docs: Array.from({ length: 1000 }, (_, i) => ({
       title: `Doc ${i + 1}`,
       path: 'docs/collision.md',
       content: `Content ${i + 1}`,
       description: `Description ${i + 1}`,
       url: 'https://example.com/docs/collision'
     })),
-    expectedPaths: ['collision.md', ...Array.from({length: 999}, (_, i) => `collision-${i + 2}.md`)],
+    expectedPaths: ['collision.md', ...Array.from({ length: 999 }, (_, i) => `collision-${i + 2}.md`)],
     siteUrl: 'https://example.com',
     description: 'Should handle 1000 collisions efficiently'
   },

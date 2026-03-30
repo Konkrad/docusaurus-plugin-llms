@@ -4,7 +4,7 @@
  * Run with: node test-filename-sanitization-improved.js
  */
 
-const {sanitizeForFilename} = require('../lib/utils');
+const { sanitizeForFilename } = require('../lib/utils');
 
 const testCases = [
   // Default behavior (preserveUnicode: true, preserveCase: false)
@@ -32,19 +32,19 @@ const testCases = [
     name: 'Removes unicode in ASCII-only mode',
     input: 'Café Guide',
     expected: 'caf-guide',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   },
   {
     name: 'Removes unicode characters in ASCII-only mode',
     input: 'Introdução à Programação',
     expected: 'introdu-o-programa-o',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   },
   {
     name: 'Removes emoji and unicode in ASCII-only mode',
     input: 'Hello 世界 Guide',
     expected: 'hello-guide',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   },
 
   // Special characters handling (filesystem-unsafe)
@@ -84,7 +84,7 @@ const testCases = [
     name: 'Preserves underscores in ASCII-only mode',
     input: 'file_name_test',
     expected: 'file_name_test',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   },
   {
     name: 'Preserves dots in middle',
@@ -235,13 +235,13 @@ const testCases = [
     name: 'Preserves case when requested',
     input: 'MixedCaseTitle',
     expected: 'MixedCaseTitle',
-    options: {preserveCase: true}
+    options: { preserveCase: true }
   },
   {
     name: 'Preserves case with underscores',
     input: 'My_File_Name',
     expected: 'My_File_Name',
-    options: {preserveCase: true}
+    options: { preserveCase: true }
   },
 
   // Combined options
@@ -249,7 +249,7 @@ const testCases = [
     name: 'ASCII-only + preserve case',
     input: 'My Café File',
     expected: 'My-Caf-File',
-    options: {preserveUnicode: false, preserveCase: true}
+    options: { preserveUnicode: false, preserveCase: true }
   },
 
   // Backward compatibility - ASCII-only mode matches old behavior
@@ -257,13 +257,13 @@ const testCases = [
     name: 'ASCII mode matches old behavior for unicode',
     input: 'Café Guide',
     expected: 'caf-guide',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   },
   {
     name: 'ASCII mode preserves underscores',
     input: 'file_name_test',
     expected: 'file_name_test',
-    options: {preserveUnicode: false}
+    options: { preserveUnicode: false }
   }
 ];
 

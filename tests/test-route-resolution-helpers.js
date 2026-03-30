@@ -7,7 +7,7 @@
 
 const path = require('path');
 const fs = require('fs-extra');
-const {processFilesWithPatterns} = require('../lib/processor');
+const { processFilesWithPatterns } = require('../lib/processor');
 
 // Test data setup
 const TEST_DIR = path.join(__dirname, 'route-helpers-test');
