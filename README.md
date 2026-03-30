@@ -22,12 +22,14 @@ A Docusaurus plugin for generating LLM-friendly documentation following the [llm
 - 🚫 Optional import statement removal for cleaner MDX content
 - 🔄 Optional duplicate heading removal for concise output
 - 📊 Provides statistics about generated documentation
+- 🗂️ Multiple documentation sections via `docsDir` array with named headings in `llms.txt`
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Configuration Options](#configuration-options)
 - [Available Options](#available-options)
+- [Multiple Documentation Sections (docsDir)](#multiple-documentation-sections-docsdir-array-form)
 - [Path Transformation Examples](#path-transformation-examples)
 - [Document Ordering Examples](#document-ordering-examples)
 - [Custom LLM Files](#custom-llm-files)
@@ -121,33 +123,149 @@ module.exports = {
 
 ### Available Options
 
-| Option                           | Type     | Default           | Description                                                   |
-|----------------------------------|----------|-------------------|---------------------------------------------------------------|
-| `description`                    | string   | Site tagline      | Custom description to use in generated files                  |
-| `docsDir`                        | string   | `'docs'`          | Base directory for documentation files                        |
-| `excludeImports`                 | boolean  | `false`           | Remove import statements from generated content                |
-| `generateLLMsFullTxt`            | boolean  | `true`            | Whether to generate the full content file                     |
-| `generateLLMsTxt`                | boolean  | `true`            | Whether to generate the links file                            |
-| `ignoreFiles`                    | string[] | `[]`              | Array of glob patterns for files to ignore                    |
-| `includeBlog`                    | boolean  | `false`           | Whether to include blog content                               |
-| `includeOrder`                   | string[] | `[]`              | Array of glob patterns for files to process in specific order |
-| `includeUnmatchedLast`           | boolean  | `true`            | Whether to include unmatched files at the end                 |
-| `llmsFullTxtFilename`            | string   | `'llms-full.txt'` | Custom filename for the full content file                     |
-| `llmsTxtFilename`                | string   | `'llms.txt'`      | Custom filename for the links file                            |
-| `pathTransformation.addPaths`    | string[] | `[]`              | Path segments to add when constructing URLs                   |
-| `pathTransformation.ignorePaths` | string[] | `[]`              | Path segments to ignore when constructing URLs                |
-| `pathTransformation`             | object   | `undefined`       | Path transformation options for URL construction              |
-| `removeDuplicateHeadings`        | boolean  | `false`           | Remove redundant content that duplicates heading text         |
-| `title`                          | string   | Site title        | Custom title to use in generated files                        |
-| `version`                        | string   | `undefined`       | Global version to include in all generated files              |
-| `customLLMFiles`                 | array    | `[]`              | Array of custom LLM file configurations                       |
-| `generateMarkdownFiles`          | boolean  | `false`           | Generate individual markdown files and link to them from llms.txt |
-| `keepFrontMatter`                | string[] | []                | Preserve selected front matter items when generating individual markdown files |
-| `preserveDirectoryStructure`     | boolean  | `true`            | Preserve full directory structure in generated markdown files (e.g., `docs/server/config.md` instead of `server/config.md`) |
-| `processingBatchSize`            | number   | `100`             | Batch size for processing documents to prevent out-of-memory errors on large sites |
-| `rootContent`                    | string   | (see below)       | Custom content to include at the root level of llms.txt       |
-| `fullRootContent`                | string   | (see below)       | Custom content to include at the root level of llms-full.txt  |
-| `logLevel`                       | string   | `'normal'`        | Logging level for plugin output: `'quiet'`, `'normal'`, or `'verbose'` |
+| Option                           | Type              | Default           | Description                                                                                                                   |
+|----------------------------------|-------------------|-------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| `description`                    | string            | Site tagline      | Custom description to use in generated files                                                                                  |
+| `docsDir`                        | `string \| DocsSection[]` | `'docs'`  | Base directory for documentation files. Pass a **string** for single-section sites or an **array of `DocsSection` objects** for multi-section sites. See [Multiple Documentation Sections](#multiple-documentation-sections-docsdir-array-form). |
+| `excludeImports`                 | boolean           | `false`           | Remove import statements from generated content                                                                               |
+| `generateLLMsFullTxt`            | boolean           | `true`            | Whether to generate the full content file                                                                                     |
+| `generateLLMsTxt`                | boolean           | `true`            | Whether to generate the links file                                                                                            |
+| `ignoreFiles`                    | string[]          | `[]`              | Array of glob patterns for files to ignore                                                                                    |
+| `includeBlog`                    | boolean           | `false`           | Whether to include blog content                                                                                               |
+| `includeOrder`                   | string[]          | `[]`              | Array of glob patterns for files to process in specific order                                                                 |
+| `includeUnmatchedLast`           | boolean           | `true`            | Whether to include unmatched files at the end                                                                                 |
+| `llmsFullTxtFilename`            | string            | `'llms-full.txt'` | Custom filename for the full content file                                                                                     |
+| `llmsTxtFilename`                | string            | `'llms.txt'`      | Custom filename for the links file                                                                                            |
+| `pathTransformation.addPaths`    | string[]          | `[]`              | Path segments to add when constructing URLs                                                                                   |
+| `pathTransformation.ignorePaths` | string[]          | `[]`              | Path segments to ignore when constructing URLs                                                                                |
+| `pathTransformation`             | object            | `undefined`       | Path transformation options for URL construction                                                                              |
+| `removeDuplicateHeadings`        | boolean           | `false`           | Remove redundant content that duplicates heading text                                                                         |
+| `title`                          | string            | Site title        | Custom title to use in generated files                                                                                        |
+| `version`                        | string            | `undefined`       | Global version to include in all generated files                                                                              |
+| `customLLMFiles`                 | array             | `[]`              | Array of custom LLM file configurations                                                                                       |
+| `generateMarkdownFiles`          | boolean           | `false`           | Generate individual markdown files and link to them from llms.txt                                                             |
+| `keepFrontMatter`                | string[]          | `[]`              | Preserve selected front matter items when generating individual markdown files                                                |
+| `preserveDirectoryStructure`     | boolean           | `true`            | Preserve full directory structure in generated markdown files                                                                 |
+| `processingBatchSize`            | number            | `100`             | Batch size for processing documents to prevent out-of-memory errors on large sites                                            |
+| `rootContent`                    | string            | (see below)       | Custom content to include at the root level of llms.txt                                                                       |
+| `fullRootContent`                | string            | (see below)       | Custom content to include at the root level of llms-full.txt                                                                  |
+| `logLevel`                       | string            | `'normal'`        | Logging level for plugin output: `'quiet'`, `'normal'`, or `'verbose'`                                                       |
+
+### Multiple Documentation Sections (`docsDir` array form)
+
+Use `docsDir` with an **array of `DocsSection` objects** when your Docusaurus site has **more than one** `@docusaurus/plugin-content-docs` instance — for example, separate plugins for `cloud`, `api`, and `tutorials` sections, each with their own `path` and `routeBasePath`.
+
+Using `docsDir` as a plain string in this situation only scans a single directory and hardcodes the URL path prefix to `'docs'`, producing wrong URLs for every other section. The array form solves both problems.
+
+Each entry is a `DocsSection` object:
+
+| Field            | Type   | Required | Description                                                                                                                                    |
+|------------------|--------|----------|------------------------------------------------------------------------------------------------------------------------------------------------|
+| `path`           | string | ✅        | Physical directory path relative to `siteDir`. Matches the `path` option of `@docusaurus/plugin-content-docs`.                                |
+| `routeBasePath`  | string | ✅        | URL route base. Use `'/'` when the docs plugin has `routeBasePath: '/'` (i.e. docs served at the site root), otherwise use the route value.   |
+| `label`          | string |          | Human-readable section heading in `llms.txt`. Falls back to `path` when omitted.                                                              |
+
+#### Configuration Example
+
+Given a Docusaurus config with multiple docs plugins:
+
+```js
+// docusaurus.config.js
+plugins: [
+  ['@docusaurus/plugin-content-docs', {
+    id: 'cloud',
+    path: 'cloud',
+    routeBasePath: 'cloud',
+  }],
+  ['@docusaurus/plugin-content-docs', {
+    id: 'api',
+    path: 'api',
+    routeBasePath: 'api',
+  }],
+],
+presets: [
+  ['classic', {
+    docs: { routeBasePath: '/' }, // default docs served at site root
+  }],
+],
+```
+
+Configure `docusaurus-plugin-llms` as:
+
+```js
+plugins: [
+  [
+    'docusaurus-plugin-llms',
+    {
+      docsDir: [
+        { path: 'docs',  routeBasePath: '/',     label: 'General' },
+        { path: 'cloud', routeBasePath: 'cloud', label: '☁️ Cloud Resources' },
+        { path: 'api',   routeBasePath: 'api',   label: '🔌 API Reference' },
+      ],
+      generateLLMsTxt: true,
+      generateLLMsFullTxt: true,
+      excludeImports: true,
+      removeDuplicateHeadings: true,
+    },
+  ],
+],
+```
+
+This produces an `llms.txt` where the TOC is grouped by section:
+
+```
+# My Project
+
+> Complete project documentation
+
+This file contains links to documentation sections following the llmstxt.org standard.
+
+## General
+
+- [Introduction](https://example.com/index.md): Welcome to My Project
+- [Getting Started](https://example.com/getting-started.md): Installation and first steps
+
+## ☁️ Cloud Resources
+
+- [Overview](https://example.com/cloud/index.md): Cloud architecture overview
+- [Deployment](https://example.com/cloud/deployment.md): How to deploy to the cloud
+
+## 🔌 API Reference
+
+- [API Overview](https://example.com/api/index.md): API reference introduction
+- [Endpoints](https://example.com/api/endpoints.md): All available endpoints
+```
+
+#### Section Ordering
+
+Sections appear in the order they are listed in `docsDir`. Use `includeOrder` for fine-grained ordering of files within a section (patterns are matched against the site-relative path):
+
+```js
+docsDir: [
+  { path: 'docs',  routeBasePath: '/',     label: 'General' },
+  { path: 'cloud', routeBasePath: 'cloud', label: '☁️ Cloud Resources' },
+],
+includeOrder: [
+  'docs/getting-started.md',
+  'cloud/overview.md',
+  'cloud/deployment.md',
+],
+includeUnmatchedLast: true,
+```
+
+#### Migration from string `docsDir`
+
+The string form of `docsDir` is still fully supported for single-section sites. To gain section labels and correct multi-section URL construction, switch to the array form:
+
+```js
+// Before — string form (still valid for single-section sites)
+docsDir: 'docs',
+
+// After — array form, supports multiple sections with labels
+docsDir: [
+  { path: 'docs', routeBasePath: '/', label: 'Documentation' },
+],
+```
 
 ### Custom Root Content
 
@@ -1095,6 +1213,37 @@ The plugin includes comprehensive tests in the `tests` directory:
 
 - **Unit tests**: Test the path transformation functionality in isolation
 - **Integration tests**: Simulate a Docusaurus build with various configurations
+
+#### Test Docs
+
+The `test-docs/` directory contains sample documentation used by the integration tests and for manual verification:
+
+| Directory         | Simulates                                      |
+|-------------------|------------------------------------------------|
+| `test-docs/docs/` | Default docs plugin (`routeBasePath: '/'`)     |
+| `test-docs/cloud/`| Secondary plugin (`routeBasePath: 'cloud'`)    |
+| `test-docs/api/`  | Secondary plugin (`routeBasePath: 'api'`)      |
+
+To manually verify the multi-section output, configure the plugin with `docsDir` pointing at all three directories:
+
+```js
+plugins: [
+  [
+    'docusaurus-plugin-llms',
+    {
+      docsDir: [
+        { path: 'test-docs/docs',  routeBasePath: '/',     label: 'General' },
+        { path: 'test-docs/cloud', routeBasePath: 'cloud', label: '☁️ Cloud Resources' },
+        { path: 'test-docs/api',   routeBasePath: 'api',   label: '🔌 API Reference' },
+      ],
+      generateLLMsTxt: true,
+      generateLLMsFullTxt: true,
+    },
+  ],
+],
+```
+
+The resulting `llms.txt` will have a grouped TOC with one `##` heading per section.
 
 To run the tests:
 
